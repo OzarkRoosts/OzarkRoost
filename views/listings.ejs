@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ozarks Cabins &amp; Camp — OzarkRoost</title>
+  <meta name="description" content="Browse curated cabin, RV, and glamping rentals in Bull Shoals, Hot Springs Village, Beaver Lake, and Eureka Springs. Book through verified partners.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="listings-nav">
+  <div class="listings-nav__inner">
+    <a href="/" class="listings-nav__logo">OzarkRoost</a>
+    <div class="listings-nav__links">
+      <a href="/">Home</a>
+      <a href="/listings" class="listings-nav__active">Browse Listings</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Banner -->
+<header class="listings-hero">
+  <div class="listings-hero__inner">
+    <p class="section-label">Ozarks, Arkansas</p>
+    <h1>Find Your Perfect Retreat</h1>
+    <p>Cabins, RV sites, and glamping spots across Bull Shoals, Hot Springs Village, Beaver Lake, and Eureka Springs.</p>
+  </div>
+</header>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <div class="filter-bar__inner">
+    <div class="filter-group">
+      <label for="location-filter" class="filter-label">Location</label>
+      <select id="location-filter" class="filter-select">
+        <option value="all">All Destinations</option>
+        <option value="bull-shoals">Bull Shoals Lake</option>
+        <option value="hot-springs">Hot Springs Village</option>
+        <option value="beaver-lake">Beaver Lake</option>
+        <option value="eureka-springs">Eureka Springs</option>
+      </select>
+    </div>
+    <div class="filter-group filter-group--toggle">
+      <span class="filter-label">Type</span>
+      <div class="type-toggle">
+        <button class="type-btn type-btn--active" data-type="all">All</button>
+        <button class="type-btn" data-type="cabin">Cabins</button>
+        <button class="type-btn" data-type="rv">RV Sites</button>
+        <button class="type-btn" data-type="glamping">Glamping</button>
+      </div>
+    </div>
+    <div class="filter-results" id="results-count">Showing <%= listings ? listings.length : 0 %> listings</div>
+  </div>
+</div>
+
+<!-- Listings Grid -->
+<main class="listings-grid-wrap">
+  <div class="listings-grid" id="listings-grid">
+    <% if (listings && listings.length > 0) { %>
+      <% listings.forEach(function(listing) { %>
+        <%
+          const typeBadgeClass = {
+            cabin: 'listing-card__type-badge--cabin',
+            rv: 'listing-card__type-badge--rv',
+            glamping: 'listing-card__type-badge--glamping'
+          }[listing.property_type] || 'listing-card__type-badge--cabin';
+
+          const typeLabel = {
+            cabin: 'Cabin',
+            rv: 'RV Site',
+            glamping: 'Glamping'
+          }[listing.property_type] || listing.property_type;
+
+          const locationLabels = {
+            'bull-shoals': 'Bull Shoals Lake',
+            'hot-springs': 'Hot Springs Village',
+            'beaver-lake': 'Beaver Lake',
+            'eureka-springs': 'Eureka Springs'
+          };
+          const locationLabel = locationLabels[listing.location] || listing.location;
+        %>
+        <article class="listing-card" data-location="<%= listing.location %>" data-type="<%= listing.property_type %>">
+          <% if (listing.photo_url) { %>
+            <div class="listing-card__img" style="background-image: url('<%= listing.photo_url %>'); background-size: cover; background-position: center;">
+              <span class="listing-card__type-badge <%= typeBadgeClass %>"><%= typeLabel %></span>
+            </div>
+          <% } else { %>
+            <div class="listing-card__img" style="background: linear-gradient(135deg, #1a4a3a 0%, #2a6550 50%, #1a3a2e 100%);">
+              <span class="listing-card__type-badge <%= typeBadgeClass %>"><%= typeLabel %></span>
+            </div>
+          <% } %>
+          <div class="listing-card__body">
+            <div class="listing-card__location">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <%= locationLabel %>
+            </div>
+            <h2 class="listing-card__name"><%= listing.property_name %></h2>
+            <p class="listing-card__desc"><%= listing.description %></p>
+            <% if (listing.website_url && listing.partner) { %>
+              <div class="listing-card__links">
+                <% if (listing.partner === 'vrbo') { %>
+                  <a href="/out?listing=<%= listing.id %>&partner=vrbo" target="_blank" rel="noopener" class="listing-card__affiliate-btn listing-card__affiliate-btn--vrbo">View on Vrbo</a>
+                <% } else if (listing.partner === 'booking') { %>
+                  <a href="/out?listing=<%= listing.id %>&partner=booking" target="_blank" rel="noopener" class="listing-card__affiliate-btn listing-card__affiliate-btn--booking">View on Booking.com</a>
+                <% } %>
+              </div>
+            <% } %>
+          </div>
+        </article>
+      <% }); %>
+    <% } %>
+  </div>
+
+  <!-- Empty state -->
+  <div class="listings-empty" id="listings-empty" style="display: <%= (!listings || listings.length === 0) ? '' : 'none' %>;">
+    <p>No listings match your filters.</p>
+    <button class="btn-reset" id="btn-reset">Show all listings</button>
+  </div>
+</main>
+
+<!-- Footer -->
+<%- include('partials/footer') %>
+
+<script>
+(function() {
+  const grid = document.getElementById('listings-grid');
+  const emptyState = document.getElementById('listings-empty');
+  const resultsCount = document.getElementById('results-count');
+  const locationFilter = document.getElementById('location-filter');
+  const typeBtns = document.querySelectorAll('.type-btn');
+  const btnReset = document.getElementById('btn-reset');
+
+  let currentLocation = 'all';
+  let currentType = 'all';
+
+  function applyFilters() {
+    const cards = grid.querySelectorAll('.listing-card');
+    let visible = 0;
+
+    cards.forEach(function(card) {
+      const loc = card.getAttribute('data-location');
+      const type = card.getAttribute('data-type');
+
+      const locMatch = currentLocation === 'all' || loc === currentLocation;
+      const typeMatch = currentType === 'all' || type === currentType;
+
+      if (locMatch && typeMatch) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    resultsCount.textContent = 'Showing ' + visible + ' listing' + (visible !== 1 ? 's' : '');
+    emptyState.style.display = visible === 0 ? '' : 'none';
+  }
+
+  locationFilter.addEventListener('change', function() {
+    currentLocation = this.value;
+    applyFilters();
+  });
+
+  typeBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      typeBtns.forEach(function(b) { b.classList.remove('type-btn--active'); });
+      this.classList.add('type-btn--active');
+      currentType = this.getAttribute('data-type');
+      applyFilters();
+    });
+  });
+
+  btnReset && btnReset.addEventListener('click', function() {
+    currentLocation = 'all';
+    currentType = 'all';
+    locationFilter.value = 'all';
+    typeBtns.forEach(function(b) { b.classList.remove('type-btn--active'); });
+    typeBtns[0].classList.add('type-btn--active');
+    applyFilters();
+  });
+})();
+</script>
+
+</body>
+</html>

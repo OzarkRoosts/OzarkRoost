@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Hidden Gem Cabins in the Ozarks Most Tourists Miss",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-06-22",
+    "dateModified": "2026-06-22"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.hiddenGemCabins %>" alt="Secluded cabin in the Ozarks with morning fog among pine trees">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Destination Guide</p>
+    <h1>Hidden Gem Cabins in the Ozarks Most Tourists Miss</h1>
+    <p class="guide-hero__sub">The Cabins the Travel Guides Don't Know About (Yet)</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Your Perfect Ozarks Stay</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p>Most visitors to the Ozarks never leave the highway. They stay in the big-name destinations, eat at the restaurants with the billboard, and drive home without ever finding the places that make regulars come back every year. This list is for the people who want to go further. These are the <strong>hidden gem cabins in the Ozarks</strong> &mdash; vetted, quiet, and worth the extra 20 minutes of driving.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>8 Hidden Gem Cabins Worth Finding</h2>
+    <div class="guide-gems">
+      <div class="guide-gem">
+        <span class="guide-gem__num">1</span>
+        <div>
+          <h3>The Cabin at OZK Ranch</h3>
+          <p class="guide-gem__loc">Compton, AR</p>
+          <p>550 private acres, no neighbors, Dark Sky Park certified, 5 miles from Buffalo River upper put-in.</p>
+        </div>
+      </div>
+      <div class="guide-gem">
+        <span class="guide-gem__num">2</span>
+        <div>
+          <h3>Summit House</h3>
+          <p class="guide-gem__loc">St. Joe, AR</p>
+          <p>360&deg; Ozark views, 17 private acres, overlooks the Buffalo River valley &mdash; one reviewer called it &ldquo;the view I keep trying to paint.&rdquo;</p>
+        </div>
+      </div>
+      <div class="guide-gem">
+        <span class="guide-gem__num">3</span>
+        <div>
+          <h3>Sky Hawk Ridge</h3>
+          <p class="guide-gem__loc">Gilbert area</p>
+          <p>185-acre private refuge, 1 mile to Buffalo River, dog-friendly, two separate homes for large groups.</p>
+        </div>
+      </div>
+      <div class="guide-gem">
+        <span class="guide-gem__num">4</span>
+        <div>
+          <h3>Highlands Retreat</h3>
+          <p class="guide-gem__loc">Near Jasper</p>
+          <p>3 private wooded acres overlooking the Arkansas Grand Canyon. 1,300 sq ft, designed for nature lovers who also need good WiFi.</p>
+        </div>
+      </div>
+      <div class="guide-gem">
+        <span class="guide-gem__num">5</span>
+        <div>
+          <h3>Misty Bluff Cabin</h3>
+          <p class="guide-gem__loc">Scenic Hwy 7 corridor</p>
+          <p>Secluded setting, incredible views, close to waterfalls and elk viewing, hot tub.</p>
+        </div>
+      </div>
+      <div class="guide-gem">
+        <span class="guide-gem__num">6</span>
+        <div>
+          <h3>The Round House</h3>
+          <p class="guide-gem__loc">White River / Buffalo River confluence</p>
+          <p>Screened porch with mountain bluff views, very near the river junction, one-of-a-kind architecture.</p>
+        </div>
+      </div>
+      <div class="guide-gem">
+        <span class="guide-gem__num">7</span>
+        <div>
+          <h3>Nature's Loft Tree Cabins</h3>
+          <p class="guide-gem__loc">Near Gilbert</p>
+          <p>Luxury tree-loft cabins 4.4 miles from Gilbert, romantic couples setting, boutique-style.</p>
+        </div>
+      </div>
+      <div class="guide-gem">
+        <span class="guide-gem__num">8</span>
+        <div>
+          <h3>Century Farm Cabin</h3>
+          <p class="guide-gem__loc">Near Parthenon</p>
+          <p>1918 Arkansas working farm, rustic feel with modern comfort, hiking trails on property, 15 min to Antenna Pine Overlook.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Why These Cabins Stay Off the Main Booking Pages</h2>
+    <div class="guide-prose">
+      <p>Not listed on the big aggregators &mdash; some only take direct bookings. No algorithm boosting their visibility. Word-of-mouth regulars keep them booked. They don't need your traffic &mdash; they're full every fall color weekend by September.</p>
+    </div>
+    <a href="/listings" class="guide-cta">These fill fast. Book before the weekend rush &rarr;</a>
+  </section>
+
+  <section class="guide-section">
+    <h2>How to Find More Off-the-Beaten-Path Ozarks Cabins</h2>
+    <ul class="guide-bullets">
+      <li>Check the Upper Buffalo River Association website &mdash; direct owner listings not on Airbnb</li>
+      <li>Look for properties in &ldquo;unincorporated&rdquo; areas near Compton, Parthenon, Snowball, and Big Flat</li>
+      <li>Filter OzarkRoost listings by &ldquo;Secluded&rdquo; or &ldquo;Private acreage&rdquo; &mdash; we curate these specifically</li>
+    </ul>
+  </section>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Find Your Own Hidden Gem</h2>
+    <p>Some places take effort to find. That's part of what makes them worth it.</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Browse Cabins</a>
+  </section>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>

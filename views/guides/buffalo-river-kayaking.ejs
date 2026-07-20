@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Buffalo River Kayaking: What You Need to Know Before You Go",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-06-22",
+    "dateModified": "2026-06-22"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.buffaloRiverKayaking %>" alt="Kayaker paddling clear water on the Buffalo River with bluffs">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Destination Guide</p>
+    <h1>Buffalo River Kayaking: What You Need to Know Before You Go</h1>
+    <p class="guide-hero__sub">The River Everyone Comes Back To</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Your Perfect Ozarks Stay</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p>The Buffalo River doesn't play tricks on you. No hidden rapids, no sudden drops, no mandatory portages. It's a gentle, clear-water float through one of the most scenic stretches of wilderness in the lower 48. But that simplicity has a catch &mdash; &ldquo;beginner-friendly&rdquo; doesn't mean &ldquo;no planning needed.&rdquo; Water levels shift, shuttle logistics change, and the best stretches aren't always the most obvious. Here's everything you need to know about <strong>Buffalo River kayaking</strong> before you load your gear.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>The Buffalo River at a Glance</h2>
+    <div class="guide-table-wrap">
+      <table class="guide-table">
+        <tbody>
+          <tr><td><strong>Length</strong></td><td>153 miles</td></tr>
+          <tr><td><strong>Classification</strong></td><td>Class I&ndash;II (mostly flatwater)</td></tr>
+          <tr><td><strong>Designated</strong></td><td>America's first National River (1972)</td></tr>
+          <tr><td><strong>Managed by</strong></td><td>National Park Service</td></tr>
+          <tr><td><strong>Nearest major city</strong></td><td>Harrison, AR (45 min)</td></tr>
+          <tr><td><strong>Best water season</strong></td><td>March&ndash;October</td></tr>
+          <tr><td><strong>Water level source</strong></td><td>USGS gauge at St. Joe</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Best Kayak Sections on the Buffalo River</h2>
+    <div class="guide-table-wrap">
+      <table class="guide-table">
+        <thead>
+          <tr><th>Section</th><th>Miles</th><th>Difficulty</th><th>Best For</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ponca to Steel Creek</td><td>5.5</td><td>Easy</td><td>Beginners, elk viewing combo</td></tr>
+          <tr><td>Steel Creek to Kyles Landing</td><td>8.5</td><td>Easy&ndash;Moderate</td><td>Full-day floats, scenic bluffs</td></tr>
+          <tr><td>Kyles Landing to Riverton</td><td>7.5</td><td>Easy</td><td>Families, swimming holes</td></tr>
+          <tr><td>Pruitt to Hasty</td><td>5.5</td><td>Easy</td><td>Remote feel, fewer crowds</td></tr>
+          <tr><td>Hasty to Cotter</td><td>9</td><td>Moderate</td><td>Experienced paddlers, longer floats</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Buffalo River Shuttle Services and Kayak Rentals</h2>
+    <div class="guide-prose">
+      <p><strong>Shuttle services:</strong> Buffalo Outdoor Center (Ponca), outfitter shops in Harrison &mdash; call ahead for reservations in peak season (spring and fall color weekends).</p>
+      <p><strong>Rentals:</strong> Single kayak ($35&ndash;50/day), double kayak ($55&ndash;75/day), tubes ($15&ndash;20/day). Prices vary by outfitter.</p>
+      <p><strong>Key note:</strong> Many outfitters include shuttle in the rental price. Confirm this when you book.</p>
+    </div>
+    <a href="/adventures" class="guide-cta">Find kayak and canoe rental operators on OzarkRoost &rarr;</a>
+  </section>
+
+  <section class="guide-section">
+    <h2>Buffalo River Water Levels &mdash; When to Go</h2>
+    <div class="guide-prose">
+      <p>Check the USGS gauge at St. Joe before you go. <strong>Ideal floating level: 2.5&ndash;4.5 feet.</strong> Below 2 feet: expect dragging over gravel bars. Above 6 feet: high water &mdash; experienced paddlers only.</p>
+    </div>
+    <div class="guide-seasons">
+      <div class="guide-season">
+        <h3>&#127800; Spring</h3>
+        <p>Variable levels, best after rain. Highest water of the year &mdash; fastest float times.</p>
+      </div>
+      <div class="guide-season">
+        <h3>&#9728;&#65039; Summer</h3>
+        <p>Low but consistent. Expect gravel bar dragging on upper sections. Lower sections hold water longer.</p>
+      </div>
+      <div class="guide-season">
+        <h3>&#127809; Fall</h3>
+        <p>Most reliable. Less rain, stable levels. Fall colors from the water are unmatched.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>What to Bring for a Buffalo River Kayak Trip</h2>
+    <div class="guide-columns">
+      <div class="guide-column">
+        <h3>Essentials</h3>
+        <ul class="guide-bullets">
+          <li>PFD (life jacket &mdash; required by law)</li>
+          <li>Water shoes</li>
+          <li>Sunscreen</li>
+          <li>Water (1.5&ndash;2 liters per person)</li>
+          <li>Dry bag for phone and keys</li>
+          <li>Snacks</li>
+        </ul>
+      </div>
+      <div class="guide-column">
+        <h3>Recommended</h3>
+        <ul class="guide-bullets">
+          <li>Polarized sunglasses</li>
+          <li>Hat with a chin strap</li>
+          <li>Quick-dry clothes</li>
+          <li>A towel in a dry bag</li>
+          <li>Download offline maps before you go &mdash; cell service is unreliable on the river</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Stay Close to the River</h2>
+    <p>Nothing beats a day on the water followed by a hot shower, a cold drink, and a porch swing overlooking the same bluffs you just paddled past. OzarkRoost has cabin options within 15 minutes of every major put-in on the Buffalo.</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find a Cabin Near Buffalo River</a>
+  </section>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>

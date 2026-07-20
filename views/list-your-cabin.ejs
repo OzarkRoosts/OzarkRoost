@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Your Cabin — OzarkRoost</title>
+  <meta name="description" content="Get your Arkansas Ozarks cabin featured on OzarkRoost. $20/month sponsored listing — reach millions of annual visitors.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="/" class="site-nav__logo">OzarkRoost</a>
+      <div class="site-nav__links">
+        <a href="/listings">Browse Cabins</a>
+        <a href="/list-your-cabin" class="site-nav__cta">List Your Cabin</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="lyc-hero">
+    <div class="lyc-hero__inner">
+      <div class="lyc-hero__badge">For Property Owners</div>
+      <h1>Get featured on OzarkRoost for <strong>$20/month</strong></h1>
+      <p class="lyc-hero__sub">Your cabin shown to <strong>52 million</strong> annual Arkansas tourists — pay only when it works.</p>
+      <div class="lyc-hero__stats">
+        <div class="lyc-hero__stat">
+          <span class="lyc-hero__stat-num">52M+</span>
+          <span class="lyc-hero__stat-label">Annual AR tourists</span>
+        </div>
+        <div class="lyc-hero__stat">
+          <span class="lyc-hero__stat-num">$20</span>
+          <span class="lyc-hero__stat-label">per month, cancel anytime</span>
+        </div>
+        <div class="lyc-hero__stat">
+          <span class="lyc-hero__stat-num">0%</span>
+          <span class="lyc-hero__stat-label">commission on bookings</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form Section -->
+  <section class="lyc-form-section">
+    <div class="lyc-form-section__inner">
+      <h2>Submit your property</h2>
+      <p class="lyc-form-section__desc">We'll create a sponsored listing page for your cabin and send you a payment link to activate it.</p>
+
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="form-error"><%= error %></div>
+      <% } %>
+
+      <form class="lyc-form" method="POST" action="/list-your-cabin">
+        <div class="form-row form-row--two">
+          <div class="form-group">
+            <label for="owner_name">Your Name <span class="required">*</span></label>
+            <input type="text" id="owner_name" name="owner_name" required placeholder="Maggie Thornton"
+              value="<%= typeof values !== 'undefined' && values.owner_name ? values.owner_name : '' %>">
+          </div>
+          <div class="form-group">
+            <label for="owner_email">Email Address <span class="required">*</span></label>
+            <input type="email" id="owner_email" name="owner_email" required placeholder="maggie@ozarkcabins.com"
+              value="<%= typeof values !== 'undefined' && values.owner_email ? values.owner_email : '' %>">
+          </div>
+        </div>
+
+        <div class="form-row form-row--two">
+          <div class="form-group">
+            <label for="property_name">Property Name <span class="required">*</span></label>
+            <input type="text" id="property_name" name="property_name" required placeholder="Bull Shoals Lakeside Cabin"
+              value="<%= typeof values !== 'undefined' && values.property_name ? values.property_name : '' %>">
+          </div>
+          <div class="form-group">
+            <label for="location">Location <span class="required">*</span></label>
+            <input type="text" id="location" name="location" required placeholder="Bull Shoals, AR"
+              value="<%= typeof values !== 'undefined' && values.location ? values.location : '' %>">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="property_type">Property Type <span class="required">*</span></label>
+          <select id="property_type" name="property_type" required>
+            <option value="">Select type…</option>
+            <option value="cabin" <%= (typeof values !== 'undefined' && values.property_type === 'cabin') ? 'selected' : '' %>>Cabin</option>
+            <option value="rv" <%= (typeof values !== 'undefined' && values.property_type === 'rv') ? 'selected' : '' %>>RV Site</option>
+            <option value="glamping" <%= (typeof values !== 'undefined' && values.property_type === 'glamping') ? 'selected' : '' %>>Glamping / Safari Tent</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Brief Description</label>
+          <textarea id="description" name="description" rows="4" placeholder="Tell travelers what makes your property special. 2-4 sentences is perfect."><%= (typeof values !== 'undefined' && values.description) ? values.description : '' %></textarea>
+        </div>
+
+        <div class="form-row form-row--two">
+          <div class="form-group">
+            <label for="photo_url">Photo URL</label>
+            <input type="url" id="photo_url" name="photo_url" placeholder="https://example.com/my-cabin.jpg">
+            <span class="form-hint">Link to a photo of your property. We'll use it on your listing page.</span>
+          </div>
+          <div class="form-group">
+            <label for="website_url">Your Website / Booking Link</label>
+            <input type="url" id="website_url" name="website_url" placeholder="https://vrbo.com/your-cabin">
+            <span class="form-hint">Direct link to your Vrbo, Booking.com, or own website.</span>
+          </div>
+        </div>
+
+        <div class="lyc-form__footer">
+          <p class="lyc-form__note">After you submit, you'll be redirected to a secure Stripe checkout to activate your listing for <strong>$20/month</strong>. Cancel anytime.</p>
+          <button type="submit" class="btn btn--primary btn--lg">Continue to Payment →</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="lyc-how">
+    <div class="lyc-how__inner">
+      <h2>How it works</h2>
+      <div class="lyc-how__steps">
+        <div class="lyc-how__step">
+          <div class="lyc-how__step-num">1</div>
+          <h3>Submit your property</h3>
+          <p>Fill out the form above with your cabin or RV details.</p>
+        </div>
+        <div class="lyc-how__step">
+          <div class="lyc-how__step-num">2</div>
+          <h3>Pay $20/month</h3>
+          <p>Secure checkout via Stripe. Your card is charged monthly.</p>
+        </div>
+        <div class="lyc-how__step">
+          <div class="lyc-how__step-num">3</div>
+          <h3>Get featured</h3>
+          <p>Your cabin appears in OzarkRoost listings, reaching thousands of Ozarks visitors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+</body>
+</html>

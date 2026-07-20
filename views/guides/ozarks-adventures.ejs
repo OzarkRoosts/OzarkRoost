@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Top 10 Outdoor Adventures in the Ozarks",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-06-22",
+    "dateModified": "2026-06-22"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.ozarksAdventures %>" alt="Kayakers on an Ozark river through autumn canyon">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Destination Guide</p>
+    <h1>Top 10 Outdoor Adventures in the Ozarks</h1>
+    <p class="guide-hero__sub">Bluff Views. Cold Water. Views That Actually Stop You.</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Your Perfect Ozarks Stay</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p>The Ozarks were built for people who need to move. Not the zoom-call kind of movement &mdash; the kind where you sleep hard, your hands get dirty, and you come back quieter. Whether you're planning a weekend escape or building an entire Arkansas itinerary, here are the 10 <strong>outdoor adventures in the Ozarks</strong> that define this region &mdash; and what you need to know before you go.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>The 10 Adventures</h2>
+    <ol class="guide-numbered">
+      <li>
+        <h3>Hike to Hemmed-In Hollow Falls</h3>
+        <p>Near Compton, AR. 209-foot drop &mdash; tallest waterfall between the Rockies and the Appalachians. Moderate hike, 2.2 miles each way. Best after rain.</p>
+      </li>
+      <li>
+        <h3>Float the Buffalo River</h3>
+        <p>Class I&ndash;II paddling, no rapids. Outfitters at Ponca and Harrison. Shuttle service available. Rent tubes, canoes, or kayaks. <a href="/adventures">Find rentals &rarr;</a></p>
+      </li>
+      <li>
+        <h3>Explore Blanchard Springs Caverns</h3>
+        <p>Year-round, 65&deg;F underground. Two guided tour options. Near Sylamore Creek. One of the most stunning cave systems in the country.</p>
+      </li>
+      <li>
+        <h3>Zipline the Ozarks</h3>
+        <p>Near Branson and Harrison. Courses range from 5 to 7 ziplines. 1.5&ndash;2 hours. Family-friendly. Great for breaking up a drive.</p>
+      </li>
+      <li>
+        <h3>Kayak Beaver Lake</h3>
+        <p>Crystal-clear water, limestone bluffs. Kayak rentals at multiple marinas. Best for: beginners and photographers.</p>
+      </li>
+      <li>
+        <h3>Fish the White River for Trout</h3>
+        <p>World-class rainbow and brown trout. Guided fishing trips year-round. <a href="/adventures">See guided options &rarr;</a></p>
+      </li>
+      <li>
+        <h3>Ride the Ozark Highlands Trail</h3>
+        <p>270-mile backcountry route. Can be done in sections. Trail access points at KMS, Hurricane Creek, Leatherwood. Best for: experienced hikers.</p>
+      </li>
+      <li>
+        <h3>Elk Watching at Ponca</h3>
+        <p>Season: October through December. Biggest herds in Arkansas. Arrive at dawn. Low-impact sighting (binoculars, no drones).</p>
+      </li>
+      <li>
+        <h3>Swim at Steel Creek or Big Eddy</h3>
+        <p>Two of the most popular swimming holes on the Buffalo. Calm water, sandy bottoms. Bring water shoes.</p>
+      </li>
+      <li>
+        <h3>Photograph the Arkansas Grand Canyon</h3>
+        <p>Near Jasper on Scenic Hwy 7. The view from Highway 7 south of Jasper drops 500+ feet. Best at sunrise or after a rain.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="guide-section">
+    <h2>Where to Stay for Your Ozarks Adventure</h2>
+    <div class="guide-prose">
+      <p>Every one of these adventures puts you within 30 minutes of a cabin, campground, or RV park listed on OzarkRoost. Book your basecamp and have the whole region within reach.</p>
+    </div>
+    <div class="guide-cta-group">
+      <a href="/listings" class="btn btn--primary btn--lg">Browse cabin rentals near top Ozarks adventures</a>
+      <a href="/adventures" class="guide-cta">Explore Adventures &rarr;</a>
+    </div>
+  </section>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submission Received — OzarkRoost</title>
+  <meta name="description" content="Your OzarkRoost sponsored listing submission is pending review.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="/" class="site-nav__logo">OzarkRoost</a>
+      <div class="site-nav__links">
+        <a href="/listings">Browse Cabins</a>
+        <a href="/list-your-cabin" class="site-nav__cta">List Your Cabin</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="ty-hero">
+    <div class="ty-hero__inner">
+      <div class="ty-hero__icon">✓</div>
+      <h1>Submission received!</h1>
+      <p class="ty-hero__sub">Your property is pending review. Here's what happens next:</p>
+    </div>
+  </section>
+
+  <section class="ty-body">
+    <div class="ty-body__inner">
+      <div class="ty-card">
+        <h2>What happens next</h2>
+        <ol class="ty-steps">
+          <li>
+            <strong>Check your email<% if (email) { %> at <%= email %><% } %></strong> — a payment confirmation has been sent with your receipt.
+          </li>
+          <li>
+            <strong>Your listing goes live</strong> after payment is confirmed. We'll email you when it's published on OzarkRoost.
+          </li>
+          <li>
+            <strong>You're billed $20/month</strong> via Stripe. Cancel anytime from the Stripe portal link in your receipt.
+          </li>
+        </ol>
+
+        <% if (manual) { %>
+        <div class="ty-manual-notice">
+          <strong>Note:</strong> Your payment link couldn't be generated automatically. Please contact <a href="mailto:ozarkroost@polsia.app">ozarkroost@polsia.app</a> to complete your listing activation.
+        </div>
+        <% } %>
+
+        <div class="ty-actions">
+          <a href="/listings" class="btn btn--primary">Browse Ozarks Cabins →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Complete Guide to Camping and RV Camping in Arkansas",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-06-22",
+    "dateModified": "2026-06-22"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.campingRv %>" alt="Campsite in the Arkansas Ozarks at sunset with tent and campfire">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Destination Guide</p>
+    <h1>Complete Guide to Camping and RV Camping in Arkansas</h1>
+    <p class="guide-hero__sub">From Primitive Sites to Full-Hookup Sites &mdash; Here's How to Do It Right</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Your Perfect Ozarks Stay</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p>Arkansas has over 2,400 named campsites and an almost unlimited supply of forest roads where you can pull off and set up camp away from everyone. Whether you want a fire ring, a flush toilet, and a Wi-Fi signal &mdash; or you want to sleep where the nearest neighbor is a mile away &mdash; this guide covers <strong>camping and RV camping in Arkansas</strong> from every angle.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Buffalo River Camping &mdash; What You Need to Know</h2>
+    <div class="guide-prose">
+      <p>The Buffalo National River has 10 maintained campgrounds and unlimited dispersed camping (leave no trace). Key campgrounds: Tyler Bend, Jasper, Buffalo Point (the only riverside drive-in campground), and Steel Creek (closest to elk viewing).</p>
+      <p><strong>Note:</strong> No reservations at most NPS campgrounds on the Buffalo. First come, first served. Peak season (spring&ndash;fall) fills by early afternoon on weekends.</p>
+    </div>
+    <a href="/listings" class="guide-cta">Find a campground or cabin near Buffalo River &rarr;</a>
+  </section>
+
+  <section class="guide-section">
+    <h2>RV Camping in Arkansas &mdash; Key Destinations</h2>
+    <div class="guide-table-wrap">
+      <table class="guide-table">
+        <thead>
+          <tr><th>Location</th><th>Amenities</th><th>Best For</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Buffalo Point Campground</td><td>Full hookups, riverside sites, dump station</td><td>Families, first-time RVers</td></tr>
+          <tr><td>Tomahawk Mountain River Site</td><td>Primitive, river access</td><td>Overlanders, experienced RVers</td></tr>
+          <tr><td>Maumee Campground (Ozark NF)</td><td>Vault toilets, no hookups</td><td>Scenic drives, solitude seekers</td></tr>
+          <tr><td>Blue Mountain Lake</td><td>Electric at sites, boat ramp</td><td>Anglers, paddle sports</td></tr>
+          <tr><td>Bull Shoals Lake SP</td><td>50-amp sites, lake views</td><td>Extended stays, water sports</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Dispersed Camping in Ozark National Forest</h2>
+    <div class="guide-prose">
+      <p>You can camp anywhere on Ozark-St. Francis National Forest land outside of day-use areas and posted closures. No fee, no reservation, no services. Pack out everything.</p>
+    </div>
+    <ul class="guide-bullets">
+      <li>Stay at least 100 feet from any water source</li>
+      <li>No cutting live vegetation</li>
+      <li>Leave the site cleaner than you found it</li>
+      <li>Best spots: along Forest Service roads 1200&ndash;1600 in the Sylamore District, near Richland Creek</li>
+    </ul>
+  </section>
+
+  <section class="guide-section">
+    <h2>Arkansas Ozarks Camping Packing List</h2>
+    <div class="guide-columns">
+      <div class="guide-column">
+        <h3>Essentials</h3>
+        <ul class="guide-bullets">
+          <li>Water (2 gallons per person per day)</li>
+          <li>First aid kit</li>
+          <li>Fire starter</li>
+          <li>Maps (cell service is unreliable in much of the region)</li>
+          <li>Sun protection</li>
+          <li>Water shoes</li>
+        </ul>
+      </div>
+      <div class="guide-column">
+        <h3>Nice to Have</h3>
+        <ul class="guide-bullets">
+          <li>Hammock</li>
+          <li>Kayak or tube</li>
+          <li>Camp chair with arm rests</li>
+          <li>Portable speaker</li>
+          <li>Headlamp with red light mode</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Find Your Perfect Basecamp</h2>
+    <p>The Ozarks reward the prepared. Every campground on this page and hundreds more are linked from your nearest cabin rental or trailhead on OzarkRoost.</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Browse Listings</a>
+  </section>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>

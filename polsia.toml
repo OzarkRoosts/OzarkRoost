@@ -1,0 +1,4 @@
+[[crons]]
+name     = "send-nurture-emails"
+schedule = "0 * * * *"
+command  = "node jobs/send-nurture-emails.js"

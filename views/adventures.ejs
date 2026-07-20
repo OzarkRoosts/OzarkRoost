@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adventures in the Ozarks — OzarkRoost</title>
+  <meta name="description" content="Explore the Arkansas Ozarks — kayaking, ATV trails, Jesse James history, missing gold legends, hot springs, and more. Curated adventures for every type of explorer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <style>
+    /* ===== Adventures Page ===== */
+    .adv-hero {
+      position: relative;
+      height: clamp(480px, 60vh, 640px);
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: var(--pine-dark);
+    }
+    .adv-hero__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      opacity: 0.6;
+    }
+    .adv-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14,34,18,0.85) 0%, rgba(14,34,18,0.3) 50%, transparent 80%);
+    }
+    .adv-hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px 56px;
+    }
+    .adv-hero__content .section-label { color: var(--amber-light); }
+    .adv-hero__content h1 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 6vw, 60px);
+      color: var(--cream);
+      font-weight: 400;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+    .adv-hero__sub {
+      font-size: 18px;
+      color: rgba(245,240,232,0.75);
+      max-width: 560px;
+      line-height: 1.5;
+    }
+
+    /* Nav */
+    .adv-nav {
+      background: var(--pine-dark);
+      border-bottom: 1px solid rgba(245,240,232,0.08);
+    }
+    .adv-nav__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .adv-nav__logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--cream);
+      text-decoration: none;
+    }
+    .adv-nav__links {
+      display: flex;
+      gap: 28px;
+    }
+    .adv-nav__links a {
+      color: rgba(245,240,232,0.6);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .adv-nav__links a:hover { color: var(--amber-light); }
+
+    /* Intro */
+    .adv-intro {
+      padding: 64px 24px;
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .adv-intro h2 {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4vw, 40px);
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    .adv-intro p {
+      font-size: 17px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Activity Grid */
+    .adv-grid-section {
+      padding: 0 24px 80px;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .adv-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber-dark);
+      margin-bottom: 28px;
+      padding-top: 16px;
+    }
+    .adv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    /* Adventure Card */
+    .adv-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(14,34,18,0.07);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+    }
+    .adv-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(14,34,18,0.12);
+    }
+    .adv-card__img {
+      position: relative;
+      height: 160px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .adv-card__img-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.4s ease;
+    }
+    .adv-card:hover .adv-card__img-bg { transform: scale(1.04); }
+    .adv-card__icon {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      width: 40px;
+      height: 40px;
+      background: rgba(245,240,232,0.95);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--pine);
+    }
+    .adv-card__body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .adv-card__tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber-dark);
+      margin-bottom: 6px;
+    }
+    .adv-card__name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+    .adv-card__desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+    .adv-card__stops {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 16px;
+    }
+    .adv-card__stop {
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--cream-dark);
+      color: var(--text-muted);
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+    .adv-card__link {
+      display: inline-block;
+      text-align: center;
+      padding: 9px 16px;
+      background: var(--pine);
+      color: var(--cream);
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .adv-card__link:hover { background: var(--pine-light); }
+    .adv-card__link--outlined {
+      background: transparent;
+      border: 1.5px solid var(--pine-light);
+      color: var(--pine);
+    }
+    .adv-card__link--outlined:hover {
+      background: var(--pine);
+      color: var(--cream);
+    }
+    .adv-card__link--amber {
+      background: var(--amber);
+      color: white;
+    }
+    .adv-card__link--amber:hover { background: var(--amber-dark); }
+
+    /* Featured cards (Jesse James + Missing Gold — span 2 cols) */
+    .adv-card--featured {
+      grid-column: span 2;
+      flex-direction: row;
+    }
+    .adv-card--featured .adv-card__img {
+      height: auto;
+      width: 42%;
+      flex-shrink: 0;
+    }
+    .adv-card--featured .adv-card__body {
+      padding: 28px;
+      justify-content: center;
+    }
+    .adv-card--featured .adv-card__name { font-size: 26px; margin-bottom: 12px; }
+    .adv-card--featured .adv-card__desc { font-size: 15px; margin-bottom: 18px; }
+
+    /* CTA Section */
+    .adv-cta {
+      background: var(--pine);
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .adv-cta__inner { max-width: 600px; margin: 0 auto; }
+    .adv-cta__inner .section-label { color: var(--amber-light); margin-bottom: 14px; }
+    .adv-cta__inner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 46px);
+      color: var(--cream);
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .adv-cta__inner p {
+      font-size: 17px;
+      color: rgba(245,240,232,0.65);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+    .adv-cta__actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .adv-cta__btn {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .adv-cta__btn--primary {
+      background: var(--amber);
+      color: white;
+    }
+    .adv-cta__btn--primary:hover { background: var(--amber-dark); transform: translateY(-1px); }
+    .adv-cta__btn--ghost {
+      background: rgba(245,240,232,0.1);
+      color: var(--cream);
+      border: 1.5px solid rgba(245,240,232,0.2);
+    }
+    .adv-cta__btn--ghost:hover {
+      background: rgba(245,240,232,0.18);
+      transform: translateY(-1px);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .adv-grid { grid-template-columns: repeat(2, 1fr); }
+      .adv-card--featured { grid-column: span 2; flex-direction: column; }
+      .adv-card--featured .adv-card__img { height: 200px; width: 100%; }
+    }
+    @media (max-width: 640px) {
+      .adv-grid { grid-template-columns: 1fr; }
+      .adv-card--featured { grid-column: span 1; }
+      .adv-card--featured .adv-card__img { height: 180px; }
+      .adv-nav__links { display: none; }
+      .adv-cta__actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="adv-nav">
+  <div class="adv-nav__inner">
+    <a href="/" class="adv-nav__logo">OzarkRoost</a>
+    <div class="adv-nav__links">
+      <a href="/">Home</a>
+      <a href="/listings">Cabin Listings</a>
+      <a href="/adventures" style="color: var(--amber-light);">Adventures</a>
+      <a href="/list-your-cabin">List Your Cabin</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="adv-hero">
+  <img
+    src="https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/4e9d78f0-abc8-4aed-bb7e-a68d7f472d82.jpg"
+    alt="Misty Ozarks river at dawn"
+    class="adv-hero__img"
+  >
+  <div class="adv-hero__content">
+    <p class="section-label">Arkansas Ozarks</p>
+    <h1>Adventures in the Ozarks</h1>
+    <p class="adv-hero__sub">From legendary outlaw hideouts to glass-clear rivers, the Ozarks reward the curious. Start here.</p>
+  </div>
+</header>
+
+<!-- Intro -->
+<section class="adv-intro">
+  <h2>More Than a Cabin — A Launching Point</h2>
+  <p>The best Ozarks stories aren't found in four walls. We've mapped the rivers, ridges, caves, and country roads worth driving — with booking links so you can actually do it.</p>
+</section>
+
+<!-- Water Adventures -->
+<section class="adv-grid-section">
+  <p class="adv-section-label">On the Water</p>
+  <div class="adv-grid">
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #0e3a4a 0%, #1a5a6e 40%, #0e2a38 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/><path d="M2 17c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/><path d="M7 7l5 10M17 7l-5 10"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Water</p>
+        <h3 class="adv-card__name">Water Adventures</h3>
+        <p class="adv-card__desc">Paddle through Class I–III rapids on the Buffalo River, rent a kayak at Apex Boat Rental near Diamond City, or try paddleboarding on the glassy surface of Bull Shoals at sunrise.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Buffalo River</span>
+          <span class="adv-card__stop">Beaver Lake</span>
+          <span class="adv-card__stop">Bull Shoals</span>
+          <span class="adv-card__stop">White River</span>
+        </div>
+        <a href="https://www.viator.com/search?text=ozarks+arkansas&utm_source=ozarkroost&utm_medium=referral&utm_campaign=adventures" target="_blank" rel="noopener" class="adv-card__link">Browse Tours on Viator</a>
+      </div>
+    </article>
+
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #1a3a2a 0%, #2a5a3a 40%, #0e2a1a 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Fishing</p>
+        <h3 class="adv-card__name">Fishing</h3>
+        <p class="adv-card__desc">The White River is a world-class trout stream. Book a guided fly fishing trip with Nelson's Trout Guide Service or charter a bass fishing excursion on Beaver Lake with Reel Results Guide.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">White River</span>
+          <span class="adv-card__stop">Beaver Lake</span>
+          <span class="adv-card__stop">Bull Shoals</span>
+        </div>
+        <a href="https://www.viator.com/search?text=ozarks+arkansas&utm_source=ozarkroost&utm_medium=referral&utm_campaign=adventures-fishing" target="_blank" rel="noopener" class="adv-card__link">Find Guided Fishing</a>
+      </div>
+    </article>
+
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #3d2a0f 0%, #6a4a1a 40%, #2a1a05 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Wellness</p>
+        <h3 class="adv-card__name">Hot Springs</h3>
+        <p class="adv-card__desc">An easy day trip to Hot Springs National Park — historic bathhouses, thermal springs, and a charming downtown. Pair it with a spa soak at Hot Springs Spa or the Arlington Resort day pass.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Hot Springs NP</span>
+          <span class="adv-card__stop">Arlington Resort</span>
+          <span class="adv-card__stop">Bathhouse Row</span>
+        </div>
+        <a href="https://www.nps.gov/hosp" target="_blank" rel="noopener" class="adv-card__link">Plan Your Visit</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Land Adventures -->
+<section class="adv-grid-section">
+  <p class="adv-section-label">On Land</p>
+  <div class="adv-grid">
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #1a3020 0%, #2a4a30 40%, #0e1a10 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4v16M7 4v16M1 8h6l4-4 5 4 5-8"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Hiking</p>
+        <h3 class="adv-card__name">Hiking</h3>
+        <p class="adv-card__desc">The Ozarks deliver everything from easy creek-side walks to sweeping ridgeline views. Whitaker Point (Hawksbill Crag) is the most photographed spot in Arkansas. Don't skip Lost Valley Trail and Glory Hole Falls.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Whitaker Point</span>
+          <span class="adv-card__stop">Lost Valley</span>
+          <span class="adv-card__stop">Glory Hole Falls</span>
+          <span class="adv-card__stop">Pedestal Rock</span>
+        </div>
+        <a href="https://www.alltrails.com/us/arkansas?utm_source=ozarkroost&utm_medium=referral&utm_campaign=adventures" target="_blank" rel="noopener" class="adv-card__link">Find Trails on AllTrails</a>
+      </div>
+    </article>
+
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #3d1a0a 0%, #6a2a10 40%, #2a0a05 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Off-Road</p>
+        <h3 class="adv-card__name">ATV & UTV Trails</h3>
+        <p class="adv-card__desc">Horseshoe Canyon Ranch near Jasper, AR runs 100+ miles of mapped ATV trails with terrain ranging from beginner to gnarly. Bring your own or rent a UTV on-site. Book through their site directly.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Horseshoe Canyon Ranch</span>
+          <span class="adv-card__stop">Jasper, AR</span>
+          <span class="adv-card__stop">100+ miles trails</span>
+        </div>
+        <a href="https://horseshoecanyonranch.com" target="_blank" rel="noopener" class="adv-card__link">Book ATV Adventure</a>
+      </div>
+    </article>
+
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #5a3a10 0%, #8a5a20 40%, #3a2005 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L2 22M12.5 5.5L18 11M5.5 12.5L11 18"/><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Shooting</p>
+        <h3 class="adv-card__name">Shooting Sports</h3>
+        <p class="adv-card__desc">Try sporting clays at the North Arkansas Shooting Complex near Mountain Home, or visit the Ozark Mountain 3-Gun range for rifle and pistol. Perfect for a half-day between cabin mornings and evening fires.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">N. Arkansas Shooting Complex</span>
+          <span class="adv-card__stop">Ozark Mountain 3-Gun</span>
+        </div>
+        <a href="https://www.viator.com/search?text=ozarks+arkansas&utm_source=ozarkroost&utm_medium=referral&utm_campaign=adventures-shooting" target="_blank" rel="noopener" class="adv-card__link">Find Ranges on Viator</a>
+      </div>
+    </article>
+
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #2a1a40 0%, #4a2a60 40%, #1a0a28 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Trails</p>
+        <h3 class="adv-card__name">Horseback Riding</h3>
+        <p class="adv-card__desc">Guided trail rides through the Ozark hills are one of the most peaceful ways to see the region. Several outfitters near Harrison and Jasper operate year-round — winding through hollows and ridgelines that cars can't reach.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Near Harrison</span>
+          <span class="adv-card__stop">Jasper, AR</span>
+          <span class="adv-card__stop">Ozark hills</span>
+        </div>
+        <a href="https://www.viator.com/search?text=horseback+riding+arkansas&utm_source=ozarkroost&utm_medium=referral&utm_campaign=adventures-horseback" target="_blank" rel="noopener" class="adv-card__link">Book a Trail Ride</a>
+      </div>
+    </article>
+
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #1a2a3a 0%, #2a4a5a 40%, #0e1a28 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12h4M18 12h4M12 2v4M12 18v4"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Sightseeing</p>
+        <h3 class="adv-card__name">Sightseeing</h3>
+        <p class="adv-card__desc">Eureka Springs Tram Tours wind through Victorian streets perched on steep hillsides. Bull Shoals Dam tours reveal one of the largest earthen dams in the world. Blanchard Springs Caverns offers underground wonder year-round.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Eureka Springs</span>
+          <span class="adv-card__stop">Bull Shoals Dam</span>
+          <span class="adv-card__stop">Blanchard Springs</span>
+        </div>
+        <a href="https://www.viator.com/search?text=ozarks+tours+arkansas&utm_source=ozarkroost&utm_medium=referral&utm_campaign=adventures-sightseeing" target="_blank" rel="noopener" class="adv-card__link">Book Tours on Viator</a>
+      </div>
+    </article>
+
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #0e1a0e 0%, #1a3a1a 40%, #050f05 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Underground</p>
+        <h3 class="adv-card__name">Caving</h3>
+        <p class="adv-card__desc">Blanchard Springs Caverns is a living cave system with guided tours at a constant 58°F — a perfect escape from summer heat. Cosmic Caverns near Berryville offers wild cave tours and one of the deepest surveyed pits in the Ozarks.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Blanchard Springs</span>
+          <span class="adv-card__stop">Cosmic Caverns</span>
+          <span class="adv-card__stop">Berryville, AR</span>
+        </div>
+        <a href="https://www.viator.com/search?text=cave+tours+arkansas&utm_source=ozarkroost&utm_medium=referral&utm_campaign=adventures-caving" target="_blank" rel="noopener" class="adv-card__link">Find Cave Tours</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Road Trips -->
+<section class="adv-grid-section">
+  <p class="adv-section-label">Road Trips</p>
+  <div class="adv-grid">
+    <article class="adv-card">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #1a3a20 0%, #2a5a30 40%, #0e2a15 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Scenic Drive</p>
+        <h3 class="adv-card__name">Scenic Drives</h3>
+        <p class="adv-card__desc">AR Highway 7 has been called one of America's most scenic byways — 115 miles of forested ridges, river valleys, and small-town charm between Harrison and Hot Springs. AR-21 through the heart of the Ozarks and the Pig Trail Scenic Byway are close contenders.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">AR Highway 7</span>
+          <span class="adv-card__stop">AR Highway 21</span>
+          <span class="adv-card__stop">Pig Trail Byway</span>
+        </div>
+        <a href="https://www.arkansas.com" target="_blank" rel="noopener" class="adv-card__link">Plan Your Drive</a>
+      </div>
+    </article>
+
+    <!-- Jesse James Trail -->
+    <article class="adv-card adv-card--featured">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #2a1505 0%, #5a2a0a 40%, #1a0a02 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Legend & History</p>
+        <h3 class="adv-card__name">The Jesse James Trail</h3>
+        <p class="adv-card__desc">Live the legend. Jesse James and his gang called the southern Ozarks home for years — hiding out in the same hills your cabin sits in. This self-drive trail hits the key outlaw sites: Carthage, Missouri's historic courthouse (site of the 1865 massacre), Galena's Minnie's Cafe (an outlaw roadhouse), the Pearl River caves, and the famous Carter's Creek Crossing shootout site. The lore is thick. The drive is beautiful.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Carthage, MO</span>
+          <span class="adv-card__stop">Galena, MO</span>
+          <span class="adv-card__stop">Pearl River Caves</span>
+          <span class="adv-card__stop">Carter's Creek Crossing</span>
+          <span class="adv-card__stop">Ozark outlaw hideouts</span>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="https://www.nps.gov" target="_blank" rel="noopener" class="adv-card__link adv-card__link--amber">Research the Trail</a>
+          <a href="/listings" class="adv-card__link adv-card__link--outlined">Book a Cabin Base</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Missing Gold -->
+    <article class="adv-card adv-card--featured" style="flex-direction: row-reverse;">
+      <div class="adv-card__img">
+        <div class="adv-card__img-bg" style="background: linear-gradient(135deg, #1a0e02 0%, #3d2205 40%, #2a1502 100%);"></div>
+        <div class="adv-card__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+      </div>
+      <div class="adv-card__body">
+        <p class="adv-card__tag">Ozarks Legend</p>
+        <h3 class="adv-card__name">The Missing Gold</h3>
+        <p class="adv-card__desc">They say Jesse James buried it somewhere along the Buffalo River — a chest of Union gold coins stolen during the Civil War, never recovered. Every local has a theory. Some say it's near a specific limestone bluff above Pruitt. Others swear it's somewhere near Rich Creek. The search has consumed treasure hunters for over 150 years. Nobody's found it. Yet. The best time to hunt? Late autumn, when the leaves are down and the river's low.</p>
+        <div class="adv-card__stops">
+          <span class="adv-card__stop">Buffalo River</span>
+          <span class="adv-card__stop">Pruitt, AR</span>
+          <span class="adv-card__stop">Rich Creek</span>
+          <span class="adv-card__stop">Limestone bluffs</span>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="https://www.nps.gov/buff" target="_blank" rel="noopener" class="adv-card__link adv-card__link--amber">Explore Buffalo River</a>
+          <a href="/listings" class="adv-card__link adv-card__link--outlined">Stay Near the Trail</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="adv-cta">
+  <div class="adv-cta__inner">
+    <p class="section-label">Ready to come?</p>
+    <h2>Find Your Ozarks Base Camp</h2>
+    <p>Every great adventure starts with a cabin. Browse our curated Ozarks listings — then go find what's been waiting for you.</p>
+    <div class="adv-cta__actions">
+      <a href="/listings" class="adv-cta__btn adv-cta__btn--primary">Browse Cabins</a>
+      <a href="/adventures" class="adv-cta__btn adv-cta__btn--ghost">More Adventures</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<%- include('partials/footer') %>
+
+</body>
+</html>

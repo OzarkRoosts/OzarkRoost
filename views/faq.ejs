@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — OzarkRoost</title>
+  <meta name="description" content="Answers to common questions about booking Ozarks cabins, camping, and RV sites through OzarkRoost. Learn about policies, cancellation, pets, and seasonal availability.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <style>
+    /* =========================================
+       FAQ Page
+       ========================================= */
+    .faq-hero {
+      background: var(--pine);
+      padding: 80px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .faq-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(212,137,63,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(42,85,64,0.3) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .faq-hero__inner { max-width: 680px; margin: 0 auto; position: relative; }
+    .faq-hero__badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--amber);
+      color: white;
+      padding: 5px 16px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+    .faq-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 5vw, 52px);
+      color: var(--cream);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .faq-hero__sub {
+      font-size: 18px;
+      color: rgba(245,240,232,0.72);
+      line-height: 1.6;
+    }
+
+    /* FAQ Content */
+    .faq-content {
+      padding: 64px 24px 80px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .faq-group {
+      margin-bottom: 56px;
+    }
+    .faq-group:last-child { margin-bottom: 0; }
+
+    .faq-group__heading {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: var(--pine);
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+      border-bottom: 2px solid var(--amber);
+    }
+
+    .faq-qa {
+      margin-bottom: 32px;
+      padding-left: 0;
+    }
+    .faq-qa:last-child { margin-bottom: 0; }
+
+    .faq-qa__q {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--pine-dark);
+      margin-bottom: 8px;
+      padding-left: 28px;
+      position: relative;
+      line-height: 1.4;
+    }
+    .faq-qa__q::before {
+      content: 'Q.';
+      position: absolute;
+      left: 0;
+      top: 1px;
+      font-family: var(--font-display);
+      color: var(--amber);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .faq-qa__a {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      padding-left: 28px;
+    }
+    .faq-qa__a a {
+      color: var(--amber-dark);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .faq-qa__a a:hover { color: var(--pine); }
+
+    /* Contact CTA */
+    .faq-contact {
+      text-align: center;
+      padding: 48px 32px;
+      background: var(--cream-dark);
+      border-radius: var(--radius-lg);
+      margin-top: 64px;
+    }
+    .faq-contact h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      color: var(--pine-dark);
+      margin-bottom: 10px;
+    }
+    .faq-contact p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .faq-content { padding: 40px 20px 60px; }
+      .faq-group__heading { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="/" class="site-nav__logo">OzarkRoost</a>
+      <div class="site-nav__links">
+        <a href="/listings">Browse Cabins</a>
+        <a href="/adventures">Adventures</a>
+        <a href="/faq">FAQ</a>
+        <a href="/list-your-cabin" class="site-nav__cta">List Your Cabin</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="faq-hero">
+    <div class="faq-hero__inner">
+      <div class="faq-hero__badge">Help Center</div>
+      <h1>Frequently Asked Questions</h1>
+      <p class="faq-hero__sub">Everything you need to know about booking your Ozarks getaway — from how it works to cancellation policies and pet rules.</p>
+    </div>
+  </section>
+
+  <!-- FAQ Content -->
+  <div class="faq-content">
+
+    <!-- Booking -->
+    <div class="faq-group">
+      <h2 class="faq-group__heading">How Booking Works</h2>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">How do I book a cabin, campsite, or RV site?</p>
+        <p class="faq-qa__a">OzarkRoost connects you with verified operators across the Arkansas Ozarks. Browse listings on our site, then click through to the operator's booking page on Vrbo, Booking.com, or their own website. We earn a small commission at no extra cost to you — it helps us keep the site running and the guides free.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Is my booking confirmed through OzarkRoost?</p>
+        <p class="faq-qa__a">No — we are a discovery platform, not a booking engine. Your reservation is made directly with the operator on their platform. Always confirm directly with the operator before your arrival.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Are prices shown on OzarkRoost?</p>
+        <p class="faq-qa__a">We show starting prices where operators provide them, but rates fluctuate based on season, length of stay, and availability. Click through to the operator's listing for current pricing.</p>
+      </div>
+    </div>
+
+    <!-- Listings -->
+    <div class="faq-group">
+      <h2 class="faq-group__heading">Rental Listings &amp; What's Included</h2>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">What types of rentals are listed?</p>
+        <p class="faq-qa__a">We feature three categories: <strong>cabins</strong> (standalone and resort), <strong>camping</strong> (primitive and improved sites), and <strong>RV sites</strong> (with and without hookups). Each listing includes photos, amenities, capacity, and a direct link to the operator's booking page.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">What amenities can I expect?</p>
+        <p class="faq-qa__a">It varies by property. Common cabin amenities include full kitchens, WiFi, linens, and outdoor fire pits. Campsites range from walk-in primitive sites to sites with picnic tables, fire rings, and sometimes electricity. Check the individual listing for specifics — if something matters to you, ask the operator before booking.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Do all listings include WiFi?</p>
+        <p class="faq-qa__a">No. Many remote Ozarks properties have limited or no connectivity by design — part of the appeal. If WiFi is essential for your stay, look for listings that specifically mention it or contact the operator before booking.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Can I see verified reviews?</p>
+        <p class="faq-qa__a">The operator's linked page (Vrbo, Booking.com) is the source of truth for reviews. We display aggregated ratings where available.</p>
+      </div>
+    </div>
+
+    <!-- Operators -->
+    <div class="faq-group">
+      <h2 class="faq-group__heading">Contacting Operators</h2>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">How do I contact a specific operator?</p>
+        <p class="faq-qa__a">Each listing has a "Book Now" or "View on [Platform]" button that takes you directly to the operator's page. From there you can send a message, check availability, and complete your reservation. We don't intermediate communication.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Can OzarkRoost help with a question before I book?</p>
+        <p class="faq-qa__a">Use the contact form on the operator's listing page or the platform you booked through. OzarkRoost does not manage reservations, so we can't relay messages to operators. If you have a question about a specific listing, the operator's contact info is on their page.</p>
+      </div>
+    </div>
+
+    <!-- Cancellation -->
+    <div class="faq-group">
+      <h2 class="faq-group__heading">Cancellation Policies</h2>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">What is the cancellation policy?</p>
+        <p class="faq-qa__a">Cancellation terms are set by the individual operator, not by OzarkRoost. When you book, the platform's policies (Vrbo, Booking.com, or the operator's own site) govern your reservation. We recommend reading the fine print before confirming — policies vary from flexible to no-refund.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">What if I need to cancel — who do I contact?</p>
+        <p class="faq-qa__a">Cancel through the platform where you booked. If you booked directly with the operator, contact them directly. OzarkRoost does not hold reservations and cannot process cancellations.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Can OzarkRoost help with a dispute?</p>
+        <p class="faq-qa__a">We don't manage disputes between guests and operators. For platform-booked reservations, reach out to the platform's support team. For direct bookings, contact the operator directly.</p>
+      </div>
+    </div>
+
+    <!-- Pets -->
+    <div class="faq-group">
+      <h2 class="faq-group__heading">Pet Policies</h2>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Can I bring my dog or pet?</p>
+        <p class="faq-qa__a">Pet policies vary by property. Many Ozarks cabin operators welcome well-behaved dogs, but some have strict no-pet rules — especially in newer or high-end rentals. Check the individual listing for pet policy details, or ask the operator directly before booking.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Are there pet-friendly camping options?</p>
+        <p class="faq-qa__a">Most Arkansas Ozarks campgrounds and RV parks allow pets, but rules vary by site. Primitive sites in national forests typically allow pets with no restrictions. Always check with the specific operator if you plan to bring animals.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Are service animals allowed?</p>
+        <p class="faq-qa__a">Operators must comply with ADA requirements for service animals. Contact the operator directly if you have a service animal — they can clarify what documentation, if any, is required.</p>
+      </div>
+    </div>
+
+    <!-- Seasonal -->
+    <div class="faq-group">
+      <h2 class="faq-group__heading">Seasonal Availability</h2>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">When is the best time to visit the Ozarks?</p>
+        <p class="faq-qa__a">Peak season is April through October — warm weather, river activities, and events draw the biggest crowds. Fall foliage season (October–November) is spectacular but fills up fast. Winter (December–February) is quiet, with lower rates at many properties, though some remote cabins have limited access during cold snaps.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Are properties open year-round?</p>
+        <p class="faq-qa__a">Most cabin rentals operate year-round. Some camping sites and primitive sites close or reduce services in the winter. Check the individual listing or with the operator for off-season availability.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Will I find availability during holidays and peak weekends?</p>
+        <p class="faq-qa__a">Holiday weekends (Memorial Day, Fourth of July, Labor Day, Thanksgiving) book out months in advance. If you're planning a trip during a peak period, book as early as possible. Last-minute availability does happen, but it's the exception, not the rule.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">What about spring flooding and seasonal closures?</p>
+        <p class="faq-qa__a">The Buffalo River and surrounding waterways can flood after heavy rain, which may temporarily close some access points and campgrounds. National park closures are managed by the NPS. Operators typically update their availability on their booking platforms — check before you head out.</p>
+      </div>
+    </div>
+
+    <!-- For Operators -->
+    <div class="faq-group">
+      <h2 class="faq-group__heading">For Property Owners &amp; Operators</h2>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">I own a cabin or campsite — can I list it on OzarkRoost?</p>
+        <p class="faq-qa__a">Yes. We partner with cabin, camping, and RV operators across the Arkansas Ozarks. <a href="/list-your-cabin">List your property</a> or <a href="/operators">apply to our operator referral program</a>. Listing fees start at $20/month for sponsored placement.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">Can I become an affiliate partner?</p>
+        <p class="faq-qa__a">Yes. We offer an affiliate program for content creators, travel bloggers, and local businesses. Partners earn commissions when users book through their referrals. <a href="/referral">Learn more about the referral program</a>.</p>
+      </div>
+
+      <div class="faq-qa">
+        <p class="faq-qa__q">How do I report an incorrect listing?</p>
+        <p class="faq-qa__a">Contact us at <a href="mailto:ozarkroost@polsia.app">ozarkroost@polsia.app</a> with the listing URL and a description of the issue.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Contact CTA -->
+  <div class="faq-content">
+    <div class="faq-contact">
+      <h2>Still have questions?</h2>
+      <p>Email us at <a href="mailto:ozarkroost@polsia.app">ozarkroost@polsia.app</a> — we typically respond within one business day.</p>
+      <a href="/" class="btn btn--primary btn--lg">Back to Home</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__brand">
+        <span class="site-footer__logo">OzarkRoost</span>
+        <p>The curated guide to cabin, camping &amp; RV rentals in the Arkansas Ozarks.</p>
+      </div>
+      <div class="site-footer__links">
+        <a href="/listings">Browse Cabins</a>
+        <a href="/adventures">Adventures</a>
+        <a href="/faq">FAQ</a>
+        <a href="/list-your-cabin">List Your Cabin</a>
+        <a href="/referral">Referral Program</a>
+        <a href="/operators">For Operators</a>
+      </div>
+      <p class="site-footer__copy">&copy; 2026 OzarkRoost. Built by <a href="https://polsia.com" target="_blank" rel="noopener">Polsia</a>.</p>
+    </div>
+  </footer>
+
+  <!-- Polsia Analytics -->
+  <script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return (c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>
