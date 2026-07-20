@@ -2,9 +2,30 @@ services:
   - type: web
     runtime: node
     name: app
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    # Install dependencies during build. Avoid running migrations at build time
+    # because DATABASE_URL may not be available during build — run migrations
+    # at service start where runtime env vars are provided.
+    buildCommand: npm install
+    startCommand: npm run migrate && npm start
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
+      # Add placeholders for required/optional env vars. Set values in the
+      # Render dashboard or via secure Secrets — do NOT commit secrets here.
+      - key: DATABASE_URL
+        value: ""
+      - key: STRIPE_PAYMENT_LINK_URL
+        value: ""
+      - key: POLSIA_ANALYTICS_SLUG
+        value: ""
+      - key: EMAIL_FROM
+        value: ""
+      - key: SMTP_HOST
+        value: ""
+      - key: SMTP_PORT
+        value: ""
+      - key: SMTP_USER
+        value: ""
+      - key: SMTP_PASS
+        value: ""
