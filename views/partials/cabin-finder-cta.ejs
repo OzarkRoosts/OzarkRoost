@@ -1,0 +1,32 @@
+<%
+  /**
+   * cabin-finder-cta.ejs
+   * Call-to-action button for browsing cabins on Vrbo/Booking.com
+   *
+   * Usage:
+   *   <%- include('partials/cabin-finder-cta', {
+   *     title: 'Find Your Buffalo River Cabin',
+   *     platforms: ['vrbo', 'booking']
+   *   }) %>
+   */
+%>
+
+<div class="cabin-finder-cta">
+  <h3><%= title %></h3>
+  <div class="cabin-finder-cta__buttons">
+    <% if (platforms.includes('vrbo')) { %>
+      <a href="https://www.vrbo.com/search?q=Buffalo%20River%20Arkansas&utm_source=ozarkroost&utm_medium=referral&utm_campaign=cabin-finder" 
+         target="_blank" rel="noopener noreferrer"
+         class="affiliate-btn affiliate-btn--vrbo">
+        Browse on Vrbo →
+      </a>
+    <% } %>
+    <% if (platforms.includes('booking')) { %>
+      <a href="https://www.booking.com/searchresults.en.html?ss=Buffalo+River+Arkansas&utm_source=ozarkroost&utm_medium=referral&utm_campaign=cabin-finder" 
+         target="_blank" rel="noopener noreferrer"
+         class="affiliate-btn affiliate-btn--booking">
+        Browse on Booking.com →
+      </a>
+    <% } %>
+  </div>
+</div>

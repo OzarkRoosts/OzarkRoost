@@ -5,6 +5,19 @@ const path = require('path');
 const { buildLandingContext } = require('./lib/landing-context');
 require('./db/index'); // fail-fast on missing DATABASE_URL
 
+// Start affiliate AI monitoring in background
+const affiliateAI = require('./lib/affiliate-ai-engine');
+if (process.env.NODE_ENV === 'production') {
+  affiliateAI.startMonitoring();
+}
+
+// Start autonomous sales engine (FULL AUTONOMY MODE)
+const autonomous = require('./lib/autonomous-sales');
+if (process.env.AUTONOMOUS_MODE === 'true') {
+  autonomous.startAutonomous();
+  console.log('[Autonomous] SALES ENGINE ACTIVATED - Sending emails, responding, signing contracts, charging cards');
+}
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -47,19 +60,25 @@ app.get('/adventures', (_req, res) => {
 app.get('/out', async (req, res) => {
   const { listing: listingId, partner } = req.query;
   if (!listingId || !partner) return res.redirect('/listings');
+  
   try {
     const pool = require('./db/index');
     const row = await pool.query(
       'SELECT website_url FROM listing_submissions WHERE id = $1 AND payment_status = $2',
       [listingId, 'paid']
     );
+    
     if (!row.rows[0]) return res.redirect('/listings');
-    await pool.query(
-      'INSERT INTO affiliate_clicks (listing_id, partner, user_agent) VALUES ($1, $2, $3)',
+    
+    // Log click asynchronously (fire and forget)
+    pool.query(
+      'INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1, $2, $3, NOW())',
       [listingId, partner, req.headers['user-agent'] || null]
-    );
+    ).catch(err => console.error('[affiliate_clicks] insert error:', err?.message));
+    
     res.redirect(row.rows[0].website_url);
-  } catch {
+  } catch (err) {
+    console.error('[/out route] error:', err?.message);
     res.redirect('/listings');
   }
 });
@@ -75,6 +94,15 @@ app.use('/operators', require('./routes/operators'));
 
 // SEO destination guides — /guides/buffalo-river-cabins, etc.
 app.use('/guides', require('./routes/guides'));
+
+// Affiliate Revenue API — real-time monitoring dashboard
+app.use('/api/affiliate', require('./routes/affiliate-api'));
+
+// Cold Call Killer API — AI-powered sales engine
+app.use('/api/killer', require('./routes/killer-api'));
+
+// Autonomous Sales API — FULL AUTOMATION (email, contracts, billing)
+app.use('/api/autonomous', require('./routes/autonomous-api'));
 
 // FAQ — visitor questions about booking, policies, and operators
 app.get('/faq', (_req, res) => {

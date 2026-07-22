@@ -1750,3 +1750,93 @@ h2 {
   font-size: 16px;
   margin-bottom: 24px;
 }
+
+/* =========================================
+   Affiliate Components
+   ========================================= */
+.affiliate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1.5px solid;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.affiliate-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+.affiliate-btn--vrbo {
+  background: #5c4b1e;
+  color: #f5e6c8;
+  border-color: #7a611e;
+}
+.affiliate-btn--booking {
+  background: #003580;
+  color: white;
+  border-color: #003580;
+}
+.affiliate-btn--viator {
+  background: #003b6f;
+  color: white;
+  border-color: #003b6f;
+}
+.affiliate-btn--alltrails {
+  background: #1d7874;
+  color: white;
+  border-color: #1d7874;
+}
+.affiliate-btn__icon {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.cabin-finder-cta {
+  text-align: center;
+  padding: 40px;
+  background: rgba(212, 137, 63, 0.08);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--amber-light);
+}
+.cabin-finder-cta h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+.cabin-finder-cta__buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.activity-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.activity-link:hover { opacity: 0.85; }
+.activity-link--viator {
+  background: rgba(0, 59, 111, 0.1);
+  color: #003b6f;
+}
+.activity-link--alltrails {
+  background: rgba(29, 120, 116, 0.1);
+  color: #1d7874;
+}
+
+@media (max-width: 640px) {
+  .cabin-finder-cta__buttons { flex-direction: column; }
+  .cabin-finder-cta__buttons .affiliate-btn { width: 100%; }
+}

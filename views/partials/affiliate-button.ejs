@@ -1,0 +1,29 @@
+<%
+  /**
+   * affiliate-button.ejs
+   * Reusable affiliate CTA button component
+   *
+   * Usage:
+   *   <%- include('partials/affiliate-button', { 
+   *     platform: 'vrbo',
+   *     url: '/out?listing=123&partner=vrbo',
+   *     label: 'View on Vrbo'
+   *   }) %>
+   *
+   * Or for direct URLs (Viator, AllTrails):
+   *   <%- include('partials/affiliate-button', {
+   *     platform: 'viator',
+   *     url: 'https://www.viator.com/...',
+   *     label: 'Guided Tours on Viator',
+   *     external: true
+   *   }) %>
+   */
+%>
+
+<a href="<%= url %>" 
+   target="<%= external ? '_blank' : '_self' %>"
+   rel="<%= external ? 'noopener noreferrer' : '' %>"
+   class="affiliate-btn affiliate-btn--<%= platform %>">
+  <%= label %>
+  <% if (external) { %><span class="affiliate-btn__icon">→</span><% } %>
+</a>

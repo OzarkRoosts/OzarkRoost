@@ -106,8 +106,8 @@ router.post('/trip-planner', async (req, res) => {
 
   const normalizedEmail = email.trim().toLowerCase();
   // Basic format check: has @ and a domain with at least one dot after @
-  const emailRegex = /^[^\t\n\r@]+@[^\t\n\r@]+\/[^\t\n\r@]+$/;
-  if (emailRegex.test(normalizedEmail)) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(normalizedEmail)) {
     return res.render('guides/trip-planner', {
       error: 'Please enter a valid email address.',
       values: { email },

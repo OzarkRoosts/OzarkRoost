@@ -19,8 +19,8 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const emailRegex = /^[^\t\n\r@]+@[^\t\n\r@]+\/[^\t\n\r@]+$/;
-  if (emailRegex.test(email)) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
     return res.render('referral', {
       error: 'Please enter a valid email address.',
       values: { name, email, website, promotion_method, message }

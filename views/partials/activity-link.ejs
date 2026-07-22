@@ -1,0 +1,38 @@
+<%
+  /**
+   * activity-link.ejs
+   * Reusable activity link for Viator and AllTrails
+   *
+   * Usage (Viator):
+   *   <%- include('partials/activity-link', {
+   *     platform: 'viator',
+   *     label: 'Guided Tours',
+   *     searchQuery: 'Buffalo River kayaking'
+   *   }) %>
+   *
+   * Usage (AllTrails):
+   *   <%- include('partials/activity-link', {
+   *     platform: 'alltrails',
+   *     label: 'Hiking Trails',
+   *     region: 'arkansas'
+   *   }) %>
+   */
+%>
+
+<% 
+  let url = '';
+  if (platform === 'viator') {
+    const encoded = encodeURIComponent(searchQuery);
+    url = `https://www.viator.com/search?text=${encoded}&utm_source=ozarkroost&utm_medium=referral&utm_campaign=guides`;
+  } else if (platform === 'alltrails') {
+    url = `https://www.alltrails.com/us/${region}?utm_source=ozarkroost&utm_medium=referral&utm_campaign=guides`;
+  }
+%>
+
+<% if (url) { %>
+  <a href="<%= url %>" 
+     target="_blank" rel="noopener noreferrer"
+     class="activity-link activity-link--<%= platform %>">
+    <%= label %> →
+  </a>
+<% } %>
