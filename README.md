@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Express + EJS + Postgres Starter
 
 Minimal Node.js web app: Express server, EJS templates, PostgreSQL connection,
@@ -43,3 +44,6 @@ DATABASE_URL="postgresql://..." npm run dev
 
 Configured for Render via `render.yaml`. `npm run build` runs migrations on
 deploy.
+=======
+# OzarkRoost
+>>>>>>> 95aeeb0df2b168ea7a38c0165a0c98f6df9f43b9
