@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# Express + EJS + Postgres Starter
+Express + EJS + Postgres Starter
 
 Minimal Node.js web app: Express server, EJS templates, PostgreSQL connection,
 migration runner, Render deployment config.
