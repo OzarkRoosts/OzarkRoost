@@ -1,4 +1,4 @@
-# OzarkRoost# Express + EJS + Postgres Starter
+# OzarkRoost
 
 Minimal Node.js web app: Express server, EJS templates, PostgreSQL connection,
 migration runner, Render deployment config.
@@ -42,4 +42,4 @@ DATABASE_URL="postgresql://..." npm run dev
 ## Deployment
 
 Configured for Render via `render.yaml`. `npm run build` runs migrations on
-deploy.
+deploy using the configured `DATABASE_URL`.
