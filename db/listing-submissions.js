@@ -75,4 +75,16 @@ async function getAllListings({ location, type } = {}) {
   return rows;
 }
 
-module.exports = { createListingSubmission, getSubmissionByEmail, getAllListings };
+async function markListingPaid(id, stripeSessionId) {
+  const result = await pool.query(
+    `UPDATE listing_submissions
+     SET payment_status = 'paid', stripe_checkout_session_id = $2, paid_at = NOW()
+     WHERE id = $1
+     RETURNING *`,
+    [id, stripeSessionId]
+  );
+  listingsCache = null;
+  return result.rows[0];
+}
+
+module.exports = { createListingSubmission, getSubmissionByEmail, getAllListings, markListingPaid };

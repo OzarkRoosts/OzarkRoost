@@ -21,6 +21,9 @@ if (process.env.AUTONOMOUS_MODE === 'true') {
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Stripe verifies the exact signed request bytes, so this route must be
+// registered before the JSON parser transforms the body.
+app.use('/webhooks/stripe', require('./routes/stripe-webhook'));
 app.use(express.json());
 
 // EJS view engine. Templates live in ./views/ (entry point: layout.ejs).
@@ -103,6 +106,9 @@ app.use('/api/killer', require('./routes/killer-api'));
 
 // Autonomous Sales API — FULL AUTOMATION (email, contracts, billing)
 app.use('/api/autonomous', require('./routes/autonomous-api'));
+
+// Rover is a public, read-only trip-planning assistant.
+app.use('/api/rover', require('./routes/rover'));
 
 // FAQ — visitor questions about booking, policies, and operators
 app.get('/faq', (_req, res) => {

@@ -33,13 +33,10 @@ router.post('/', async (req, res) => {
   // Payment link is pre-created via Stripe MCP, stored as env var.
   // Append email so thank-you page can personalize the confirmation.
   const baseLink = process.env.STRIPE_PAYMENT_LINK_URL;
-  const paymentLinkUrl = baseLink
-    ? `${baseLink}${baseLink.includes('?') ? '&' : '?'}email=${encodeURIComponent(ownerEmail)}&property=${encodeURIComponent(propertyName)}`
-    : null;
-
-  // Save submission to DB regardless of Stripe result
+  // Persist first so the signed Stripe webhook can activate the exact listing.
+  let submission;
   try {
-    await createListingSubmission({
+    submission = await createListingSubmission({
       ownerName,
       ownerEmail,
       propertyName,
@@ -52,9 +49,15 @@ router.post('/', async (req, res) => {
     });
   } catch (dbErr) {
     console.error('[list-your-cabin] DB error:', dbErr && dbErr.message);
+    return res.status(503).render('list-your-cabin', {
+      error: 'We could not save your listing. Please try again in a moment.',
+      values: req.body
+    });
   }
 
-  if (paymentLinkUrl) {
+  if (baseLink) {
+    const separator = baseLink.includes('?') ? '&' : '?';
+    const paymentLinkUrl = `${baseLink}${separator}client_reference_id=${encodeURIComponent(submission.id)}&prefilled_email=${encodeURIComponent(ownerEmail)}`;
     return res.redirect(paymentLinkUrl);
   }
 

@@ -5,33 +5,32 @@ Deploying OzarkRoost to Render
 - In the Render dashboard, create a new Web Service and connect the repo.
 
 2) Environment variables (required)
-- `DATABASE_URL` — **required**. Set to your Postgres connection string.
-- `NODE_ENV` — set to `production` (already in `render.yaml`).
+- `DATABASE_URL` - PostgreSQL connection string.
+- `NODE_ENV` - production (declared in `render.yaml`).
+- `STRIPE_SECRET_KEY` - Stripe secret key.
+- `STRIPE_WEBHOOK_SECRET` - signing secret for `https://<service>/webhooks/stripe`.
+- `STRIPE_PAYMENT_LINK_URL` - recurring Payment Link for owner listings.
+- `OPENAI_API_KEY` - Rover assistant API key.
+- `APP_URL` - public HTTPS base URL for payment and email links.
 
-Optional (recommended)
-- `STRIPE_PAYMENT_LINK_URL` — pre-created Stripe payment link for owners.
-- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` — SMTP for outgoing email.
-- `POLSIA_ANALYTICS_SLUG`, `EMAIL_FROM` — analytics and sender identity.
+Optional: `OPENAI_MODEL` (defaults to `gpt-4o-mini`), `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, and `EMAIL_FROM` for email jobs.
 
 3) Render service settings
-- `buildCommand` is `npm install` (see `render.yaml`).
-- `startCommand` is `npm run migrate && npm start` — migrations run at startup.
+- `buildCommand` is `npm ci`.
+- `preDeployCommand` is `npm run migrate`.
+- `startCommand` is `npm start`.
 - Health check path: `/health`.
 
-4) Local testing before deploy
-PowerShell:
+4) Stripe webhook
+- In Stripe, create `https://<service>/webhooks/stripe` and subscribe to `checkout.session.completed`.
+- Put the endpoint signing secret in `STRIPE_WEBHOOK_SECRET`.
+- Listings activate only after Stripe sends a signed paid checkout event.
+
+5) Local testing
 ```powershell
 $env:DATABASE_URL="postgres://user:pass@host:5432/dbname"
-npm install
-npm start
+npm.cmd run migrate
+npm.cmd start
 ```
 
-5) Deploy
-- After connecting the repo and setting env vars in Render, click "Create Web Service".
-- Render will run `npm install`, then on start run migrations and `server.js`.
-
-Notes
-- Do NOT commit real secrets to the repo. Use Render Secrets or the dashboard environment UI.
-- If migrations should run separately (e.g., manual control), update `render.yaml` to remove `npm run migrate` from `startCommand`.
-
-If you want, I can prepare a small Git commit message and the exact `git` commands to push these changes for you.
+Do not commit real secrets. Configure them in Render's environment UI.
