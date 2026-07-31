@@ -1,0 +1,15 @@
+<aside class="rover" aria-label="Rover trip-planning assistant">
+  <button class="rover__toggle" type="button" aria-expanded="false" aria-controls="rover-panel">Ask Rover</button>
+  <section class="rover__panel" id="rover-panel" hidden>
+    <header class="rover__header"><strong>Rover</strong><span>Ozarks trip guide</span></header>
+    <div class="rover__messages" aria-live="polite">
+      <p class="rover__message rover__message--assistant">What are you hoping to explore in the Ozarks?</p>
+    </div>
+    <form class="rover__form">
+      <label class="sr-only" for="rover-question">Ask Rover a question</label>
+      <input id="rover-question" name="message" maxlength="1500" placeholder="Ask about cabins, trails, or rivers" required>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+</aside>
+<script src="/js/rover.js" defer></script>
