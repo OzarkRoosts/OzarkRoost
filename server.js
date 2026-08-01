@@ -18,6 +18,10 @@ if (process.env.AUTONOMOUS_MODE === 'true') {
   console.log('[Autonomous] SALES ENGINE ACTIVATED - Sending emails, responding, signing contracts, charging cards');
 }
 
+// Start OpsBot — autonomous operations superbot
+const opsbot = require('./lib/opsbot');
+opsbot.start();
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -106,6 +110,9 @@ app.use('/api/killer', require('./routes/killer-api'));
 
 // Autonomous Sales API â€” FULL AUTOMATION (email, contracts, billing)
 app.use('/api/autonomous', require('./routes/autonomous-api'));
+
+// OpsBot — autonomous operations superbot (email, affiliates, outreach, payments)
+app.use('/api/opsbot', require('./routes/opsbot-api'));
 
 // Rover is a public, read-only trip-planning assistant.
 app.use('/api/rover', require('./routes/rover'));
