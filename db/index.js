@@ -1,20 +1,29 @@
-// Database connection pool — single source of truth for pg Pool.
-// Any file that needs to query the database imports from here.
-const { Pool } = require('pg');
+// Database connection - single source of truth.
+// Production: uses pg Pool with DATABASE_URL.
+// Local dev without DB: exports a stub that warns (Rover still works).
+require('dotenv').config();
 
-if (!process.env.DATABASE_URL) {
-  console.error('ERROR: DATABASE_URL is required');
-  process.exit(1);
+let pool;
+
+if (process.env.DATABASE_URL) {
+  const { Pool } = require('pg');
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.DATABASE_URL.includes('localhost') ? false : { rejectUnauthorized: false }
+  });
+  pool.on('error', (err) => {
+    console.error('[pg pool] idle client error (non-fatal):', err && err.message);
+  });
+  console.log('[db] Connected via pg Pool');
+} else {
+  console.warn('[db] DATABASE_URL not set - database features disabled (Rover still works)');
+  const noDbError = new Error('Database not configured. Set DATABASE_URL to enable DB features.');
+  pool = {
+    async query() { throw noDbError; },
+    async connect() { throw noDbError; },
+    on() {},
+    async end() {}
+  };
 }
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false }
-});
-
-// Prevent idle client errors from crashing the process (Neon auto-suspend)
-pool.on('error', (err) => {
-  console.error('[pg pool] idle client error (non-fatal):', err && err.message);
-});
 
 module.exports = pool;

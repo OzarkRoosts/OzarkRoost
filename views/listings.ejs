@@ -102,13 +102,9 @@
             </div>
             <h2 class="listing-card__name"><%= listing.property_name %></h2>
             <p class="listing-card__desc"><%= listing.description %></p>
-            <% if (listing.website_url && listing.partner) { %>
+            <% if (listing.website_url) { %>
               <div class="listing-card__links">
-                <% if (listing.partner === 'vrbo') { %>
-                  <a href="/out?listing=<%= listing.id %>&partner=vrbo" target="_blank" rel="noopener" class="listing-card__affiliate-btn listing-card__affiliate-btn--vrbo">View on Vrbo</a>
-                <% } else if (listing.partner === 'booking') { %>
-                  <a href="/out?listing=<%= listing.id %>&partner=booking" target="_blank" rel="noopener" class="listing-card__affiliate-btn listing-card__affiliate-btn--booking">View on Booking.com</a>
-                <% } %>
+                <a href="/out?listing=<%= listing.id %><%= listing.partner ? '&partner=' + encodeURIComponent(listing.partner) : '' %>" target="_blank" rel="noopener" class="listing-card__affiliate-btn">View Listing</a>
               </div>
             <% } %>
           </div>
