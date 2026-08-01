@@ -10,16 +10,52 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: ozarkroost-db
+          property: connectionString
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
       - key: STRIPE_PAYMENT_LINK_URL
         sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.1-8b-instant
       - key: OPENAI_API_KEY
         sync: false
       - key: OPENAI_MODEL
         value: gpt-4o-mini
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
       - key: APP_URL
         sync: false
+      - key: AUTONOMOUS_MODE
+        value: "true"
+      - key: AUTONOMOUS_API_KEY
+        sync: false
+      - key: OPSBOT_ENABLED
+        value: "true"
+      - key: OPSBOT_EMAIL_CHECK_INTERVAL
+        value: "300000"
+      - key: OPSBOT_AFFILIATE_SCAN_INTERVAL
+        value: "3600000"
+      - key: OPSBOT_OUTREACH_INTERVAL
+        value: "900000"
+      - key: OPSBOT_PAYMENT_CHECK_INTERVAL
+        value: "600000"
+
+databases:
+  - name: ozarkroost-db
+    plan: free
