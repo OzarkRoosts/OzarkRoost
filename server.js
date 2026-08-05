@@ -1,9 +1,19 @@
-﻿require('dotenv')
-.config();
+﻿require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { buildLandingContext } = require('./lib/landing-context');
-require('./db/index'); // fail-fast if DB connection is misconfigured
+const pool = require('./db/index');
+
+// Auto-run migrations on startup
+async function startServer() {
+  try {
+    console.log('[startup] Running migrations...');
+    const { runAllMigrations } = require('./migrate-runner');
+    await runAllMigrations(pool);
+    console.log('[startup] Migrations complete.');
+  } catch (err) {
+    console.error('[startup] Migration error:', err.message);
+  }
 
 // Start affiliate AI monitoring in background
 const affiliateAI = require('./lib/affiliate-ai-engine');
@@ -124,4 +134,10 @@ app.get('/faq', (_req, res) => {
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+});
+}
+
+startServer().catch(err => {
+  console.error('[startup] Fatal error:', err.message);
+  process.exit(1);
 });
