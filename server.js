@@ -32,6 +32,12 @@ if (process.env.AUTONOMOUS_MODE === 'true') {
 const opsbot = require('./lib/opsbot');
 opsbot.start();
 
+// Start Super Agent — self-healing operations daemon (NO AI credits needed)
+if (process.env.SUPERAGENT_ENABLED === 'true') {
+  require('./lib/super-agent');
+  console.log('[SuperAgent] Self-healing daemon armed.');
+}
+
 const app = express();
 const port = process.env.PORT || 3000;
 
