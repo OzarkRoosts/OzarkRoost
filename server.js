@@ -56,6 +56,16 @@ app.get('/health', (req, res) => {
   res.json({ status: 'healthy' });
 });
 
+// Super Agent status endpoint
+app.get('/superagent-status', (req, res) => {
+  try {
+    const superagent = require('./lib/super-agent');
+    res.json(superagent.getStatus());
+  } catch (err) {
+    res.status(503).json({ error: 'Super Agent not enabled' });
+  }
+});
+
 // Serve static files from public folder.
 // `index: false` disables auto-serving public/index.html as the directory
 // index â€” `/` always hits the EJS render route below, which is the only
