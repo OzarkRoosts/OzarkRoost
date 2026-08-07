@@ -38,6 +38,13 @@ if (process.env.SUPERAGENT_ENABLED === 'true') {
   console.log('[SuperAgent] Self-healing daemon armed.');
 }
 
+// Start Marketing Engine — autonomous customer acquisition (NO ad spend)
+if (process.env.MARKETING_ENABLED === 'true') {
+  const marketing = require('./lib/marketing-engine');
+  marketing.start();
+  console.log('[Marketing] Autonomous marketing engine armed.');
+}
+
 const app = express();
 const port = process.env.PORT || 3000;
 
