@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ozarkroost.polsia.app/sitemap.xml
+# Set APP_URL on host; sitemap is served dynamically at /sitemap.xml
+Sitemap: /sitemap.xml

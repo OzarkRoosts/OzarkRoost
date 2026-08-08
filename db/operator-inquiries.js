@@ -1,5 +1,5 @@
 // db/operator-inquiries.js — Operator inquiry submissions
-const pool = require('./index');
+const { query } = require('./index');
 
 async function createOperatorInquiry({ operator_name, email, property_name, property_type, location, phone, message, source }) {
   const sql = `
@@ -7,7 +7,7 @@ async function createOperatorInquiry({ operator_name, email, property_name, prop
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
     RETURNING id, operator_name, email, property_name, property_type, submitted_at
   `;
-  const result = await pool.query(sql, [operator_name, email, property_name, property_type, location, phone || null, message || null, source || null]);
+  const result = await query(sql, [operator_name, email, property_name, property_type, location, phone || null, message || null, source || null]);
   return result.rows[0];
 }
 

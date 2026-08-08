@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/theme.css">
-  <%- include('partials/speed-insights') %>
 </head>
 <body>
 
@@ -102,9 +101,13 @@
             </div>
             <h2 class="listing-card__name"><%= listing.property_name %></h2>
             <p class="listing-card__desc"><%= listing.description %></p>
-            <% if (listing.website_url) { %>
+            <% if (listing.website_url && listing.partner) { %>
               <div class="listing-card__links">
-                <a href="/out?listing=<%= listing.id %><%= listing.partner ? '&partner=' + encodeURIComponent(listing.partner) : '' %>" target="_blank" rel="noopener" class="listing-card__affiliate-btn">View Listing</a>
+                <% if (listing.partner === 'vrbo') { %>
+                  <a href="/out?listing=<%= listing.id %>&partner=vrbo" target="_blank" rel="noopener" class="listing-card__affiliate-btn listing-card__affiliate-btn--vrbo">View on Vrbo</a>
+                <% } else if (listing.partner === 'booking') { %>
+                  <a href="/out?listing=<%= listing.id %>&partner=booking" target="_blank" rel="noopener" class="listing-card__affiliate-btn listing-card__affiliate-btn--booking">View on Booking.com</a>
+                <% } %>
               </div>
             <% } %>
           </div>

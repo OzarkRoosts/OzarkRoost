@@ -23,25 +23,11 @@ const router = express.Router();
 const autonomous = require('../lib/autonomous-sales');
 const killerDb = require('../db/cold-call-killer');
 
-// Authentication middleware — protects all autonomous endpoints.
-// Set AUTONOMOUS_API_KEY in .env; pass it via Authorization header.
-function requireAuth(req, res, next) {
-  const apiKey = process.env.AUTONOMOUS_API_KEY;
-  if (!apiKey) {
-    return res.status(503).json({ error: 'Autonomous API not configured' });
-  }
-  const provided = req.headers.authorization?.replace(/^Bearer\s+/i, '');
-  if (!provided || provided !== apiKey) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  next();
-}
-
 /**
  * POST /api/autonomous/send
  * Send email directly from your account
  */
-router.post('/send', requireAuth, async (req, res) => {
+router.post('/send', async (req, res) => {
   try {
     const {
       to,
@@ -84,7 +70,7 @@ router.post('/send', requireAuth, async (req, res) => {
  * POST /api/autonomous/contract
  * Send contract for signature
  */
-router.post('/contract', requireAuth, async (req, res) => {
+router.post('/contract', async (req, res) => {
   try {
     const {
       prospect_email,
@@ -127,7 +113,7 @@ router.post('/contract', requireAuth, async (req, res) => {
  * POST /api/autonomous/accept-signature
  * Process contract acceptance and charge card
  */
-router.post('/accept-signature', requireAuth, async (req, res) => {
+router.post('/accept-signature', async (req, res) => {
   try {
     const {
       prospect_email,
@@ -169,7 +155,7 @@ router.post('/accept-signature', requireAuth, async (req, res) => {
  * POST /api/autonomous/charge
  * One-time charge or subscription
  */
-router.post('/charge', requireAuth, async (req, res) => {
+router.post('/charge', async (req, res) => {
   try {
     const {
       prospect_email,
@@ -209,7 +195,7 @@ router.post('/charge', requireAuth, async (req, res) => {
  * POST /api/autonomous/monitor
  * Start monitoring for replies and auto-responding
  */
-router.post('/monitor', requireAuth, async (req, res) => {
+router.post('/monitor', async (req, res) => {
   try {
     // Start the autonomous workflow
     autonomous.autonomousWorkflow();
@@ -237,7 +223,7 @@ router.post('/monitor', requireAuth, async (req, res) => {
  * GET /api/autonomous/report
  * Sales metrics and revenue dashboard
  */
-router.get('/report', requireAuth, async (req, res) => {
+router.get('/report', async (req, res) => {
   try {
     const stats = await autonomous.getAutonomousReport();
 
@@ -263,7 +249,7 @@ router.get('/report', requireAuth, async (req, res) => {
  * GET /api/autonomous/activate
  * Full autonomous mode - sends emails, responds, contracts, charges
  */
-router.get('/activate', requireAuth, async (req, res) => {
+router.get('/activate', async (req, res) => {
   try {
     autonomous.startAutonomous();
 

@@ -5,47 +5,96 @@ const { buildLandingContext } = require('./lib/landing-context');
 const pool = require('./db/index');
 const { applySecurityHeaders, isSafeExternalUrl, sanitizeText } = require('./lib/security');
 const { createRateLimiter } = require('./middleware/rate-limit');
+const errorTracker = require('./middleware/error-tracker');
+
+function softRequire(modulePath) {
+  try {
+    return require(modulePath);
+  } catch (err) {
+    console.warn(`[startup] optional module missing: ${modulePath} (${err.message})`);
+    return null;
+  }
+}
+
+function softStart(label, fn) {
+  try {
+    fn();
+  } catch (err) {
+    console.warn(`[startup] ${label} failed soft-start:`, err.message);
+  }
+}
 
 // Auto-run migrations on startup, then boot engines + HTTP server
 async function startServer() {
+  errorTracker.installProcessHooks();
+
   try {
     console.log('[startup] Running migrations...');
     const { runAllMigrations } = require('./migrate-runner');
-    await runAllMigrations(pool);
+    await runAllMigrations();
     console.log('[startup] Migrations complete.');
   } catch (err) {
     console.error('[startup] Migration error:', err.message);
   }
 
-  // Start affiliate AI monitoring in background
-  const affiliateAI = require('./lib/affiliate-ai-engine');
-  if (process.env.NODE_ENV === 'production') {
-    affiliateAI.startMonitoring();
-  }
+  // Site Health Superagent — page probes, error tracking, safe heals
+  const siteHealth = softRequire('./lib/site-health-agent');
+  softStart('site-health', () => {
+    if (siteHealth) siteHealth.start();
+  });
 
-  // Start autonomous sales engine (FULL AUTONOMY MODE)
-  const autonomous = require('./lib/autonomous-sales');
-  if (process.env.AUTONOMOUS_MODE === 'true') {
-    autonomous.startAutonomous();
-    console.log('[Autonomous] SALES ENGINE ACTIVATED - Sending emails, responding, signing contracts, charging cards');
-  }
+  // Affiliate Ops Superagent — gap scan + ops plan
+  const affiliateOps = softRequire('./lib/affiliate-ops-agent');
+  softStart('affiliate-ops', () => {
+    if (affiliateOps) affiliateOps.start();
+  });
 
-  // Start OpsBot — autonomous operations superbot
-  const opsbot = require('./lib/opsbot');
-  opsbot.start();
+  // Affiliate AI monitoring (legacy scanner) — production or explicit flag
+  const affiliateAI = softRequire('./lib/affiliate-ai-engine');
+  softStart('affiliate-ai', () => {
+    if (!affiliateAI) return;
+    if (process.env.NODE_ENV === 'production' || process.env.AFFILIATE_AI_ENABLED === 'true') {
+      affiliateAI.startMonitoring();
+    }
+  });
 
-  // Start Super Agent — self-healing operations daemon (NO AI credits needed)
-  if (process.env.SUPERAGENT_ENABLED === 'true') {
-    require('./lib/super-agent');
-    console.log('[SuperAgent] Self-healing daemon armed.');
-  }
+  // Autonomous sales — only when explicitly enabled (needs Stripe/OpenAI)
+  softStart('autonomous-sales', () => {
+    if (process.env.AUTONOMOUS_MODE !== 'true') return;
+    const autonomous = softRequire('./lib/autonomous-sales');
+    if (autonomous?.startAutonomous) {
+      autonomous.startAutonomous();
+      console.log('[Autonomous] SALES ENGINE ACTIVATED');
+    }
+  });
 
-  // Start Marketing Engine — autonomous customer acquisition (NO ad spend)
-  if (process.env.MARKETING_ENABLED === 'true') {
-    const marketing = require('./lib/marketing-engine');
-    marketing.start();
-    console.log('[Marketing] Autonomous marketing engine armed.');
-  }
+  // OpsBot stub or real
+  softStart('opsbot', () => {
+    const opsbot = softRequire('./lib/opsbot');
+    if (!opsbot) return;
+    if (typeof opsbot.startOpsBot === 'function') opsbot.startOpsBot();
+    else if (typeof opsbot.start === 'function') opsbot.start();
+  });
+
+  // Super Agent facade (delegates to site-health + affiliate-ops)
+  softStart('super-agent', () => {
+    if (process.env.SUPERAGENT_ENABLED === 'false') return;
+    // Default ON in production; optional elsewhere
+    if (process.env.NODE_ENV === 'production' || process.env.SUPERAGENT_ENABLED === 'true') {
+      const superagent = softRequire('./lib/super-agent');
+      if (superagent?.start) superagent.start();
+      console.log('[SuperAgent] facade armed.');
+    }
+  });
+
+  softStart('marketing', () => {
+    if (process.env.MARKETING_ENABLED !== 'true') return;
+    const marketing = softRequire('./lib/marketing-engine');
+    if (marketing?.start) {
+      marketing.start();
+      console.log('[Marketing] engine armed.');
+    }
+  });
 
   const app = express();
   const port = process.env.PORT || 3000;
@@ -57,6 +106,7 @@ async function startServer() {
   // registered before the JSON / urlencoded parsers transform the body.
   app.use('/webhooks/stripe', require('./routes/stripe-webhook'));
 
+  app.use(errorTracker.requestTracker());
   app.use(applySecurityHeaders);
   app.use(express.json({ limit: '100kb' }));
   app.use(express.urlencoded({ extended: false, limit: '100kb' }));
@@ -75,13 +125,71 @@ async function startServer() {
     res.json({ status: 'healthy' });
   });
 
-  // Super Agent status endpoint
+  function publicBaseUrl(req) {
+    if (process.env.APP_URL) return String(process.env.APP_URL).replace(/\/$/, '');
+    const proto = req.get('x-forwarded-proto') || req.protocol || 'https';
+    return `${proto}://${req.get('host')}`;
+  }
+
+  const SITEMAP_PATHS = [
+    '/',
+    '/listings',
+    '/adventures',
+    '/list-your-cabin',
+    '/referral',
+    '/operators',
+    '/faq',
+    '/guides/about-the-ozarks',
+    '/guides/buffalo-river-cabins',
+    '/guides/ozarks-adventures',
+    '/guides/ozarks-camping-rv',
+    '/guides/hidden-gem-cabins',
+    '/guides/buffalo-river-kayaking',
+    '/guides/hot-tub-cabins',
+    '/guides/pet-friendly-cabins',
+    '/guides/treehouse-rentals',
+    '/guides/glamping-ozarks',
+    '/guides/luxury-cabins',
+    '/guides/ozarks-road-trip',
+    '/guides/trip-planner',
+  ];
+
+  // Dynamic sitemap — uses APP_URL (or request host) so Render/custom domain stay correct
+  app.get('/sitemap.xml', (req, res) => {
+    const base = publicBaseUrl(req);
+    const body = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      ...SITEMAP_PATHS.map((p) => {
+        const priority = p === '/' ? '1.0' : p.startsWith('/guides/') ? '0.9' : '0.7';
+        return [
+          '  <url>',
+          `    <loc>${base}${p}</loc>`,
+          '    <changefreq>weekly</changefreq>',
+          `    <priority>${priority}</priority>`,
+          '  </url>',
+        ].join('\n');
+      }),
+      '</urlset>',
+      '',
+    ].join('\n');
+    res.type('application/xml').send(body);
+  });
+
+  app.get('/robots.txt', (req, res) => {
+    const base = publicBaseUrl(req);
+    res
+      .type('text/plain')
+      .send(`User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
+  });
+
+  // Super Agent status endpoint (facade)
   app.get('/superagent-status', (req, res) => {
     try {
       const superagent = require('./lib/super-agent');
       res.json(superagent.getStatus());
     } catch (err) {
-      res.status(503).json({ error: 'Super Agent not enabled' });
+      res.status(503).json({ error: 'Super Agent not enabled', detail: err.message });
     }
   });
 
@@ -90,6 +198,11 @@ async function startServer() {
   // index — `/` always hits the EJS render route below, which is the only
   // thing that should ever serve the landing page on this template.
   app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+
+  // Roost Nation campaign command center (static HTML)
+  app.get('/campaign', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'campaign', 'index.html'));
+  });
 
   // Landing page
   app.get('/', (_req, res) => {
@@ -159,8 +272,11 @@ async function startServer() {
   // SEO destination guides — /guides/buffalo-river-cabins, etc.
   app.use('/guides', require('./routes/guides'));
 
-  // Affiliate Revenue API — real-time monitoring dashboard
+  // Affiliate Revenue API — real-time monitoring dashboard + ops agent
   app.use('/api/affiliate', apiLimiter, require('./routes/affiliate-api'));
+
+  // Site Health Superagent API
+  app.use('/api/health', apiLimiter, require('./routes/health-api'));
 
   // Cold Call Killer API — AI-powered sales engine
   app.use('/api/killer', apiLimiter, require('./routes/killer-api'));
@@ -178,6 +294,9 @@ async function startServer() {
   app.get('/faq', (_req, res) => {
     res.render('faq');
   });
+
+  // Express error tracker (must be after routes)
+  app.use(errorTracker.errorHandler());
 
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);

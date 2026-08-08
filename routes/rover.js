@@ -14,16 +14,6 @@ function isRateLimited(ip) {
   return timestamps.length > MAX_REQUESTS;
 }
 
-// Periodically evict stale entries to prevent unbounded memory growth
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, timestamps] of requests) {
-    const fresh = timestamps.filter((t) => now - t < WINDOW_MS);
-    if (fresh.length === 0) requests.delete(ip);
-    else requests.set(ip, fresh);
-  }
-}, 5 * 60_000).unref();
-
 router.post('/chat', async (req, res) => {
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';
   if (!message || message.length > 1_500) {

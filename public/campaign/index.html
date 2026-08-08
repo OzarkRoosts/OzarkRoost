@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roost Nation — Campaign Command Center | Ozark Roost</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1a3a2e;
+    --forest-light: #2d5a44;
+    --gold: #d4a017;
+    --gold-light: #f0c040;
+    --cream: #faf6f0;
+    --rust: #b8551c;
+    --stone: #8a8579;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--cream); }
+  .gradient-forest { background: linear-gradient(135deg, #1a3a2e 0%, #2d5a44 50%, #1a3a2e 100%); }
+  .gradient-gold { background: linear-gradient(135deg, #d4a017 0%, #f0c040 100%); }
+  .text-gold { color: var(--gold); }
+  .text-forest { color: var(--forest); }
+  .bg-forest { background: var(--forest); }
+  .border-forest { border-color: var(--forest); }
+  .phase-card { transition: all 0.3s ease; }
+  .phase-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,58,46,0.15); }
+  .channel-card { transition: all 0.2s ease; }
+  .channel-card:hover { border-color: var(--gold); }
+  .stat-num { font-weight: 800; letter-spacing: -0.02em; }
+  .tab-active { border-bottom: 3px solid var(--gold); font-weight: 600; color: var(--forest); }
+  .tab-inactive { border-bottom: 3px solid transparent; font-weight: 500; color: var(--stone); }
+  .progress-bar { height: 6px; border-radius: 3px; background: #e8e3d8; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #d4a017, #f0c040); transition: width 0.6s ease; }
+  .glow { box-shadow: 0 0 30px rgba(212,160,23,0.3); }
+  details summary { cursor: pointer; list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  .pulse-dot { animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+</head>
+<body class="bg-[#faf6f0] text-gray-900">
+
+<!-- TOP BAR -->
+<div class="gradient-forest text-white py-2 px-6 text-xs flex items-center justify-between">
+  <div class="flex items-center gap-2">
+    <span class="pulse-dot inline-block w-2 h-2 rounded-full bg-[#d4a017]"></span>
+    <span class="font-medium tracking-wide">LIVE CAMPAIGN DOCUMENT</span>
+  </div>
+  <div class="flex items-center gap-4 text-gray-300">
+    <span>Ozark Roost Media LLC</span>
+    <span>•</span>
+    <span>Version 1.0</span>
+    <span>•</span>
+    <span>August 2026</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="gradient-forest text-white py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="gradient-gold text-forest px-3 py-1 rounded-full text-xs font-bold tracking-wider">ANTI-GOOGLE REVENUE ENGINE</span>
+    </div>
+    <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-3">Roost Nation</h1>
+    <p class="text-2xl text-gray-200 font-light mb-2">The Ozark Roost Media Campaign</p>
+    <p class="text-lg text-gray-400 max-w-2xl">A four-phase, multi-channel media campaign that turns a local directory into a owned-audience media brand — generating revenue Google can't touch, throttle, or take away.</p>
+
+    <!-- CURRENT STATE STATS -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-10">
+      <div class="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/10">
+        <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Listings Live</p>
+        <p class="text-3xl stat-num text-white">6</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/10">
+        <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Affiliate Programs</p>
+        <p class="text-3xl stat-num text-white">29</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/10">
+        <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Content Pages</p>
+        <p class="text-3xl stat-num text-white">8</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/10">
+        <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Email Subs</p>
+        <p class="text-3xl stat-num text-[#f0c040]">0</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/10">
+        <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Monthly Revenue</p>
+        <p class="text-3xl stat-num text-[#f0c040]">$0</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- THE THESIS -->
+<section class="max-w-6xl mx-auto py-12 px-6">
+  <div class="flex items-start gap-6">
+    <div class="flex-1">
+      <h2 class="text-2xl font-bold text-forest mb-4">The Thesis: Why We Bench Google</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Google's entire model is <span class="font-semibold text-forest">rent-seeking on intent</span> — you pay them to reach people who were already looking for you. Every algorithm update, every CPC increase, every SERP reshuffle is a toll hike on your own customers.
+      </p>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Roost Nation flips the model. We don't rent attention from Google — we <span class="font-semibold text-forest">own</span> it. An email list nobody can de-rank. A community nobody can shadow-ban. Content that lives on platforms we control. Revenue from affiliate partnerships and local businesses who pay US directly — not through a middleman.
+      </p>
+      <p class="text-gray-700 leading-relaxed">
+        By the end of this campaign, Ozark Roost isn't a directory. It's the <span class="font-semibold text-forest">media brand of the Ozarks</span> — the place locals check before they go anywhere, and tourists find before they plan anything. And Google's not in the equation.
+      </p>
+    </div>
+    <div class="hidden md:block w-72 shrink-0 bg-forest text-white rounded-2xl p-6">
+      <h3 class="text-lg font-bold mb-4 text-[#f0c040]">The Anti-Google Stack</h3>
+      <ul class="space-y-3 text-sm">
+        <li class="flex items-start gap-2"><span class="text-[#d4a017] font-bold">✦</span> <span><b>Email list</b> — owned, portable, algorithm-proof</span></li>
+        <li class="flex items-start gap-2"><span class="text-[#d4a017] font-bold">✦</span> <span><b>Affiliate revenue</b> — no AdSense middleman, 5-12% commissions</span></li>
+        <li class="flex items-start gap-2"><span class="text-[#d4a017] font-bold">✦</span> <span><b>Direct B2B</b> — businesses pay us for listings, not Google for ads</span></li>
+        <li class="flex items-start gap-2"><span class="text-[#d4a017] font-bold">✦</span> <span><b>Multi-platform content</b> — traffic from 6+ channels, not 1 SERP</span></li>
+        <li class="flex items-start gap-2"><span class="text-[#d4a017] font-bold">✦</span> <span><b>Community</b> — loyalty that search can't replicate</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE TIMELINE -->
+<section class="max-w-6xl mx-auto px-6 pb-8">
+  <h2 class="text-2xl font-bold text-forest mb-2">The Four Phases</h2>
+  <p class="text-gray-600 mb-8">20 weeks to go from zero to a owned-audience media brand.</p>
+
+  <!-- PHASE 1 -->
+  <div class="phase-card bg-white rounded-2xl border border-gray-200 p-8 mb-6 shadow-sm">
+    <div class="flex items-start justify-between mb-6">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="bg-[#1a3a2e] text-white text-xs font-bold px-3 py-1 rounded-full">PHASE 1</span>
+          <span class="text-sm text-gray-500">Weeks 1–4</span>
+        </div>
+        <h3 class="text-2xl font-bold text-forest">Build the Nest</h3>
+        <p class="text-gray-600">Foundation — capture attention infrastructure and activate revenue rails</p>
+      </div>
+      <div class="text-right shrink-0">
+        <p class="text-xs text-gray-500 uppercase">Investment Phase</p>
+        <p class="text-2xl font-bold text-gray-400">$0</p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">01</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Email Capture Infrastructure</p>
+            <p class="text-xs text-gray-600">Deploy lead magnet forms on all 8 content pages + homepage. 5 free Ozark trip itineraries as opt-in incentives. Target: 500 subs by week 4.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">02</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Activate Affiliate Integrations</p>
+            <p class="text-xs text-gray-600">Push pending approvals for all 29 programs. Priority: REI (5%), GetYourGuide (8%), Hipcamp, Outdoorsy, YETI (8%), Osprey (10%). Deploy widgets on matching content.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">03</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Publish All Content</p>
+            <p class="text-xs text-gray-600">3 pages drafted (Glamping, Luxury Cabins, Road Trip) → publish. 4 pages not started (Hot Tub Cabins, Pet-Friendly, Treehouse, Adventures) → write + publish. Total: 8 live pages.</p>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">04</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Social Media Foundation</p>
+            <p class="text-xs text-gray-600">Create profiles: Instagram (@ozarkroost), TikTok (@ozarkroost), Pinterest (Ozark Roost), YouTube (Ozark Roost). Brand kit: logo, color palette, voice guide, bio templates.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">05</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">SEO Foundation (Pinning, Not Google)</p>
+            <p class="text-xs text-gray-600">Pinterest SEO: 15 boards with keyword-optimized titles. Pin all content pages. Pinterest is a visual search engine we OWN, not Google's SERP.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">06</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Brand Voice & Identity</p>
+            <p class="text-xs text-gray-600">Define the Roost Nation voice: warm, authentic Ozark-local who knows the hidden gems. Tagline: "Your Roost in the Ozarks." Content style guide for all channels.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase-card bg-white rounded-2xl border border-gray-200 p-8 mb-6 shadow-sm">
+    <div class="flex items-start justify-between mb-6">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="bg-[#2d5a44] text-white text-xs font-bold px-3 py-1 rounded-full">PHASE 2</span>
+          <span class="text-sm text-gray-500">Weeks 5–12</span>
+        </div>
+        <h3 class="text-2xl font-bold text-forest">Flock Building</h3>
+        <p class="text-gray-600">Audience acquisition — multi-platform content engine and community growth</p>
+      </div>
+      <div class="text-right shrink-0">
+        <p class="text-xs text-gray-500 uppercase">Early Revenue</p>
+        <p class="text-2xl font-bold text-[#d4a017]">$500–1,500<span class="text-sm text-gray-500">/mo</span></p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">07</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">The Roost Report Newsletter</p>
+            <p class="text-xs text-gray-600">Weekly email: hidden gem spotlight, deal of the week, local story, affiliate-powered "Plan Your Trip" section. Send every Thursday at 6am. Target: 2,000 subs by week 12.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">08</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Content Engine: 3 Posts/Day</p>
+            <p class="text-xs text-gray-600">Instagram Reels (1/day) — "Ozark hidden gems" series. TikTok (1/day) — "60 Seconds in the Ozarks." Pinterest pins (3/day) — all content repurposed. YouTube Shorts (2/week).</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">09</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Micro-Influencer Partnerships</p>
+            <p class="text-xs text-gray-600">Identify 10 Ozark-area travel creators (1K–50K followers). Offer free featured listings + affiliate rev-share for content featuring OR listings. Goal: 5 partnerships signed.</p>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">10</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Local Business Co-Marketing</p>
+            <p class="text-xs text-gray-600">Every listed business gets an "As Featured on Ozark Roost" badge + backlink. They promote their listing → we get free traffic. Viral loop: more businesses → more content → more traffic → more businesses.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">11</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Reddit & Forum Strategy</p>
+            <p class="text-xs text-gray-600">Active in r/Arkansas, r/missouri, r/Camping, r/roadtrip. Not spam — genuine value answers linking to OR guides. Build karma → build trust → build traffic.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">12</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">SMS List (Bonus Channel)</p>
+            <p class="text-xs text-gray-600">Text alerts for last-minute cabin deals, weekend event reminders, flash affiliate promos. 95% open rate vs email's 20%. Pure owned media.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase-card bg-white rounded-2xl border border-gray-200 p-8 mb-6 shadow-sm">
+    <div class="flex items-start justify-between mb-6">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="bg-[#d4a017] text-white text-xs font-bold px-3 py-1 rounded-full">PHASE 3</span>
+          <span class="text-sm text-gray-500">Weeks 13–20</span>
+        </div>
+        <h3 class="text-2xl font-bold text-forest">The Gold Egg</h3>
+        <p class="text-gray-600">Revenue activation — full monetization across every channel</p>
+      </div>
+      <div class="text-right shrink-0">
+        <p class="text-xs text-gray-500 uppercase">Scaling Revenue</p>
+        <p class="text-2xl font-bold text-[#d4a017]">$3,000–8,000<span class="text-sm text-gray-500">/mo</span></p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">13</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Full Affiliate Widget Integration</p>
+            <p class="text-xs text-gray-600">Every content page gets contextual affiliate widgets: cabin booking (Stay22), tours (GetYourGuide), gear (REI, Osprey, YETI), camping (Hipcamp), RVs (Outdoorsy). Revenue per page view, not per impression.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">14</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Premium Listing Tiers Launched</p>
+            <p class="text-xs text-gray-600">3 tiers: Free (basic listing), Basic ($29/mo — featured badge, photo gallery), Premium ($99/mo — top placement, video tour, social feature, monthly analytics). Target: 20 paying businesses by week 20.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">15</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Email Newsletter Monetization</p>
+            <p class="text-xs text-gray-600">Every Roost Report includes: 1 affiliate feature (gear deal, cabin booking link), 1 sponsored business spotlight ($50/placement), "Plan Your Trip" booking widget.</p>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">16</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Arkansas Tourism Co-Op Partnership</p>
+            <p class="text-xs text-gray-600">Apply for the Arkansas Tourism 2026-2027 Cooperative Marketing Program. Matched marketing budget from the state. Free money to amplify Roost Nation content.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">17</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Interactive Trip Planner</p>
+            <p class="text-xs text-gray-600">Build an interactive "Plan Your Ozark Trip" tool: pick dates → see available cabins (Stay22), tours (GetYourGuide), camping (Hipcamp), gear recs (REI). Every step is an affiliate click.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">18</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">ShareASale Network Expansion</p>
+            <p class="text-xs text-gray-600">Mine ShareASale for additional Arkansas/Ozark-relevant programs. Expand from 29 to 50+ active programs. More programs = more contextual monetization opportunities.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase-card bg-white rounded-2xl border border-gray-200 p-8 mb-6 shadow-sm">
+    <div class="flex items-start justify-between mb-6">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="gradient-gold text-forest text-xs font-bold px-3 py-1 rounded-full">PHASE 4</span>
+          <span class="text-sm text-gray-500">Week 21+</span>
+        </div>
+        <h3 class="text-2xl font-bold text-forest">Beyond Google</h3>
+        <p class="text-gray-600">Scale & dominate — full media brand with diversified revenue streams</p>
+      </div>
+      <div class="text-right shrink-0">
+        <p class="text-xs text-gray-500 uppercase">Full Scale</p>
+        <p class="text-2xl font-bold text-[#d4a017]">$10,000–25,000<span class="text-sm text-gray-500">/mo</span></p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">19</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">The Roost Community Platform</p>
+            <p class="text-xs text-gray-600">Members area: trip photos, reviews, forum, local deals. Paid tier ($5/mo) for exclusive content + early access to deals. Community = retention Google can't touch.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">20</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">"Stories from the Ozarks" Podcast</p>
+            <p class="text-xs text-gray-600">Weekly interview show: local business owners, Ozark characters, historians, adventure guides. Spotify + Apple + YouTube. Sponsorship slots: $200–500/episode.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">21</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Annual Ozark Roost Awards</p>
+            <p class="text-xs text-gray-600">"Best of the Ozarks" — community-voted awards for local businesses. Entry fee for businesses, sponsorship opportunities, PR event. Pure brand authority play.</p>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">22</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">B2B SaaS Tier</p>
+            <p class="text-xs text-gray-600">Businesses get dashboard: analytics on listing views, click-throughs, booking attribution. $199/mo premium tier with content features, social amplification, and priority placement.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">23</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Data Products</p>
+            <p class="text-xs text-gray-600">"Ozark Travel Trends" — quarterly report on visitor patterns, search trends, top destinations. Sell to tourism boards, chambers of commerce, real estate developers. $500/report or $2K/yr subscription.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 bg-[#faf6f0] rounded-lg">
+          <span class="text-[#d4a017] font-bold mt-0.5">24</span>
+          <div>
+            <p class="font-semibold text-sm text-forest">Physical Events & Meetups</p>
+            <p class="text-xs text-gray-600">"Roost Fest" — annual Ozark travel + food + music festival. Sponsored by listed businesses + affiliate brands. Ticket revenue + sponsorship + massive content generation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVENUE MODEL -->
+<section class="max-w-6xl mx-auto px-6 py-12">
+  <h2 class="text-2xl font-bold text-forest mb-2">Revenue Model</h2>
+  <p class="text-gray-600 mb-8">Five income streams. Zero Google dependency. Each grows independently.</p>
+
+  <div class="grid md:grid-cols-5 gap-4">
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="w-10 h-10 rounded-lg bg-[#1a3a2e] flex items-center justify-center mb-3">
+        <svg class="w-5 h-5 text-[#f0c040]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+      </div>
+      <h3 class="font-bold text-sm text-forest mb-1">Affiliate Commissions</h3>
+      <p class="text-xs text-gray-600 mb-3">5–12% on gear, lodging, tours, camping bookings through content links.</p>
+      <p class="text-lg font-bold text-[#d4a017]">$2K–6K/mo</p>
+      <p class="text-xs text-gray-500">at scale</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="w-10 h-10 rounded-lg bg-[#1a3a2e] flex items-center justify-center mb-3">
+        <svg class="w-5 h-5 text-[#f0c040]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      </div>
+      <h3 class="font-bold text-sm text-forest mb-1">Premium Listings</h3>
+      <p class="text-xs text-gray-600 mb-3">Businesses pay $29–$199/mo for enhanced visibility, features, analytics.</p>
+      <p class="text-lg font-bold text-[#d4a017]">$1K–5K/mo</p>
+      <p class="text-xs text-gray-500">at scale</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="w-10 h-10 rounded-lg bg-[#1a3a2e] flex items-center justify-center mb-3">
+        <svg class="w-5 h-5 text-[#f0c040]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      </div>
+      <h3 class="font-bold text-sm text-forest mb-1">Newsletter Sponsorships</h3>
+      <p class="text-xs text-gray-600 mb-3">Sponsored spots in The Roost Report. $50–$500/placement based on list size.</p>
+      <p class="text-lg font-bold text-[#d4a017]">$500–2K/mo</p>
+      <p class="text-xs text-gray-500">at scale</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="w-10 h-10 rounded-lg bg-[#1a3a2e] flex items-center justify-center mb-3">
+        <svg class="w-5 h-5 text-[#f0c040]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+      </div>
+      <h3 class="font-bold text-sm text-forest mb-1">Community & Memberships</h3>
+      <p class="text-xs text-gray-600 mb-3">Paid community tier, premium content, early deals access.</p>
+      <p class="text-lg font-bold text-[#d4a017]">$500–2K/mo</p>
+      <p class="text-xs text-gray-500">at scale</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="w-10 h-10 rounded-lg bg-[#1a3a2e] flex items-center justify-center mb-3">
+        <svg class="w-5 h-5 text-[#f0c040]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      </div>
+      <h3 class="font-bold text-sm text-forest mb-1">Data & Events</h3>
+      <p class="text-xs text-gray-600 mb-3">Travel trend reports, Roost Fest tickets, sponsorship deals.</p>
+      <p class="text-lg font-bold text-[#d4a017]">$1K–5K/mo</p>
+      <p class="text-xs text-gray-500">at scale</p>
+    </div>
+  </div>
+
+  <!-- Revenue Timeline Chart -->
+  <div class="bg-white rounded-xl border border-gray-200 p-6 mt-6 shadow-sm">
+    <h3 class="font-bold text-forest mb-1">Revenue Trajectory</h3>
+    <p class="text-xs text-gray-500 mb-6">Projected monthly revenue across all streams</p>
+    <div class="space-y-4">
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span class="font-medium text-gray-700">Weeks 1–4 (Foundation)</span>
+          <span class="font-bold text-gray-400">$0</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 1%"></div></div>
+      </div>
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span class="font-medium text-gray-700">Weeks 5–12 (Flock Building)</span>
+          <span class="font-bold text-gray-600">$500–1,500</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 8%"></div></div>
+      </div>
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span class="font-medium text-gray-700">Weeks 13–20 (Gold Egg)</span>
+          <span class="font-bold text-[#d4a017]">$3,000–8,000</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 32%"></div></div>
+      </div>
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span class="font-medium text-gray-700">Week 21+ (Beyond Google)</span>
+          <span class="font-bold text-[#d4a017]">$10,000–25,000</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHANNEL STRATEGY -->
+<section class="max-w-6xl mx-auto px-6 py-12">
+  <h2 class="text-2xl font-bold text-forest mb-2">Channel Strategy</h2>
+  <p class="text-gray-600 mb-8">Six channels. All owned or semi-owned. None rented from Google.</p>
+
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="channel-card bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white text-xs font-bold">IG</div>
+        <h3 class="font-bold text-forest">Instagram</h3>
+        <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">OWNED</span>
+      </div>
+      <p class="text-xs text-gray-600 mb-2">Reels-first strategy. "Ozark Hidden Gems" series — 1 reel/day. Stories for real-time updates, flash deals, behind-the-scenes at listed businesses.</p>
+      <div class="flex justify-between text-xs border-t pt-2 mt-2">
+        <span class="text-gray-500">Target: 10K followers (wk 12)</span>
+        <span class="font-bold text-[#d4a017]">High intent</span>
+      </div>
+    </div>
+
+    <div class="channel-card bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-black flex items-center justify-center text-white text-xs font-bold">TT</div>
+        <h3 class="font-bold text-forest">TikTok</h3>
+        <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">OWNED</span>
+      </div>
+      <p class="text-xs text-gray-600 mb-2">"60 Seconds in the Ozarks" — fast-paced destination highlights. Trending audio + Ozark visuals = algorithm fuel. 1 post/day. Cross-post to Reels.</p>
+      <div class="flex justify-between text-xs border-t pt-2 mt-2">
+        <span class="text-gray-500">Target: 25K followers (wk 12)</span>
+        <span class="font-bold text-[#d4a017]">Viral potential</span>
+      </div>
+    </div>
+
+    <div class="channel-card bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white text-xs font-bold">P</div>
+        <h3 class="font-bold text-forest">Pinterest</h3>
+        <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">OWNED</span>
+      </div>
+      <p class="text-xs text-gray-600 mb-2">The visual search engine WE control. 15 keyword-optimized boards. 3 pins/day. All content pages pinned with rich pins. Highest ROI channel for travel intent.</p>
+      <div class="flex justify-between text-xs border-t pt-2 mt-2">
+        <span class="text-gray-500">Target: 50K monthly views</span>
+        <span class="font-bold text-[#d4a017]">Best ROI</span>
+      </div>
+    </div>
+
+    <div class="channel-card bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center text-white text-xs font-bold">YT</div>
+        <h3 class="font-bold text-forest">YouTube</h3>
+        <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">OWNED</span>
+      </div>
+      <p class="text-xs text-gray-600 mb-2">Shorts (2/week) for discovery. Long-form (1/month) Ozark travel guides with affiliate links in descriptions. Evergreen content that compounds.</p>
+      <div class="flex justify-between text-xs border-t pt-2 mt-2">
+        <span class="text-gray-500">Target: 5K subs (wk 20)</span>
+        <span class="font-bold text-[#d4a017]">Evergreen</span>
+      </div>
+    </div>
+
+    <div class="channel-card bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-white text-xs font-bold">@</div>
+        <h3 class="font-bold text-forest">Email (Roost Report)</h3>
+        <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">OWNED</span>
+      </div>
+      <p class="text-xs text-gray-600 mb-2">The crown jewel. Weekly Thursday send. Hidden gems, deals, local stories, affiliate booking links. The ONE channel no algorithm can take away.</p>
+      <div class="flex justify-between text-xs border-t pt-2 mt-2">
+        <span class="text-gray-500">Target: 10K subs (wk 20)</span>
+        <span class="font-bold text-[#d4a017]">#1 Asset</span>
+      </div>
+    </div>
+
+    <div class="channel-card bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center text-white text-xs font-bold">SMS</div>
+        <h3 class="font-bold text-forest">SMS Alerts</h3>
+        <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">OWNED</span>
+      </div>
+      <p class="text-xs text-gray-600 mb-2">Flash deals, last-minute cabin availability, weekend event reminders. 95% open rate. Highest engagement channel. Grows with email list.</p>
+      <div class="flex justify-between text-xs border-t pt-2 mt-2">
+        <span class="text-gray-500">Target: 3K SMS subs</span>
+        <span class="font-bold text-[#d4a017]">95% open rate</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT CALENDAR -->
+<section class="max-w-6xl mx-auto px-6 py-12">
+  <h2 class="text-2xl font-bold text-forest mb-2">Weekly Content Engine</h2>
+  <p class="text-gray-600 mb-8">The machine that never stops. Every piece of content serves traffic or revenue.</p>
+
+  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+    <table class="w-full text-sm">
+      <thead class="bg-[#1a3a2e] text-white">
+        <tr>
+          <th class="text-left px-4 py-3 font-medium">Day</th>
+          <th class="text-left px-4 py-3 font-medium">Instagram</th>
+          <th class="text-left px-4 py-3 font-medium">TikTok</th>
+          <th class="text-left px-4 py-3 font-medium">Pinterest</th>
+          <th class="text-left px-4 py-3 font-medium">Email</th>
+          <th class="text-left px-4 py-3 font-medium">YouTube</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Mon</td>
+          <td class="px-4 py-3 text-gray-600">Reel: Hidden Gem #1</td>
+          <td class="px-4 py-3 text-gray-600">60 Sec: Destination</td>
+          <td class="px-4 py-3 text-gray-600">3 pins (guides)</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Tue</td>
+          <td class="px-4 py-3 text-gray-600">Story: Behind the Business</td>
+          <td class="px-4 py-3 text-gray-600">60 Sec: Food spot</td>
+          <td class="px-4 py-3 text-gray-600">3 pins (lodging)</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Wed</td>
+          <td class="px-4 py-3 text-gray-600">Reel: Adventure tip</td>
+          <td class="px-4 py-3 text-gray-600">60 Sec: Trail highlight</td>
+          <td class="px-4 py-3 text-gray-600">3 pins (adventures)</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+          <td class="px-4 py-3 text-gray-600">Short: Top 5</td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0] bg-[#fef9ef]">
+          <td class="px-4 py-3 font-bold text-[#d4a017]">Thu</td>
+          <td class="px-4 py-3 text-gray-600">Reel: Newsletter teaser</td>
+          <td class="px-4 py-3 text-gray-600">60 Sec: Deal alert</td>
+          <td class="px-4 py-3 text-gray-600">3 pins (seasonal)</td>
+          <td class="px-4 py-3 font-bold text-[#d4a017]">📧 Roost Report</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Fri</td>
+          <td class="px-4 py-3 text-gray-600">Reel: Weekend guide</td>
+          <td class="px-4 py-3 text-gray-600">60 Sec: Weekend trip</td>
+          <td class="px-4 py-3 text-gray-600">3 pins (food)</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Sat</td>
+          <td class="px-4 py-3 text-gray-600">Stories: User content</td>
+          <td class="px-4 py-3 text-gray-600">60 Sec: Cabin tour</td>
+          <td class="px-4 py-3 text-gray-600">3 pins (events)</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Sun</td>
+          <td class="px-4 py-3 text-gray-600">Reel: Best of week</td>
+          <td class="px-4 py-3 text-gray-600">60 Sec: Recap</td>
+          <td class="px-4 py-3 text-gray-600">3 pins (retail)</td>
+          <td class="px-4 py-3 text-gray-400">—</td>
+          <td class="px-4 py-3 text-gray-600">Short: Vlog</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="text-xs text-gray-500 mt-3">Total output: 7 reels + 7 TikToks + 21 pins + 1 newsletter + 2 YouTube shorts = <b class="text-forest">38 pieces of content/week</b>. All repurposed from 1–2 core pieces.</p>
+</section>
+
+<!-- AFFILIATE PRIORITY -->
+<section class="max-w-6xl mx-auto px-6 py-12">
+  <h2 class="text-2xl font-bold text-forest mb-2">Affiliate Activation Priority</h2>
+  <p class="text-gray-600 mb-8">29 programs identified. Here's the activation order based on commission rate + relevance + placement readiness.</p>
+
+  <div class="space-y-3">
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center gap-4">
+      <span class="w-8 h-8 rounded-full bg-[#1a3a2e] text-white flex items-center justify-center text-xs font-bold">1</span>
+      <div class="flex-1">
+        <p class="font-bold text-sm text-forest">GetYourGuide <span class="text-xs font-normal text-gray-500">— 8% commission, 30-day cookie</span></p>
+        <p class="text-xs text-gray-600">Tours & experiences. Place on: Adventures page, Road Trip guide, newsletter "Plan Your Trip" section.</p>
+      </div>
+      <span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full font-medium">PENDING</span>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center gap-4">
+      <span class="w-8 h-8 rounded-full bg-[#1a3a2e] text-white flex items-center justify-center text-xs font-bold">2</span>
+      <div class="flex-1">
+        <p class="font-bold text-sm text-forest">Hipcamp <span class="text-xs font-normal text-gray-500">— Varies commission, 30-day cookie</span></p>
+        <p class="text-xs text-gray-600">Camping properties. Place on: Glamping guide, Road Trip guide, Adventures page.</p>
+      </div>
+      <span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full font-medium">PENDING</span>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center gap-4">
+      <span class="w-8 h-8 rounded-full bg-[#1a3a2e] text-white flex items-center justify-center text-xs font-bold">3</span>
+      <div class="flex-1">
+        <p class="font-bold text-sm text-forest">Stay22 <span class="text-xs font-normal text-gray-500">— Varies commission, 30-day cookie</span></p>
+        <p class="text-xs text-gray-600">Lodging aggregator. Place on: all cabin guides (Hot Tub, Luxury, Pet-Friendly, Treehouse), homepage booking widget.</p>
+      </div>
+      <span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full font-medium">PENDING</span>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center gap-4">
+      <span class="w-8 h-8 rounded-full bg-[#1a3a2e] text-white flex items-center justify-center text-xs font-bold">4</span>
+      <div class="flex-1">
+        <p class="font-bold text-sm text-forest">REI Co-op <span class="text-xs font-normal text-gray-500">— 5% commission, 15-day cookie</span></p>
+        <p class="text-xs text-gray-600">Outdoor gear. Place on: gear guides, packing lists, Adventure pages, newsletter gear features.</p>
+      </div>
+      <span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full font-medium">PENDING</span>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center gap-4">
+      <span class="w-8 h-8 rounded-full bg-[#1a3a2e] text-white flex items-center justify-center text-xs font-bold">5</span>
+      <div class="flex-1">
+        <p class="font-bold text-sm text-forest">Osprey Packs <span class="text-xs font-normal text-gray-500">— 10% commission, 30-day cookie</span></p>
+        <p class="text-xs text-gray-600">Backpacks & travel gear. Highest commission rate. Place on: backpacking guides, packing lists.</p>
+      </div>
+      <span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full font-medium">PENDING</span>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center gap-4">
+      <span class="w-8 h-8 rounded-full bg-[#1a3a2e] text-white flex items-center justify-center text-xs font-bold">6</span>
+      <div class="flex-1">
+        <p class="font-bold text-sm text-forest">Outdoorsy <span class="text-xs font-normal text-gray-500">— RV rentals, research phase</span></p>
+        <p class="text-xs text-gray-600">RV rental marketplace. Place on: Road Trip guide, camping content. High-value bookings = high commission.</p>
+      </div>
+      <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">RESEARCH</span>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-center gap-4">
+      <span class="w-8 h-8 rounded-full bg-[#1a3a2e] text-white flex items-center justify-center text-xs font-bold">7</span>
+      <div class="flex-1">
+        <p class="font-bold text-sm text-forest">Arkansas Tourism Co-Op <span class="text-xs font-normal text-gray-500">— Partnership / matched marketing</span></p>
+        <p class="text-xs text-gray-600">State-level cooperative marketing program. Not affiliate — this is matched budget for amplifying Roost Nation content.</p>
+      </div>
+      <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">OPPORTUNITY</span>
+    </div>
+  </div>
+  <p class="text-xs text-gray-500 mt-4">+ 22 additional programs queued (YETI, The North Face, Kelty, Sea to Summit, CampSaver, Naturehike, ShareASale Network, Travelpayouts, and more). Full list in Bro app → AffiliateProgram entity.</p>
+</section>
+
+<!-- CURRENT LISTINGS -->
+<section class="max-w-6xl mx-auto px-6 py-12">
+  <h2 class="text-2xl font-bold text-forest mb-2">Current Listings — The Seed Content</h2>
+  <p class="text-gray-600 mb-8">6 businesses live. Each one is a content engine, a social media subject, and an affiliate funnel.</p>
+
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <div class="h-32 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1473625247511-2f46a32c5f3f?w=800&q=80')"></div>
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-forest">Mystic Caverns</h3>
+          <span class="text-xs bg-[#d4a017] text-white px-2 py-0.5 rounded-full font-medium">PREMIUM</span>
+        </div>
+        <p class="text-xs text-gray-600 mb-2">Berryville, AR • Attractions & Entertainment</p>
+        <p class="text-xs text-gray-500">Underground limestone caverns with guided tours. 58° year-round.</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <div class="h-32 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80')"></div>
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-forest">Hawkins Ridge Cabins</h3>
+          <span class="text-xs bg-[#d4a017] text-white px-2 py-0.5 rounded-full font-medium">PREMIUM</span>
+        </div>
+        <p class="text-xs text-gray-600 mb-2">Eureka Springs, AR • Cabins & Lodging</p>
+        <p class="text-xs text-gray-500">Rustic cabin rentals with hot tubs and mountain views. Perfect for getaways.</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <div class="h-32 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80')"></div>
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-forest">Riverfront BBQ Co.</h3>
+          <span class="text-xs bg-gray-400 text-white px-2 py-0.5 rounded-full font-medium">BASIC</span>
+        </div>
+        <p class="text-xs text-gray-600 mb-2">Branson, MO • Restaurants & Food</p>
+        <p class="text-xs text-gray-500">Award-winning slow-smoked BBQ on the White River. 14-hour brisket.</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <div class="h-32 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80')"></div>
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-forest">Ozark Trail Adventures</h3>
+          <span class="text-xs bg-[#d4a017] text-white px-2 py-0.5 rounded-full font-medium">PREMIUM</span>
+        </div>
+        <p class="text-xs text-gray-600 mb-2">Fayetteville, AR • Outdoor Adventures</p>
+        <p class="text-xs text-gray-500">Guided hiking, kayaking, zip-lining tours. All gear provided.</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <div class="h-32 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=800&q=80')"></div>
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-forest">Main Street Mercantile</h3>
+          <span class="text-xs bg-gray-300 text-gray-700 px-2 py-0.5 rounded-full font-medium">FREE</span>
+        </div>
+        <p class="text-xs text-gray-600 mb-2">Mountain View, AR • Shopping & Retail</p>
+        <p class="text-xs text-gray-500">Local artisans, handmade goods, jams, honeys, unique gifts.</p>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <div class="h-32 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80')"></div>
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-forest">The Bluegrass Barn</h3>
+          <span class="text-xs bg-gray-400 text-white px-2 py-0.5 rounded-full font-medium">BASIC</span>
+        </div>
+        <p class="text-xs text-gray-600 mb-2">Bentonville, AR • Events & Venues</p>
+        <p class="text-xs text-gray-500">Live bluegrass & country music every Friday. Family-friendly, BYOB.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT PAGES STATUS -->
+<section class="max-w-6xl mx-auto px-6 py-12">
+  <h2 class="text-2xl font-bold text-forest mb-2">Content Pipeline Status</h2>
+  <p class="text-gray-600 mb-8">8 pages mapped. 1 published. The rest are revenue waiting to happen.</p>
+
+  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+    <table class="w-full text-sm">
+      <thead class="bg-[#1a3a2e] text-white">
+        <tr>
+          <th class="text-left px-4 py-3 font-medium">Page</th>
+          <th class="text-left px-4 py-3 font-medium">Type</th>
+          <th class="text-left px-4 py-3 font-medium">Est. Traffic</th>
+          <th class="text-left px-4 py-3 font-medium">Rev. Potential</th>
+          <th class="text-left px-4 py-3 font-medium">Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Homepage</td>
+          <td class="px-4 py-3 text-gray-600">Homepage</td>
+          <td class="px-4 py-3 text-gray-600">500/mo</td>
+          <td class="px-4 py-3 text-gray-600">$200/mo</td>
+          <td class="px-4 py-3"><span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">PUBLISHED</span></td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Ozarks Road Trip Guide</td>
+          <td class="px-4 py-3 text-gray-600">Guide</td>
+          <td class="px-4 py-3 text-gray-600">500/mo</td>
+          <td class="px-4 py-3 text-gray-600">$250/mo</td>
+          <td class="px-4 py-3"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">DRAFTED</span></td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Glamping in the Ozarks</td>
+          <td class="px-4 py-3 text-gray-600">Guide</td>
+          <td class="px-4 py-3 text-gray-600">400/mo</td>
+          <td class="px-4 py-3 text-gray-600">$200/mo</td>
+          <td class="px-4 py-3"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">DRAFTED</span></td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Luxury Cabins Guide</td>
+          <td class="px-4 py-3 text-gray-600">Guide</td>
+          <td class="px-4 py-3 text-gray-600">300/mo</td>
+          <td class="px-4 py-3 text-gray-600">$150/mo</td>
+          <td class="px-4 py-3"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">DRAFTED</span></td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Adventures Page</td>
+          <td class="px-4 py-3 text-gray-600">Destination</td>
+          <td class="px-4 py-3 text-gray-600">300/mo</td>
+          <td class="px-4 py-3 text-gray-600">$150/mo</td>
+          <td class="px-4 py-3"><span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">NOT STARTED</span></td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Pet-Friendly Cabins</td>
+          <td class="px-4 py-3 text-gray-600">Guide</td>
+          <td class="px-4 py-3 text-gray-600">250/mo</td>
+          <td class="px-4 py-3 text-gray-600">$120/mo</td>
+          <td class="px-4 py-3"><span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">NOT STARTED</span></td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Hot Tub Cabins</td>
+          <td class="px-4 py-3 text-gray-600">Guide</td>
+          <td class="px-4 py-3 text-gray-600">200/mo</td>
+          <td class="px-4 py-3 text-gray-600">$100/mo</td>
+          <td class="px-4 py-3"><span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">NOT STARTED</span></td>
+        </tr>
+        <tr class="hover:bg-[#faf6f0]">
+          <td class="px-4 py-3 font-medium text-forest">Treehouse Rentals</td>
+          <td class="px-4 py-3 text-gray-600">Guide</td>
+          <td class="px-4 py-3 text-gray-600">150/mo</td>
+          <td class="px-4 py-3 text-gray-600">$80/mo</td>
+          <td class="px-4 py-3"><span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">NOT STARTED</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="flex justify-between items-center mt-4 text-sm">
+    <p class="text-gray-600">Total estimated traffic: <b class="text-forest">2,600/mo</b> • Total revenue potential: <b class="text-[#d4a017]">$1,250/mo</b></p>
+    <p class="text-gray-500">7 of 8 pages need work. That's 93% of revenue potential untapped.</p>
+  </div>
+</section>
+
+<!-- THE WHY NO GOOGLE -->
+<section class="max-w-6xl mx-auto px-6 py-12">
+  <div class="gradient-forest rounded-2xl p-10 text-white">
+    <h2 class="text-2xl font-bold mb-6 text-[#f0c040]">Why Google Stays on the Bench</h2>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="space-y-4">
+        <div>
+          <h3 class="font-bold text-white mb-1">Google Ads: The Problem</h3>
+          <p class="text-sm text-gray-300">You pay $2-15 per click for traffic that vanishes the moment you stop paying. CPCs rise every quarter. Competitors outbid you. Google takes 90% of the value and gives you a click.</p>
+        </div>
+        <div>
+          <h3 class="font-bold text-white mb-1">AdSense: The Problem</h3>
+          <p class="text-sm text-gray-300">Google keeps ~32% of ad revenue and pays you fractions of a cent per impression. They control what shows on YOUR site. One policy change and your income disappears.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <h3 class="font-bold text-[#f0c040] mb-1">Roost Nation: The Solution</h3>
+          <p class="text-sm text-gray-300">Direct affiliate partnerships pay 5-12% per sale — not pennies per click. You keep 100% of the commission. The link lives on YOUR content. The audience is YOUR list.</p>
+        </div>
+        <div>
+          <h3 class="font-bold text-[#f0c040] mb-1">Owned Media: The Solution</h3>
+          <p class="text-sm text-gray-300">Email list, SMS list, community members, social followers — these are YOUR assets. No algorithm change, bid increase, or policy update can take them away. You own the relationship.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-8 pt-8 border-t border-white/10">
+      <p class="text-lg text-gray-200 italic">"The best time to stop paying Google rent was yesterday. The second best time is Phase 1, Week 1."</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="max-w-6xl mx-auto px-6 py-12 text-center">
+  <div class="flex items-center justify-center gap-3 mb-4">
+    <div class="w-10 h-10 rounded-lg gradient-forest flex items-center justify-center">
+      <span class="text-[#f0c040] font-bold text-lg">OR</span>
+    </div>
+    <span class="text-xl font-bold text-forest">Ozark Roost</span>
+  </div>
+  <p class="text-sm text-gray-500 mb-2">Roost Nation Campaign — Version 1.0</p>
+  <p class="text-xs text-gray-400">Generated by Koda • August 2026 • Your Roost in the Ozarks</p>
+</footer>
+
+</body>
+</html>

@@ -13,7 +13,7 @@ const {
 } = require('../lib/affiliate-links');
 const { createRateLimiter } = require('../middleware/rate-limit');
 
-const BASE_URL = process.env.APP_URL || 'https://ozarkroost.polsia.app';
+const BASE_URL = (process.env.APP_URL || 'http://localhost:3000').replace(/\/$/, '');
 const formLimiter = createRateLimiter({ windowMs: 60_000, max: 15 });
 
 /* ---------- hero images (R2-hosted) ---------- */

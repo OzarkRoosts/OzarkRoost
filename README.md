@@ -44,5 +44,10 @@ DATABASE_URL="postgresql://..." npm run dev
 
 ## Deployment
 
-Configured for Render via `render.yaml`. `npm run build` runs migrations on
-deploy using the configured `DATABASE_URL`.
+**Host:** Render web service + hourly cron  
+**Database:** Neon Postgres  
+
+See `DEPLOY.md` for the full Neon + Render walkthrough.
+
+`render.yaml` Blueprint creates the web service and nurture-email cron.
+Set `DATABASE_URL` (Neon) and `APP_URL` in the Render dashboard.

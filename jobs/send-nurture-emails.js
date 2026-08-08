@@ -2,7 +2,7 @@ const transporter = require('../lib/email-transport');
 const { fetchPendingEmails, markSent, markFailed } = require('../db/nurture-email-queue');
 const emailContent = require('../lib/nurture-emails');
 
-const FROM = process.env.EMAIL_FROM || 'OzarkRoost <noreply@ozarkroost.polsia.app>';
+const FROM = process.env.EMAIL_FROM || 'OzarkRoost <noreply@ozarkroost.com>';
 
 async function run() {
   if (!transporter) {

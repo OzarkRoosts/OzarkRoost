@@ -1,13 +1,14 @@
 /**
  * Affiliate Revenue Dashboard API Routes
- * 
- * Exposes real-time monitoring of affiliate opportunities and revenue
- * 
- * Usage:
- *   GET /api/affiliate/dashboard — Main revenue dashboard
- *   GET /api/affiliate/opportunities — List pending opportunities
- *   GET /api/affiliate/revenue — Revenue metrics
- *   POST /api/affiliate/opportunities/:id/implement — Mark opportunity as implemented
+ *
+ * GET  /api/affiliate/dashboard
+ * GET  /api/affiliate/opportunities
+ * GET  /api/affiliate/revenue
+ * POST /api/affiliate/opportunities/:id/implement
+ * GET  /api/affiliate/scan
+ * GET  /api/affiliate/ops          — Affiliate Ops Superagent plan
+ * POST /api/affiliate/ops/scan    — force ops scan
+ * GET  /api/affiliate/ops/status
  */
 
 const express = require('express');
@@ -15,10 +16,19 @@ const router = express.Router();
 
 const affiliateAI = require('../lib/affiliate-ai-engine');
 const affiliateRevenue = require('../db/affiliate-revenue');
+const affiliateOps = require('../lib/affiliate-ops-agent');
+
+function authorizeOps(req, res) {
+  const key = process.env.OPS_API_KEY || process.env.HEALTH_API_KEY;
+  if (!key) return true;
+  const provided = req.get('x-api-key') || req.query.key;
+  if (provided === key) return true;
+  res.status(401).json({ error: 'Unauthorized' });
+  return false;
+}
 
 /**
  * GET /api/affiliate/dashboard
- * Complete revenue dashboard overview
  */
 router.get('/dashboard', async (req, res) => {
   try {
@@ -39,7 +49,9 @@ router.get('/dashboard', async (req, res) => {
       affiliateRevenue.getPageMonetizationStatus(),
       affiliateRevenue.getRevenueProjection(),
     ]);
-    
+
+    const opsPlan = affiliateOps.getPlan();
+
     res.json({
       status: 'active',
       timestamp: new Date(),
@@ -60,12 +72,15 @@ router.get('/dashboard', async (req, res) => {
       top_opportunities: topOpps,
       platform_performance: platformPerf,
       page_monetization: pageStatus,
-      next_actions: [
+      ops: {
+        status: affiliateOps.getStatus(),
+        next_week_focus: opsPlan.next_week_focus || [],
+        actions_preview: (opsPlan.actions || []).slice(0, 5),
+      },
+      next_actions: (opsPlan.actions || []).slice(0, 5).map((a) => a.how || a.action).concat([
         'Implement top 5 pending opportunities',
-        'Monitor platform performance daily',
-        'Add links to undermonetized pages',
-        'Test new platforms for categories',
-      ],
+        'Set AFF_* tracked URLs in host env',
+      ]),
     });
   } catch (err) {
     console.error('[affiliate dashboard] error:', err?.message);
@@ -73,22 +88,16 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-/**
- * GET /api/affiliate/opportunities
- * List all pending monetization opportunities
- */
 router.get('/opportunities', async (req, res) => {
   try {
     const opportunities = await affiliateRevenue.getTopOpportunities(50);
-    
+
     const grouped = {};
     for (const opp of opportunities) {
-      if (!grouped[opp.page_path]) {
-        grouped[opp.page_path] = [];
-      }
+      if (!grouped[opp.page_path]) grouped[opp.page_path] = [];
       grouped[opp.page_path].push(opp);
     }
-    
+
     res.json({
       total: opportunities.length,
       by_page: grouped,
@@ -100,28 +109,17 @@ router.get('/opportunities', async (req, res) => {
   }
 });
 
-/**
- * GET /api/affiliate/revenue
- * Revenue metrics and analytics
- */
 router.get('/revenue', async (req, res) => {
   try {
-    const [
-      daily,
-      monthly,
-      platformPerf,
-      revenueProj,
-    ] = await Promise.all([
+    const [daily, monthly, platformPerf, revenueProj] = await Promise.all([
       affiliateRevenue.estimateDailyRevenue(),
       affiliateRevenue.getMonthlyRevenue(),
       affiliateRevenue.getPlatformPerformance(),
       affiliateRevenue.getRevenueProjection(),
     ]);
-    
+
     res.json({
-      today: {
-        estimated_revenue: daily,
-      },
+      today: { estimated_revenue: daily },
       monthly_history: monthly,
       platforms: platformPerf,
       projections: revenueProj,
@@ -132,10 +130,6 @@ router.get('/revenue', async (req, res) => {
   }
 });
 
-/**
- * POST /api/affiliate/opportunities/:id/implement
- * Mark an opportunity as implemented
- */
 router.post('/opportunities/:id/implement', async (req, res) => {
   try {
     const { id } = req.params;
@@ -147,22 +141,34 @@ router.post('/opportunities/:id/implement', async (req, res) => {
   }
 });
 
-/**
- * GET /api/affiliate/scan
- * Trigger immediate opportunity scan (admin only)
- */
 router.get('/scan', async (req, res) => {
   try {
     await affiliateAI.runOpportunityScan();
     const report = await affiliateAI.generateReport();
-    res.json({
-      success: true,
-      message: 'Scan complete',
-      report,
-    });
+    res.json({ success: true, message: 'Scan complete', report });
   } catch (err) {
     console.error('[affiliate scan] error:', err?.message);
     res.status(500).json({ error: 'Scan failed' });
+  }
+});
+
+/** Affiliate Ops Superagent */
+router.get('/ops', (req, res) => {
+  res.json({ ok: true, plan: affiliateOps.getPlan(), status: affiliateOps.getStatus() });
+});
+
+router.get('/ops/status', (req, res) => {
+  res.json({ ok: true, ...affiliateOps.getStatus() });
+});
+
+router.post('/ops/scan', async (req, res) => {
+  if (!authorizeOps(req, res)) return;
+  try {
+    const plan = await affiliateOps.runScan();
+    res.json({ ok: true, plan });
+  } catch (err) {
+    console.error('[affiliate ops scan] error:', err?.message);
+    res.status(500).json({ ok: false, error: err.message });
   }
 });
 
