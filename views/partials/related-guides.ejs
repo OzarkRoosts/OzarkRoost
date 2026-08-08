@@ -1,0 +1,30 @@
+<%
+  /**
+   * related-guides.ejs
+   * Cross-link block for SEO internal linking.
+   * Usage: <%- include('../partials/related-guides', { currentSlug: 'hot-tub-cabins' }) %>
+   */
+  const slug = typeof currentSlug !== 'undefined' ? currentSlug : '';
+  const all = typeof relatedGuides !== 'undefined' ? relatedGuides : [
+    { slug: 'hot-tub-cabins', title: 'Hot Tub Cabins' },
+    { slug: 'pet-friendly-cabins', title: 'Pet-Friendly Cabins' },
+    { slug: 'treehouse-rentals', title: 'Treehouse Rentals' },
+    { slug: 'glamping-ozarks', title: 'Glamping in the Ozarks' },
+    { slug: 'luxury-cabins', title: 'Luxury Cabins' },
+    { slug: 'ozarks-road-trip', title: 'Ozarks Road Trip' },
+    { slug: 'buffalo-river-cabins', title: 'Buffalo River Cabins' },
+    { slug: 'hidden-gem-cabins', title: 'Hidden Gem Cabins' },
+    { slug: 'buffalo-river-kayaking', title: 'Buffalo River Kayaking' },
+    { slug: 'about-the-ozarks', title: 'About the Ozarks' },
+  ].filter(function(g) { return g.slug !== slug; }).slice(0, 6);
+%>
+<nav class="related-guides guide-section" aria-label="Related guides">
+  <h2>Keep exploring the Ozarks</h2>
+  <ul class="related-guides__list">
+    <% all.forEach(function(g) { %>
+    <li><a href="/guides/<%= g.slug %>"><%= g.title %></a></li>
+    <% }) %>
+    <li><a href="/adventures">Adventures in the Ozarks</a></li>
+    <li><a href="/listings">Browse cabin listings</a></li>
+  </ul>
+</nav>

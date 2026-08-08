@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Hot Tub Cabins in Arkansas Ozarks",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-03-21",
+    "dateModified": "2026-03-21"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.hotTub %>" alt="Ozarks cabin deck with private hot tub overlooking forested ridges at dusk">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Stay Guide</p>
+    <h1>Hot Tub Cabins in the Arkansas Ozarks</h1>
+    <p class="guide-hero__sub">Private soaks, ridge views, and the cabins people actually book first</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Browse Hot Tub Cabins</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p>If your search history says <strong>hot tub cabins Arkansas</strong>, you already know the vibe: steam rising off the water, cedar decks, and a quiet ridge after a day on the Buffalo. The Ozarks deliver that better than almost anywhere in the Midwest &mdash; Eureka Springs hillside hideaways, Ponca bluff decks, Beaver Lake night soaks, and Jasper cabins steps from Scenic Highway 7.</p>
+      <p>This guide cuts through generic listings so you can match the right soak to your trip style, budget, and group size.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>What Makes an Ozarks Hot Tub Cabin Worth It</h2>
+    <ul class="guide-bullets">
+      <li><strong>Private outdoor tubs</strong> beat shared resort spas every time</li>
+      <li>Night skies near Jasper and Ponca are dark enough for real stargazing</li>
+      <li>Fall foliage + hot water is peak romantic season (book early)</li>
+      <li>Many cabins pair tubs with fire pits, king suites, and full kitchens</li>
+      <li>Winter weekday rates drop hard while the soak stays perfect</li>
+    </ul>
+    <a href="/listings" class="guide-cta">See curated OzarkRoost cabins &rarr;</a>
+  </section>
+
+  <%- include('../partials/affiliate-widget', { widgets: ['stay22', 'hipcamp'] }) %>
+
+  <section class="guide-section">
+    <h2>Best Areas for Hot Tub Cabins</h2>
+    <div class="guide-table-wrap">
+      <table class="guide-table">
+        <thead>
+          <tr><th>Area</th><th>Vibe</th><th>Why Book Here</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Eureka Springs</td><td>Romantic / walkable</td><td>Hillside decks, downtown dining, spa town energy</td></tr>
+          <tr><td>Ponca / Jasper</td><td>Adventure base</td><td>Buffalo River put-ins, elk, Lost Valley day hikes</td></tr>
+          <tr><td>Beaver Lake</td><td>Water + night soak</td><td>Lake views, fishing mornings, quiet coves</td></tr>
+          <tr><td>Mountain View</td><td>Music + mountain</td><td>Folk Center nights, Blanchard Springs day trips</td></tr>
+          <tr><td>Branson outskirts</td><td>Group-friendly</td><td>Larger cabins, Table Rock access, shows nearby</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <%- include('../partials/featured-listings') %>
+
+  <section class="guide-section">
+    <h2>How to Choose the Right Hot Tub Cabin</h2>
+    <div class="guide-cards">
+      <div class="guide-card">
+        <div class="guide-card__icon">&#128149;</div>
+        <h3>Couples Weekends</h3>
+        <p>Prioritize private decks, king beds, and walkable Eureka Springs or secluded Ponca ridges.</p>
+        <a href="/listings" class="guide-card__link">Browse &rarr;</a>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">&#128101;</div>
+        <h3>Families &amp; Groups</h3>
+        <p>Look for 3+ bedrooms, game rooms, and tubs away from kids&rsquo; rooms. Branson rim and Beaver Lake shine here.</p>
+        <a href="/listings" class="guide-card__link">Browse &rarr;</a>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">&#10052;&#65039;</div>
+        <h3>Winter Deals</h3>
+        <p>Weekdays Dec&ndash;Feb often cut rates 20&ndash;40%. Cold air + hot water is the Ozarks cheat code.</p>
+        <a href="/listings" class="guide-card__link">Browse &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../partials/email-capture', { source: 'hot-tub-cabins', headline: 'Get the private hot-tub cabin shortlist', subhead: 'Free Ozarks trip planner plus seasonal deals on soaks with a view.' }) %>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Ready to Book a Cabin with a Hot Tub?</h2>
+    <p>Start with OzarkRoost curated listings, then compare partner inventory when you need more dates or budgets.</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Cabins</a>
+    <p class="guide-fine-print">Some outbound booking links are affiliate partnerships. You pay the same; we may earn a commission.</p>
+  </section>
+
+  <%- include('../partials/related-guides', { currentSlug: 'hot-tub-cabins' }) %>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>

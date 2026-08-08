@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Glamping in the Ozarks",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-03-21",
+    "dateModified": "2026-03-21"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.glamping %>" alt="Glamping dome under Ozark night sky">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Stay Guide</p>
+    <h1>Glamping in the Ozarks</h1>
+    <p class="guide-hero__sub">Domes, safari tents, and yurts with real beds and real views</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Glamping Stays</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p><strong>Glamping Arkansas</strong> is booming for a reason: you get forest air and stargazing without sleeping on a rock. From geodesic domes near Eureka Springs to canvas safari tents along the Buffalo corridor, the Ozarks now have comfort camping that still feels wild.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Glamping Styles You&rsquo;ll Find</h2>
+    <div class="guide-cards">
+      <div class="guide-card">
+        <div class="guide-card__icon">&#127773;</div>
+        <h3>Stargazing Domes</h3>
+        <p>Transparent panels, comfy beds, often private baths. Perfect for couples and dark-sky nights near Jasper.</p>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">&#9978;&#65039;</div>
+        <h3>Safari / Canvas Tents</h3>
+        <p>Elevated platforms, real mattresses, shared or private bathhouses. Great intro for non-campers.</p>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">&#127968;</div>
+        <h3>Yurts &amp; Tiny Cabins</h3>
+        <p>Four-season shells with heat and kitchens. Bridge between camping and full cabin stays.</p>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../partials/affiliate-widget', { widgets: ['hipcamp', 'stay22'] }) %>
+
+  <section class="guide-section">
+    <h2>When to Book Glamping</h2>
+    <div class="guide-seasons">
+      <div class="guide-season">
+        <h3>&#127800; Spring</h3>
+        <p>Mild nights, wildflowers. Book domes early for March&ndash;May weekends.</p>
+      </div>
+      <div class="guide-season">
+        <h3>&#9728;&#65039; Summer</h3>
+        <p>Confirm A/C or strong fans. Pair with river floats and early hikes.</p>
+      </div>
+      <div class="guide-season">
+        <h3>&#127809; Fall</h3>
+        <p>Peak demand. Color + cool nights = perfect canvas weather.</p>
+      </div>
+      <div class="guide-season">
+        <h3>&#10052;&#65039; Winter</h3>
+        <p>Only heated units. Cheaper rates, incredible stars.</p>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../partials/featured-listings') %>
+  <%- include('../partials/email-capture', { source: 'glamping-ozarks', headline: 'Glamping openings + free Ozarks planner', subhead: 'Domes and tents go fast. Get the planner and seasonal stay alerts.' }) %>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Sleep Soft, Wake Wild</h2>
+    <a href="/listings" class="btn btn--primary btn--lg">Browse Glamping &amp; Cabins</a>
+    <p class="guide-fine-print">Partner links may earn OzarkRoost a commission at no extra cost to you.</p>
+  </section>
+
+  <%- include('../partials/related-guides', { currentSlug: 'glamping-ozarks' }) %>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>

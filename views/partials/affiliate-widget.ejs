@@ -1,0 +1,49 @@
+<%
+  /**
+   * affiliate-widget.ejs
+   * Renders one or more monetization partner CTAs.
+   *
+   * Usage:
+   *   <%- include('../partials/affiliate-widget', { widgets: ['stay22','hipcamp'] }) %>
+   *   or single: { widget: 'rei' }
+   */
+  const keys = typeof widgets !== 'undefined'
+    ? widgets
+    : (typeof widget !== 'undefined' ? [widget] : []);
+  const aff = typeof affiliateLinks !== 'undefined' ? affiliateLinks : {};
+  const labels = {
+    stay22: 'Find cabins on Stay22 map',
+    hipcamp: 'Browse Hipcamp stays',
+    rei: 'Gear up at REI',
+    getyourguide: 'Book tours on GetYourGuide',
+    outdoorsy: 'Rent an RV on Outdoorsy',
+    vrbo: 'Browse Vrbo cabins',
+    booking: 'Search Booking.com',
+  };
+  const blurbs = {
+    stay22: 'Interactive map of bookable cabins near your route — compare prices in one place.',
+    hipcamp: 'Unique land stays, glamping sites, and private campgrounds across the Ozarks.',
+    rei: 'Packs, layers, and river shoes locals actually use on Buffalo River trips.',
+    getyourguide: 'Guided floats, cave tours, ziplines, and day trips you can book today.',
+    outdoorsy: 'Delivery-ready RVs and camper vans for Table Rock, Beaver Lake, and beyond.',
+    vrbo: 'Whole-home cabin rentals with kitchens, hot tubs, and pet-friendly filters.',
+    booking: 'Flexible cancel rates on lodges and cabins across northwest Arkansas.',
+  };
+%>
+<% if (keys.length) { %>
+<div class="aff-widgets">
+  <% keys.forEach(function(key) {
+    const k = String(key).toLowerCase();
+    const url = aff[k];
+    if (!url) return;
+  %>
+  <aside class="aff-widget aff-widget--<%= k %>">
+    <p class="aff-widget__label"><%= labels[k] || k %></p>
+    <p class="aff-widget__blurb"><%= blurbs[k] || '' %></p>
+    <a href="<%= url %>" target="_blank" rel="noopener noreferrer sponsored" class="aff-widget__btn aff-widget__btn--<%= k %>">
+      <%= labels[k] || 'Learn more' %> →
+    </a>
+  </aside>
+  <% }) %>
+</div>
+<% } %>

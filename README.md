@@ -1,4 +1,4 @@
-Express + EJS + Postgres Starter
+# OzarkRoost
 
 Minimal Node.js web app: Express server, EJS templates, PostgreSQL connection,
 migration runner, Render deployment config.
@@ -12,17 +12,20 @@ migration runner, Render deployment config.
 
 - `DATABASE_URL` — PostgreSQL connection string (required)
 - `PORT` — Server port (default: 3000)
+- `AFF_STAY22_URL`, `AFF_HIPCAMP_URL`, `AFF_GETYOURGUIDE_URL`, `AFF_VIATOR_URL`, `AFF_REI_URL` — affiliate tracking links
 
 ## Endpoints
 
 - `GET /` — Landing page (renders `views/layout.ejs`)
 - `GET /health` — Health check
+- `GET /guides/*` — SEO destination guides
 
 ## Layout
 
 ```
 views/
   layout.ejs           top-level template (entry point)
+  guides/              SEO guide pages
   partials/            sections included from layout via <%- include('partials/<name>') %>
 public/
   css/                 stylesheets, served at /css/<file>
@@ -42,5 +45,4 @@ DATABASE_URL="postgresql://..." npm run dev
 ## Deployment
 
 Configured for Render via `render.yaml`. `npm run build` runs migrations on
-deploy.
-
+deploy using the configured `DATABASE_URL`.

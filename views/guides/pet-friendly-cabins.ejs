@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Pet-Friendly Cabins in the Ozarks",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-03-21",
+    "dateModified": "2026-03-21"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.petFriendly %>" alt="Dog on a cabin porch overlooking the Ozark mountains">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Stay Guide</p>
+    <h1>Pet-Friendly Cabins in the Ozarks</h1>
+    <p class="guide-hero__sub">Dog-friendly Arkansas lodging with yards, trails, and hosts who mean it</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Dog-Friendly Cabins</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p>Searching <strong>dog friendly cabins Ozarks</strong> should not mean scrolling past &ldquo;pets considered&rdquo; fine print. Real pet-friendly stays have fenced yards, trail access, gravel-bar swims on the Buffalo, and clear fee rules so you are not guessing at check-in.</p>
+      <p>Here is how to book a cabin your pup will actually enjoy &mdash; and what to pack before you hit Highway 7.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>What &ldquo;Pet-Friendly&rdquo; Should Include</h2>
+    <ul class="guide-bullets">
+      <li>Written pet policy (fee, weight limit, max dogs)</li>
+      <li>Fenced or partially fenced outdoor space</li>
+      <li>Nearby leash-friendly trails (Lost Valley, Hideout Hollow approaches)</li>
+      <li>No white-carpet &ldquo;show home&rdquo; interiors if you have muddy adventure dogs</li>
+      <li>River or lake access for cool-down swims in summer</li>
+    </ul>
+    <a href="/listings" class="guide-cta">Browse pet-friendly OzarkRoost stays &rarr;</a>
+  </section>
+
+  <%- include('../partials/affiliate-widget', { widgets: ['stay22', 'hipcamp'] }) %>
+
+  <section class="guide-section">
+    <h2>Best Dog-Friendly Basecamps</h2>
+    <div class="guide-table-wrap">
+      <table class="guide-table">
+        <thead>
+          <tr><th>Area</th><th>Why Dogs Love It</th><th>Watch-outs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ponca / Steel Creek</td><td>Trails, river bars, open air</td><td>Elk season traffic; leash rules on some NPS paths</td></tr>
+          <tr><td>Jasper</td><td>Cabin density + Hwy 7 day trips</td><td>Confirm yard fencing before booking</td></tr>
+          <tr><td>Eureka Springs</td><td>Walkable town + hillside porches</td><td>Steep streets; downtown crowds on weekends</td></tr>
+          <tr><td>Beaver Lake</td><td>Swim spots and larger lots</td><td>Boat traffic summer weekends</td></tr>
+          <tr><td>Mountain View</td><td>Quieter nights, forest walks</td><td>Fewer late-night pet supply stores</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <%- include('../partials/featured-listings') %>
+
+  <section class="guide-section">
+    <h2>Pack List for Ozarks Dogs</h2>
+    <div class="guide-cards">
+      <div class="guide-card">
+        <div class="guide-card__icon">&#128062;</div>
+        <h3>Trail Kit</h3>
+        <p>6-ft leash, collapsible bowl, booties for rocky bluffs, tick prevention already applied.</p>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">&#127754;</div>
+        <h3>River Days</h3>
+        <p>Life vest for strong currents, towel for muddy cabins, freshwater rinse after Buffalo floats.</p>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">&#128203;</div>
+        <h3>House Rules</h3>
+        <p>Screenshot the pet fee and furniture rules. Bring a blanket so muddy paws stay off host sofas.</p>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../partials/email-capture', { source: 'pet-friendly-cabins', headline: 'Get dog-friendly cabin picks in your inbox', subhead: 'Free trip planner plus pet-friendly stay alerts for the Arkansas Ozarks.' }) %>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Book a Cabin That Welcomes Your Dog</h2>
+    <p>Filter OzarkRoost listings first, then expand with partner inventory when dates are tight.</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Pet-Friendly Cabins</a>
+    <p class="guide-fine-print">Some outbound booking links are affiliate partnerships.</p>
+  </section>
+
+  <%- include('../partials/related-guides', { currentSlug: 'pet-friendly-cabins' }) %>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>
