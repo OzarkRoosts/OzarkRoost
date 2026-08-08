@@ -1,13 +1,14 @@
 // db/lead-magnet-submissions.js — Lead magnet email signups
 const { query } = require('./index');
 
-async function createLeadMagnetSubmission({ email }) {
+async function createLeadMagnetSubmission({ email, source = 'trip-planner' }) {
+  const safeSource = String(source || 'trip-planner').slice(0, 80);
   const sql = `
     INSERT INTO lead_magnet_submissions (email, source, submitted_at)
-    VALUES ($1, 'trip-planner', NOW())
-    RETURNING id, email
+    VALUES ($1, $2, NOW())
+    RETURNING id, email, source
   `;
-  const result = await query(sql, [email]);
+  const result = await query(sql, [email, safeSource]);
   return result.rows[0];
 }
 

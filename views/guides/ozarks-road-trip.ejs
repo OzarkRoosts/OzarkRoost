@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Ozarks Road Trip Guide",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-03-21",
+    "dateModified": "2026-03-21"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.roadTrip %>" alt="Scenic Ozarks highway winding through forested mountains">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Trip Guide</p>
+    <h1>Ozarks Road Trip Guide</h1>
+    <p class="guide-hero__sub">Highway 7, the Pig Trail, Buffalo put-ins, and cabin bases that make the drive worth it</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Pick a Cabin Base</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p>An <strong>Ozarks road trip</strong> is less about interstate miles and more about two-lane overlooks, river put-ins, and towns that still feel like towns. This route stack covers Arkansas Scenic Highway 7, the Pig Trail (Hwy 23), Buffalo National River access, and Eureka Springs &mdash; with cabin bases so you are not racing back to a chain hotel at dark.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>3-Day Core Loop (Arkansas Focus)</h2>
+    <div class="guide-cards">
+      <div class="guide-card">
+        <div class="guide-card__icon">1</div>
+        <h3>Day 1 — Highway 7 North</h3>
+        <p>Start toward Jasper. Arkansas Grand Canyon overlooks, lunch in town, cabin near Ponca or Jasper for night one.</p>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">2</div>
+        <h3>Day 2 — Buffalo River</h3>
+        <p>Lost Valley or Steel Creek morning. Afternoon float if levels allow. Elk pullouts at dusk in season.</p>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">3</div>
+        <h3>Day 3 — Eureka Springs</h3>
+        <p>Pig Trail or Hwy 21 connector. Historic downtown, springs, and a hillside cabin or hot-tub send-off.</p>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../partials/affiliate-widget', { widgets: ['rei', 'stay22'] }) %>
+
+  <section class="guide-section">
+    <h2>Must-Stop Scenic Segments</h2>
+    <div class="guide-table-wrap">
+      <table class="guide-table">
+        <thead>
+          <tr><th>Route</th><th>Why Drive It</th><th>Cabin Base</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Scenic Hwy 7 (Russellville&rarr;Jasper)</td><td>Overlooks, Arkansas Grand Canyon vibes</td><td>Jasper / Ponca</td></tr>
+          <tr><td>Pig Trail Scenic Byway (Hwy 23)</td><td>Tight curves, forest canopy, motorcycle favorite</td><td>Ozark / Eureka approaches</td></tr>
+          <tr><td>Buffalo River corridor</td><td>Put-ins, trails, elk</td><td>Ponca, Jasper, Gilbert</td></tr>
+          <tr><td>Eureka Springs streets</td><td>Victorian downtown, galleries, food</td><td>Eureka hillside cabins</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <%- include('../partials/featured-listings') %>
+
+  <section class="guide-section">
+    <h2>Road Trip Pack Notes</h2>
+    <ul class="guide-bullets">
+      <li>Download offline maps &mdash; hollers kill cell service</li>
+      <li>Fill up before remote stretches (Ponca area especially)</li>
+      <li>Check Buffalo water levels the morning you float</li>
+      <li>Fall weekends: book cabins 4&ndash;8 weeks out</li>
+      <li>Leave no trace at overlooks and gravel bars</li>
+    </ul>
+  </section>
+
+  <%- include('../partials/email-capture', { source: 'ozarks-road-trip', headline: 'Free Ozarks road-trip planner PDF', subhead: 'Routes, put-ins, and cabin bases in one download — plus seasonal alerts.' }) %>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Turn the Drive Into a Stay</h2>
+    <p>Pick a base cabin, then day-trip the byways. That is how Ozarks road trips actually feel good.</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Road-Trip Cabins</a>
+    <a href="/adventures" class="btn btn--secondary btn--lg" style="margin-left:0.5rem">See Adventures</a>
+  </section>
+
+  <%- include('../partials/related-guides', { currentSlug: 'ozarks-road-trip' }) %>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>

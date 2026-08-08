@@ -1,0 +1,43 @@
+<%
+  /**
+   * email-capture.ejs
+   * Lead magnet email form for guide pages.
+   * Usage: <%- include('../partials/email-capture', { source: 'hot-tub-cabins', headline: '...', subhead: '...' }) %>
+   */
+  const captureSource = typeof source !== 'undefined' ? source : 'guide';
+  const title = typeof headline !== 'undefined' && headline ? headline : 'Get free Ozark trip itineraries';
+  const subtitle = typeof subhead !== 'undefined' && subhead ? subhead : 'Seasonal float windows, cabin picks, and weekend routes — no spam.';
+  let justSubscribed = false;
+  try {
+    justSubscribed = typeof query !== 'undefined' && query && String(query.subscribed || '') === '1';
+  } catch (_) {}
+  if (!justSubscribed && typeof emailSubmitted !== 'undefined' && emailSubmitted) justSubscribed = true;
+%>
+<section class="email-capture guide-section" id="email-capture">
+  <div class="email-capture__inner">
+    <p class="email-capture__eyebrow">Free trip planner</p>
+    <% if (justSubscribed) { %>
+      <div class="email-capture__success">
+        <p>You&rsquo;re on the list. Check your inbox for the Ozarks planner.</p>
+      </div>
+    <% } else { %>
+      <h2><%= title %></h2>
+      <p class="email-capture__sub"><%= subtitle %></p>
+      <form class="email-capture__form" method="POST" action="/guides/email-capture">
+        <input type="hidden" name="source" value="<%= captureSource %>">
+        <label class="visually-hidden" for="email-capture-input-<%= captureSource %>">Email address</label>
+        <input
+          id="email-capture-input-<%= captureSource %>"
+          type="email"
+          name="email"
+          required
+          maxlength="254"
+          autocomplete="email"
+          placeholder="you@email.com"
+        >
+        <button type="submit">Send me the planner</button>
+      </form>
+      <p class="email-capture__fine">Unsubscribe anytime. We never sell your email.</p>
+    <% } %>
+  </div>
+</section>

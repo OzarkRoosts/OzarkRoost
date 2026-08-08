@@ -1,0 +1,30 @@
+<%
+  /**
+   * featured-listings.ejs
+   * Real directory callouts used on SEO guides.
+   * Usage: <%- include('../partials/featured-listings') %>
+   */
+  const items = typeof featuredListings !== 'undefined' ? featuredListings : [
+    { name: 'Mystic Caverns', location: 'Berryville, AR', type: 'Attraction', blurb: 'Living cave tours minutes from Eureka Springs — cool underground break on hot days.', href: '/listings' },
+    { name: 'Hawkins Ridge Cabins', location: 'Eureka Springs, AR', type: 'Cabin', blurb: 'Ridge-top porches, hot tubs, and walkable access to Victorian downtown charm.', href: '/listings' },
+    { name: 'Riverfront BBQ Co.', location: 'Branson, MO', type: 'Food', blurb: 'Smoke-forward plates after a Table Rock day — locals send out-of-towners here first.', href: '/adventures' },
+    { name: 'Ozark Trail Adventures', location: 'Fayetteville, AR', type: 'Outfitter', blurb: 'Shuttles, rentals, and guided days for Buffalo River and Boston Mountain trails.', href: '/adventures' },
+    { name: 'Main Street Mercantile', location: 'Mountain View, AR', type: 'Local', blurb: 'Folk music capital supplies — snacks, maps, and porch-picking energy downtown.', href: '/guides/about-the-ozarks' },
+    { name: 'The Bluegrass Barn', location: 'Bentonville, AR', type: 'Experience', blurb: 'Live strings and Ozarks hospitality between Crystal Bridges and the greenway.', href: '/adventures' },
+  ];
+%>
+<section class="guide-section featured-local">
+  <h2>Featured Local Listings</h2>
+  <p class="guide-prose" style="margin-bottom:16px;color:var(--text-muted);">Hand-picked Ozarks stops worth building a weekend around.</p>
+  <div class="guide-cards">
+    <% items.forEach(function(item) { %>
+    <article class="guide-card">
+      <span class="guide-card__icon"><%= item.type === 'Cabin' ? '🏡' : item.type === 'Food' ? '🍖' : item.type === 'Outfitter' ? '🛶' : '⭐' %></span>
+      <h3><%= item.name %></h3>
+      <p class="featured-local__loc"><%= item.location %> · <%= item.type %></p>
+      <p><%= item.blurb %></p>
+      <a href="<%= item.href %>" class="guide-card__link">Explore →</a>
+    </article>
+    <% }) %>
+  </div>
+</section>

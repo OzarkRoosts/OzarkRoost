@@ -1,8 +1,9 @@
-require('dotenv')
-.config();
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { buildLandingContext } = require('./lib/landing-context');
+const { applySecurityHeaders, isSafeExternalUrl, sanitizeText } = require('./lib/security');
+const { createRateLimiter } = require('./middleware/rate-limit');
 require('./db/index'); // fail-fast on missing DATABASE_URL
 
 // Start affiliate AI monitoring in background
@@ -21,10 +22,20 @@ if (process.env.AUTONOMOUS_MODE === 'true') {
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Trust proxy when behind Render/Vercel so rate limits see real IPs
+app.set('trust proxy', 1);
+
 // Stripe verifies the exact signed request bytes, so this route must be
-// registered before the JSON parser transforms the body.
+// registered before the JSON / urlencoded parsers transform the body.
 app.use('/webhooks/stripe', require('./routes/stripe-webhook'));
-app.use(express.json());
+
+app.use(applySecurityHeaders);
+app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: false, limit: '100kb' }));
+
+const formLimiter = createRateLimiter({ windowMs: 60_000, max: 20, message: 'Too many form submissions. Try again in a minute.' });
+const apiLimiter = createRateLimiter({ windowMs: 60_000, max: 60, message: 'Too many API requests. Slow down.' });
+const outLimiter = createRateLimiter({ windowMs: 60_000, max: 40, message: 'Too many redirects. Slow down.' });
 
 // EJS view engine. Templates live in ./views/ (entry point: layout.ejs).
 app.set('view engine', 'ejs');
@@ -56,30 +67,43 @@ app.get('/listings', async (_req, res) => {
 
 // Adventures in the Ozarks — curated outdoor activities & experiences
 app.get('/adventures', (_req, res) => {
-  res.render('adventures');
+  const { getAffiliateLinks, getFeaturedListings } = require('./lib/affiliate-links');
+  res.render('adventures', {
+    affiliateLinks: getAffiliateLinks(),
+    featuredListings: getFeaturedListings(),
+  });
 });
 
-// Affiliate click tracker — logs click and redirects to partner URL
-app.get('/out', async (req, res) => {
-  const { listing: listingId, partner } = req.query;
-  if (!listingId || !partner) return res.redirect('/listings');
-  
+// Affiliate click tracker — logs click and redirects to partner URL (allowlist)
+app.get('/out', outLimiter, async (req, res) => {
+  const listingId = sanitizeText(req.query.listing, 32);
+  const partner = sanitizeText(req.query.partner, 40).toLowerCase();
+  if (!listingId || !partner || !/^\d+$/.test(listingId)) {
+    return res.redirect('/listings');
+  }
+
   try {
     const pool = require('./db/index');
     const row = await pool.query(
       'SELECT website_url FROM listing_submissions WHERE id = $1 AND payment_status = $2',
       [listingId, 'paid']
     );
-    
+
     if (!row.rows[0]) return res.redirect('/listings');
-    
+
+    const target = row.rows[0].website_url;
+    if (!isSafeExternalUrl(target)) {
+      console.warn('[/out] blocked unsafe redirect for listing', listingId);
+      return res.redirect('/listings');
+    }
+
     // Log click asynchronously (fire and forget)
     pool.query(
       'INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1, $2, $3, NOW())',
-      [listingId, partner, req.headers['user-agent'] || null]
+      [listingId, partner, sanitizeText(req.headers['user-agent'], 300) || null]
     ).catch(err => console.error('[affiliate_clicks] insert error:', err?.message));
-    
-    res.redirect(row.rows[0].website_url);
+
+    res.redirect(302, target);
   } catch (err) {
     console.error('[/out route] error:', err?.message);
     res.redirect('/listings');
@@ -87,28 +111,28 @@ app.get('/out', async (req, res) => {
 });
 
 // List-your-cabin — owner submission + Stripe payment link
-app.use('/list-your-cabin', require('./routes/list-your-cabin'));
+app.use('/list-your-cabin', formLimiter, require('./routes/list-your-cabin'));
 
 // Referral — affiliate partner program page + form
-app.use('/referral', require('./routes/referral'));
+app.use('/referral', formLimiter, require('./routes/referral'));
 
 // Operators — cabin/camping/RV operator referral program page + inquiry form
-app.use('/operators', require('./routes/operators'));
+app.use('/operators', formLimiter, require('./routes/operators'));
 
 // SEO destination guides — /guides/buffalo-river-cabins, etc.
 app.use('/guides', require('./routes/guides'));
 
 // Affiliate Revenue API — real-time monitoring dashboard
-app.use('/api/affiliate', require('./routes/affiliate-api'));
+app.use('/api/affiliate', apiLimiter, require('./routes/affiliate-api'));
 
 // Cold Call Killer API — AI-powered sales engine
-app.use('/api/killer', require('./routes/killer-api'));
+app.use('/api/killer', apiLimiter, require('./routes/killer-api'));
 
 // Autonomous Sales API — FULL AUTOMATION (email, contracts, billing)
-app.use('/api/autonomous', require('./routes/autonomous-api'));
+app.use('/api/autonomous', apiLimiter, require('./routes/autonomous-api'));
 
 // Rover is a public, read-only trip-planning assistant.
-app.use('/api/rover', require('./routes/rover'));
+app.use('/api/rover', apiLimiter, require('./routes/rover'));
 
 // FAQ — visitor questions about booking, policies, and operators
 app.get('/faq', (_req, res) => {

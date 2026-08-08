@@ -26,6 +26,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ozarkroost.polsia.app/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ozarkroost.polsia.app/guides/about-the-ozarks</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -54,5 +59,40 @@
     <loc>https://ozarkroost.polsia.app/guides/buffalo-river-kayaking</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ozarkroost.polsia.app/guides/hot-tub-cabins</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ozarkroost.polsia.app/guides/pet-friendly-cabins</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ozarkroost.polsia.app/guides/treehouse-rentals</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ozarkroost.polsia.app/guides/glamping-ozarks</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ozarkroost.polsia.app/guides/luxury-cabins</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ozarkroost.polsia.app/guides/ozarks-road-trip</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ozarkroost.polsia.app/guides/trip-planner</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

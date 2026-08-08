@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Arkansas Treehouse Rentals",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-03-21",
+    "dateModified": "2026-03-21"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.treehouse %>" alt="Elevated treehouse cabin among Ozark hardwoods">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Unique Stays</p>
+    <h1>Arkansas Treehouse Rentals</h1>
+    <p class="guide-hero__sub">Canopy views near Eureka Springs, Mountain View, and Branson</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Explore Unique Stays</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p><strong>Arkansas treehouse rentals</strong> are the Ozarks&rsquo; answer to &ldquo;we want something unforgettable.&rdquo; Think elevated decks in hardwood canopy, rope bridges, loft beds, and sunrise fog rolling through the hollers below.</p>
+      <p>Inventory is limited and books out for fall foliage and spring break &mdash; so knowing where to look matters more than scrolling forever.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Where Treehouses Cluster</h2>
+    <ul class="guide-bullets">
+      <li><strong>Eureka Springs hillsides</strong> &mdash; romantic, walkable town below</li>
+      <li><strong>Mountain View forests</strong> &mdash; quieter nights, music-town day trips</li>
+      <li><strong>Branson / Table Rock rim</strong> &mdash; family-friendly unique stays near attractions</li>
+      <li><strong>Buffalo River corridor</strong> &mdash; adventure base with elevated views</li>
+    </ul>
+    <a href="/listings" class="guide-cta">Browse OzarkRoost unique stays &rarr;</a>
+  </section>
+
+  <%- include('../partials/affiliate-widget', { widgets: ['stay22', 'hipcamp'] }) %>
+
+  <section class="guide-section">
+    <h2>Treehouse Reality Check</h2>
+    <div class="guide-cards">
+      <div class="guide-card">
+        <div class="guide-card__icon">&#127795;</div>
+        <h3>Access</h3>
+        <p>Stairs and ladders are common. Confirm mobility needs and kid safety before you book.</p>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">&#128246;</div>
+        <h3>Amenities</h3>
+        <p>Some are full cabins in the trees; others are glamping-lite. Read bathroom and HVAC details carefully.</p>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card__icon">&#128197;</div>
+        <h3>Season</h3>
+        <p>Leaf-out (May) and peak color (mid-Oct) sell out first. Winter can be magical and cheaper.</p>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../partials/featured-listings') %>
+  <%- include('../partials/email-capture', { source: 'treehouse-rentals', headline: 'Get alerted when unique Ozarks stays open up', subhead: 'Treehouses book fast. Grab the free trip planner and seasonal alerts.' }) %>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Sleep in the Canopy</h2>
+    <p>Start on OzarkRoost, then expand to partner unique-stay inventory if your dates are locked.</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Treehouses &amp; Unique Cabins</a>
+  </section>
+
+  <%- include('../partials/related-guides', { currentSlug: 'treehouse-rentals' }) %>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>

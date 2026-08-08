@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:image" content="<%= meta.ogImage %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Luxury Cabins in the Ozarks",
+    "description": "<%= meta.description %>",
+    "image": "<%= meta.ogImage %>",
+    "url": "<%= meta.canonical %>",
+    "publisher": { "@type": "Organization", "name": "OzarkRoost", "url": "<%= baseUrl %>" },
+    "datePublished": "2026-03-21",
+    "dateModified": "2026-03-21"
+  }
+  </script>
+</head>
+<body>
+
+<%- include('../partials/guide-nav') %>
+
+<header class="guide-hero">
+  <img class="guide-hero__img" src="<%= heroImages.luxury %>" alt="Luxury Ozarks cabin with panoramic glass and ridge view">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">Stay Guide</p>
+    <h1>Luxury Cabins in the Ozarks</h1>
+    <p class="guide-hero__sub">Chef kitchens, panoramic glass, private hot tubs, ridge estates</p>
+    <a href="/listings" class="btn btn--primary btn--lg">Browse Luxury Stays</a>
+  </div>
+</header>
+
+<article class="guide-body">
+
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p><strong>Luxury cabins Ozarks</strong> travelers want are not hotel suites with a deer painting. They are ridge estates with floor-to-ceiling glass, soaking tubs on the deck, chef-grade kitchens, and enough seclusion that the only soundtrack is wind in the oaks.</p>
+      <p>Use this guide to separate true upscale stays from mid-tier cabins with a nicer sofa.</p>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Luxury Checklist</h2>
+    <ul class="guide-bullets">
+      <li>Private hot tub or plunge + outdoor living space</li>
+      <li>High-end mattresses, quality linens, strong HVAC</li>
+      <li>Full kitchen (gas range, good cookware) for group dinners</li>
+      <li>Views that justify the rate &mdash; ridge, lake, or bluff</li>
+      <li>Fast Wi‑Fi if you are mixing remote work with weekend</li>
+      <li>Clear cancellation and damage policies (read them)</li>
+    </ul>
+    <a href="/listings" class="guide-cta">See OzarkRoost premium picks &rarr;</a>
+  </section>
+
+  <%- include('../partials/affiliate-widget', { widgets: ['stay22'] }) %>
+
+  <section class="guide-section">
+    <h2>Where Upscale Cabins Cluster</h2>
+    <div class="guide-table-wrap">
+      <table class="guide-table">
+        <thead>
+          <tr><th>Area</th><th>Luxury Angle</th><th>Best For</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Eureka Springs</td><td>Design-forward hillside homes</td><td>Couples, spa weekends</td></tr>
+          <tr><td>Table Rock / Branson rim</td><td>Large estates, lake access</td><td>Multi-family reunions</td></tr>
+          <tr><td>Beaver Lake</td><td>Waterfront glass boxes</td><td>Boating + quiet luxury</td></tr>
+          <tr><td>Jasper overlooks</td><td>Scenic Hwy 7 views</td><td>Photographers, hikers</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <%- include('../partials/featured-listings') %>
+  <%- include('../partials/email-capture', { source: 'luxury-cabins', headline: 'Premium cabin shortlist, free', subhead: 'Get the Ozarks trip planner plus alerts when luxury inventory opens.' }) %>
+
+  <section class="guide-section guide-section--cta">
+    <h2>Book the Cabin That Feels Like a Resort</h2>
+    <a href="/listings" class="btn btn--primary btn--lg">Find Luxury Cabins</a>
+    <p class="guide-fine-print">Affiliate partners may compensate OzarkRoost when you book through outbound links.</p>
+  </section>
+
+  <%- include('../partials/related-guides', { currentSlug: 'luxury-cabins' }) %>
+
+</article>
+
+<%- include('../partials/footer') %>
+<script>(function(){var slug="ozarkroost";if(!slug)return;var vid=localStorage.getItem('polsia_vid');if(!vid){vid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);});localStorage.setItem('polsia_vid',vid);}new Image().src='https://polsia.com/api/beacon/pixel?s='+encodeURIComponent(slug)+'&v='+encodeURIComponent(vid);})();</script>
+</body>
+</html>
