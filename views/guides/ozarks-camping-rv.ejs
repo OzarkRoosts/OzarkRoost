@@ -121,7 +121,11 @@
     </div>
   </section>
 
-  <section class="guide-section guide-section--cta">
+  <section class="guide-section <%- include('../partials/affiliate-widget', { bundle: 'camping' }) %>
+
+  <%- include('../partials/affiliate-widget', { bundle: 'gear' }) %>
+
+  guide-section--cta">
     <h2>Find Your Perfect Basecamp</h2>
     <p>The Ozarks reward the prepared. Every campground on this page and hundreds more are linked from your nearest cabin rental or trailhead on OzarkRoost.</p>
     <a href="/listings" class="btn btn--primary btn--lg">Browse Listings</a>

@@ -26,4 +26,11 @@ if (process.env.DATABASE_URL) {
   };
 }
 
+// Bound helper so `const { query } = require('./index')` never loses `this`
+async function query(text, params) {
+  return pool.query(text, params);
+}
+
 module.exports = pool;
+module.exports.query = query;
+module.exports.pool = pool;

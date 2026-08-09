@@ -225,10 +225,66 @@ async function startServer() {
     });
   });
 
-  // Affiliate click tracker — logs click and redirects to partner URL (allowlist)
+  // Partner domain allowlist for /out?to=
+  const PARTNER_HOST_ALLOW = new Set([
+    'stay22.com', 'www.stay22.com',
+    'hipcamp.com', 'www.hipcamp.com',
+    'rei.com', 'www.rei.com',
+    'getyourguide.com', 'www.getyourguide.com',
+    'viator.com', 'www.viator.com',
+    'outdoorsy.com', 'www.outdoorsy.com',
+    'rvshare.com', 'www.rvshare.com',
+    'vrbo.com', 'www.vrbo.com',
+    'booking.com', 'www.booking.com',
+    'publiclands.com', 'www.publiclands.com',
+    'expedia.com', 'www.expedia.com',
+    'hotels.com', 'www.hotels.com',
+    'kayak.com', 'www.kayak.com',
+    'tripadvisor.com', 'www.tripadvisor.com',
+    'klook.com', 'www.klook.com',
+    'alltrails.com', 'www.alltrails.com',
+    'amazon.com', 'www.amazon.com',
+    'airbnb.com', 'www.airbnb.com',
+    'recreation.gov', 'www.recreation.gov',
+  ]);
+
+  function isAllowedPartnerUrl(raw) {
+    if (!isSafeExternalUrl(raw)) return false;
+    try {
+      const u = new URL(raw);
+      if (u.protocol !== 'https:') return false;
+      return PARTNER_HOST_ALLOW.has(u.hostname.toLowerCase());
+    } catch {
+      return false;
+    }
+  }
+
+  // Affiliate click tracker — listing partner OR direct partner URL (?to=)
   app.get('/out', outLimiter, async (req, res) => {
     const listingId = sanitizeText(req.query.listing, 32);
     const partner = sanitizeText(req.query.partner, 40).toLowerCase();
+    const toRaw = typeof req.query.to === 'string' ? req.query.to : '';
+
+    // Path A: direct partner deep-link (guide widgets)
+    if (toRaw && !listingId) {
+      let target = toRaw;
+      try {
+        target = decodeURIComponent(toRaw);
+      } catch {
+        /* keep raw */
+      }
+      if (!isAllowedPartnerUrl(target)) {
+        console.warn('[/out] blocked unsafe to= redirect');
+        return res.redirect('/guides/hot-tub-cabins');
+      }
+      pool.query(
+        'INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1, $2, $3, NOW())',
+        [null, partner || 'direct', sanitizeText(req.headers['user-agent'], 300) || null]
+      ).catch(() => {});
+      return res.redirect(302, target);
+    }
+
+    // Path B: paid listing → website_url
     if (!listingId || !partner || !/^\d+$/.test(listingId)) {
       return res.redirect('/listings');
     }
@@ -247,7 +303,6 @@ async function startServer() {
         return res.redirect('/listings');
       }
 
-      // Log click asynchronously (fire and forget)
       pool.query(
         'INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1, $2, $3, NOW())',
         [listingId, partner, sanitizeText(req.headers['user-agent'], 300) || null]

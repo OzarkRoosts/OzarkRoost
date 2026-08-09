@@ -6,28 +6,77 @@
    * Usage:
    *   <%- include('../partials/affiliate-widget', { widgets: ['stay22','hipcamp'] }) %>
    *   or single: { widget: 'rei' }
+   *   or bundle: { bundle: 'stays' }  // stays|luxury|camping|adventure|roadtrip|gear|monetize_all
    */
-  const keys = typeof widgets !== 'undefined'
+  const bundleMap = {
+    stays: ['stay22', 'hipcamp', 'vrbo', 'booking', 'airbnb'],
+    luxury: ['stay22', 'vrbo', 'booking', 'expedia'],
+    camping: ['hipcamp', 'outdoorsy', 'rvshare', 'recreation', 'rei', 'publiclands', 'amazon_camping'],
+    adventure: ['getyourguide', 'viator', 'alltrails', 'klook', 'amazon_kayak'],
+    roadtrip: ['stay22', 'kayak', 'expedia', 'hotels', 'tripadvisor', 'alltrails'],
+    gear: ['rei', 'publiclands', 'amazon_camping', 'amazon_binoculars'],
+    monetize_all: [
+      'stay22', 'hipcamp', 'vrbo', 'booking', 'airbnb', 'expedia', 'hotels', 'kayak',
+      'getyourguide', 'viator', 'klook', 'outdoorsy', 'rvshare', 'recreation',
+      'rei', 'publiclands', 'alltrails', 'tripadvisor', 'amazon_camping'
+    ],
+  };
+  let keys = typeof widgets !== 'undefined'
     ? widgets
     : (typeof widget !== 'undefined' ? [widget] : []);
+  if (typeof bundle !== 'undefined' && bundleMap[bundle]) {
+    keys = bundleMap[bundle];
+  }
   const aff = typeof affiliateLinks !== 'undefined' ? affiliateLinks : {};
   const labels = {
     stay22: 'Find cabins on Stay22 map',
     hipcamp: 'Browse Hipcamp stays',
     rei: 'Gear up at REI',
     getyourguide: 'Book tours on GetYourGuide',
+    viator: 'Book experiences on Viator',
     outdoorsy: 'Rent an RV on Outdoorsy',
+    rvshare: 'Find RVs on RVshare',
     vrbo: 'Browse Vrbo cabins',
     booking: 'Search Booking.com',
+    publiclands: 'Outfit at Public Lands',
+    expedia: 'Compare hotels on Expedia',
+    hotels: 'Search Hotels.com',
+    kayak: 'Compare stays on Kayak',
+    tripadvisor: 'Read reviews on Tripadvisor',
+    klook: 'Browse activities on Klook',
+    alltrails: 'Map trails on AllTrails',
+    amazon_camping: 'Camping essentials on Amazon',
+    amazon_kayak: 'Kayaks & paddles on Amazon',
+    amazon_binoculars: 'Travel binoculars on Amazon',
+    airbnb: 'Browse Airbnb Ozarks homes',
+    recreation: 'Reserve on Recreation.gov',
+    list_cabin: 'List your cabin on OzarkRoost',
+    operators: 'Partner with OzarkRoost',
   };
   const blurbs = {
     stay22: 'Interactive map of bookable cabins near your route — compare prices in one place.',
     hipcamp: 'Unique land stays, glamping sites, and private campgrounds across the Ozarks.',
     rei: 'Packs, layers, and river shoes locals actually use on Buffalo River trips.',
     getyourguide: 'Guided floats, cave tours, ziplines, and day trips you can book today.',
+    viator: 'Rated Ozarks tours, cave tickets, and adventure day trips with free cancellation on many options.',
     outdoorsy: 'Delivery-ready RVs and camper vans for Table Rock, Beaver Lake, and beyond.',
+    rvshare: 'Peer-to-peer RVs near Branson, Eureka Springs, and northwest Arkansas.',
     vrbo: 'Whole-home cabin rentals with kitchens, hot tubs, and pet-friendly filters.',
     booking: 'Flexible cancel rates on lodges and cabins across northwest Arkansas.',
+    publiclands: 'Camping and trail gear from a retailer built for public-land weekends.',
+    expedia: 'Bundle-friendly hotel and cabin inventory when you need more dates.',
+    hotels: 'Member rates and flexible lodging near the lakes and show towns.',
+    kayak: 'Side-by-side price comparison for Ozarks lodging windows.',
+    tripadvisor: 'Traveler photos and recent reviews before you lock dates.',
+    klook: 'Tickets and day activities when your cabin crew wants a planned outing.',
+    alltrails: 'Trail maps for Lost Valley, Hawksbill Crag approaches, and lake loops.',
+    amazon_camping: 'Last-minute camp kitchen, lights, and packing list staples.',
+    amazon_kayak: 'Portable boats and PFDs if rentals are booked out.',
+    amazon_binoculars: 'Compact glass for elk watching and bluff overlooks.',
+    airbnb: 'Unique homes and cabins when you want host-run stays.',
+    recreation: 'Official campsites and timed entries for Buffalo National River area.',
+    list_cabin: 'Get discovered by travelers already planning Ozarks trips.',
+    operators: 'Tour, shuttle, and outfitter partnerships that convert guide traffic.',
   };
 %>
 <% if (keys.length) { %>
@@ -40,7 +89,7 @@
   <aside class="aff-widget aff-widget--<%= k %>">
     <p class="aff-widget__label"><%= labels[k] || k %></p>
     <p class="aff-widget__blurb"><%= blurbs[k] || '' %></p>
-    <a href="<%= url %>" target="_blank" rel="noopener noreferrer sponsored" class="aff-widget__btn aff-widget__btn--<%= k %>">
+    <a href="/out?to=<%= encodeURIComponent(url) %>" rel="noopener noreferrer sponsored" class="aff-widget__btn aff-widget__btn--<%= k %>">
       <%= labels[k] || 'Learn more' %> →
     </a>
   </aside>

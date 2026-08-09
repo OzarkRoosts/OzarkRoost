@@ -52,11 +52,21 @@ services:
         sync: false
       - key: AFF_PUBLICLANDS_URL
         sync: false
+      - key: AFF_VRBO_URL
+        sync: false
+      - key: AFF_BOOKING_URL
+        sync: false
+      - key: SITE_HEALTH_ENABLED
+        value: "true"
+      - key: AFFILIATE_OPS_ENABLED
+        value: "true"
+      - key: SUPERAGENT_ENABLED
+        value: "true"
       - key: AUTONOMOUS_MODE
         value: "false"
-      - key: SUPERAGENT_ENABLED
-        value: "false"
       - key: MARKETING_ENABLED
+        value: "false"
+      - key: OPSBOT_ENABLED
         value: "false"
 
   - type: cron
