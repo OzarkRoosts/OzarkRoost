@@ -14,7 +14,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="styles[...]">
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/guides.css">
   <script type="application/ld+json">
@@ -50,14 +50,14 @@
 
   <section class="guide-section">
     <div class="guide-prose">
-      <p>Arkansas has over 2,400 named campsites and an almost unlimited supply of forest roads where you can pull off and set up camp away from everyone. Whether you want a fire ring, a flush toilet, and a Wi-Fi signal &mdash; or you want to sleep where the nearest neighbor is a mile away &mdash; this guide covers <strong>camping and RV camping in Arkansas</strong> from every angle.</p>
+      <p>Arkansas has over 2,400 named campsites and an almost unlimited supply of forest roads where you can pull off and set up camp away from everyone. Whether you want a fire ring, a flush toi[...]</p>
     </div>
   </section>
 
   <section class="guide-section">
     <h2>Buffalo River Camping &mdash; What You Need to Know</h2>
     <div class="guide-prose">
-      <p>The Buffalo National River has 10 maintained campgrounds and unlimited dispersed camping (leave no trace). Key campgrounds: Tyler Bend, Jasper, Buffalo Point (the only riverside drive-in campground), and Steel Creek (closest to elk viewing).</p>
+      <p>The Buffalo National River has 10 maintained campgrounds and unlimited dispersed camping (leave no trace). Key campgrounds: Tyler Bend, Jasper, Buffalo Point (the only riverside drive-in [...]</p>
       <p><strong>Note:</strong> No reservations at most NPS campgrounds on the Buffalo. First come, first served. Peak season (spring&ndash;fall) fills by early afternoon on weekends.</p>
     </div>
     <a href="/listings" class="guide-cta">Find a campground or cabin near Buffalo River &rarr;</a>
@@ -121,11 +121,12 @@
     </div>
   </section>
 
-  <section class="guide-section <%- include('../partials/affiliate-widget', { bundle: 'camping' }) %>
+  <section class="guide-section">
+    <%- include('../partials/affiliate-widget', { bundle: 'camping' }) %>
+    <%- include('../partials/affiliate-widget', { bundle: 'gear' }) %>
+  </section>
 
-  <%- include('../partials/affiliate-widget', { bundle: 'gear' }) %>
-
-  guide-section--cta">
+  <section class="guide-section guide-section--cta">
     <h2>Find Your Perfect Basecamp</h2>
     <p>The Ozarks reward the prepared. Every campground on this page and hundreds more are linked from your nearest cabin rental or trailhead on OzarkRoost.</p>
     <a href="/listings" class="btn btn--primary btn--lg">Browse Listings</a>
