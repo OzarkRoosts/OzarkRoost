@@ -46,5 +46,14 @@
   <footer>
     <p>&copy; Ozark Roost</p>
   </footer>
+  <script>
+    // Track affiliate link clicks and send to GA4 (replace MEASUREMENT_ID in head)
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a.affiliate');
+      if (!a) return;
+      var affiliate = a.dataset.affiliate || '';
+      try { gtag('event', 'affiliate_click', { affiliate_id: affiliate, href: a.href }); } catch (err) { console.warn('gtag missing', err); }
+    });
+  </script>
 </body>
 </html>
