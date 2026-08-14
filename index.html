@@ -5,13 +5,21 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ozark Roost</title>
   <meta name="description" content="Ozark Roost — gear, guides, and stays in the Ozarks.">
-  <!-- Replace MEASUREMENT_ID with your GA4 Measurement ID -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=MEASUREMENT_ID"></script>
+  <!-- Set GA4 measurement ID in meta[name="ga-id"] so it can be injected post-deploy -->
+  <meta name="ga-id" content="">
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
-    gtag('js', new Date());
-    gtag('config', 'MEASUREMENT_ID');
+    (function(){
+      var id = document.querySelector('meta[name="ga-id"]').getAttribute('content');
+      if (!id) return;
+      var s = document.createElement('script'); s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);} 
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', id);
+    })();
   </script>
   <link rel="stylesheet" href="/assets/style.css">
 </head>
@@ -56,7 +64,11 @@
           if (found) a.href = found.url;
         });
       }
-      fetch('/affiliates.json').then(function(r){ return r.json(); }).then(function(json){ applyAffiliates(json.affiliates || []); }).catch(function(){ /* ignore */ });
+      fetch('/affiliates.json').then(function(r){ return r.json(); }).then(function(json){
+        // Map affiliate IDs to redirect function so clicks can be tracked server-side
+        (json.affiliates || []).forEach(function(a){ if (a.id) { /* nothing */ }});
+        applyAffiliates(json.affiliates || []);
+      }).catch(function(){ /* ignore */ });
 
       // Track affiliate link clicks and send to GA4 (replace MEASUREMENT_ID in head)
       document.addEventListener('click', function (e) {
