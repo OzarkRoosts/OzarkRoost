@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ozark Roost</title>
+  <meta name="description" content="Ozark Roost — gear, guides, and stays in the Ozarks.">
+  <!-- Replace MEASUREMENT_ID with your GA4 Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'MEASUREMENT_ID');
+  </script>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Ozark Roost</h1>
+    <p>Gear reviews, cabin stays, and outdoor guides from the Ozarks.</p>
+  </header>
+  <main>
+    <article>
+      <h2>Featured: Best Sleeping Pads for Ozark Camping</h2>
+      <p>Compact, warm, and comfortable pads tested on local trails.</p>
+      <p>
+        Recommended pick: <a href="#" class="affiliate" data-affiliate="AFFILIATE_ID" rel="sponsored noopener noreferrer">Acme Ultralight Sleeping Pad</a> — buy through our affiliate link so the site earns a commission at no extra cost to you.
+      </p>
+    </article>
+
+    <section class="subscribe">
+      <h3>Get trip ideas and deals</h3>
+      <!-- Replace form action with your Mailchimp / ConvertKit / Netlify forms endpoint -->
+      <form name="subscribe" method="POST" data-netlify="true" action="/subscribe">
+        <label>Email <input type="email" name="email" required></label>
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+
+    <section class="affiliate-disclosure">
+      <h4>Affiliate disclosure</h4>
+      <p>Ozark Roost may earn commissions from links on this site. <a href="/affiliate-disclosure.html">Read more</a>.</p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; Ozark Roost</p>
+  </footer>
+</body>
+</html>
