@@ -25,7 +25,7 @@
       <h2>Featured: Best Sleeping Pads for Ozark Camping</h2>
       <p>Compact, warm, and comfortable pads tested on local trails.</p>
       <p>
-        Recommended pick: <a href="#" class="affiliate" data-affiliate="AFFILIATE_ID" rel="sponsored noopener noreferrer">Acme Ultralight Sleeping Pad</a> — buy through our affiliate link so the site earns a commission at no extra cost to you.
+        Recommended pick: <a href="#" data-affiliate-id="amazon-pad" class="affiliate" rel="sponsored noopener noreferrer">Acme Ultralight Sleeping Pad</a> — buy through our affiliate link so the site earns a commission at no extra cost to you.
       </p>
     </article>
 
@@ -47,13 +47,25 @@
     <p>&copy; Ozark Roost</p>
   </footer>
   <script>
-    // Track affiliate link clicks and send to GA4 (replace MEASUREMENT_ID in head)
-    document.addEventListener('click', function (e) {
-      var a = e.target.closest && e.target.closest('a.affiliate');
-      if (!a) return;
-      var affiliate = a.dataset.affiliate || '';
-      try { gtag('event', 'affiliate_click', { affiliate_id: affiliate, href: a.href }); } catch (err) { console.warn('gtag missing', err); }
-    });
+    // Load affiliate URLs from affiliates.json and replace placeholders
+    (function (){
+      function applyAffiliates(list){
+        document.querySelectorAll('a[data-affiliate-id]').forEach(function(a){
+          var id = a.getAttribute('data-affiliate-id');
+          var found = list.find(function(x){ return x.id === id; });
+          if (found) a.href = found.url;
+        });
+      }
+      fetch('/affiliates.json').then(function(r){ return r.json(); }).then(function(json){ applyAffiliates(json.affiliates || []); }).catch(function(){ /* ignore */ });
+
+      // Track affiliate link clicks and send to GA4 (replace MEASUREMENT_ID in head)
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a.affiliate');
+        if (!a) return;
+        var affiliate = a.dataset.affiliate || a.getAttribute('data-affiliate-id') || '';
+        try { gtag && gtag('event', 'affiliate_click', { affiliate_id: affiliate, href: a.href }); } catch (err) { console.warn('gtag missing', err); }
+      });
+    })();
   </script>
 </body>
 </html>

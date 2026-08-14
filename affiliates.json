@@ -1,0 +1,6 @@
+{
+  "affiliates": [
+    { "id": "amazon-pad", "url": "https://example.com/affiliate/amazon-pad" },
+    { "id": "booking-cabin", "url": "https://example.com/affiliate/booking-cabin" }
+  ]
+}

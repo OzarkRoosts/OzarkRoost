@@ -1,0 +1,25 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ "ozarkroosts-monetize-ozark-roost", "main", "master" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: './'
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
