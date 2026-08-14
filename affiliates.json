@@ -1,6 +1,18 @@
 {
   "affiliates": [
-    { "id": "amazon-pad", "url": "https://example.com/affiliate/amazon-pad" },
-    { "id": "booking-cabin", "url": "https://example.com/affiliate/booking-cabin" }
+    {
+      "id": "amazon-pad",
+      "url": "https://example.com/affiliate/amazon-pad",
+      "project": "default",
+      "product_id": "",
+      "pay_link": ""
+    },
+    {
+      "id": "booking-cabin",
+      "url": "https://example.com/affiliate/booking-cabin",
+      "project": "default",
+      "product_id": "",
+      "pay_link": ""
+    }
   ]
 }
