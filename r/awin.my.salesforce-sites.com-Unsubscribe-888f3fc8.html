@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="robots" content="noindex">
+<title>Redirecting...</title></head><body>Redirecting... <a href="http://awin.my.salesforce-sites.com/Unsubscribe">continue</a>
+<script>
+(function(){
+  var payload = { project: "email-import", id: "awin.my.salesforce-sites.com-Unsubscribe-888f3fc8", product_id: "", ts: Date.now() };
+  try{
+    // fire-and-forget send to local tracking endpoint if available
+    fetch('/_track', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload), keepalive: true }).catch(()=>{});
+  }catch(e){}
+  // fallback: after 250ms, navigate to affiliate URL
+  setTimeout(function(){ window.location = "http://awin.my.salesforce-sites.com/Unsubscribe"; }, 250);
+})();
+</script></body></html>
