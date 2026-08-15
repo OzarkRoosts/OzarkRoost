@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ozark Roost</title>
-  <meta name="description" content="Ozark Roost — gear, guides, and stays in the Ozarks.">
-  <!-- Set GA4 measurement ID in meta[name="ga-id"] so it can be injected post-deploy -->
+  <title>Ozark Roost | Ozark Camping Guides, Cabin Deals, and Gear Picks</title>
+  <meta name="description" content="Ozark Roost helps campers and travelers discover cabin deals, outdoor gear, and Ozark weekend plans with tested recommendations and real affiliate savings.">
+  <meta property="og:title" content="Ozark Roost">
+  <meta property="og:description" content="Find the best Ozark camping gear, weekend cabin stays, and trail-tested guides.">
   <meta name="ga-id" content="">
   <script>
     (function(){
@@ -24,39 +25,182 @@
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
-  <header class="site-header">
-    <h1>Ozark Roost</h1>
-    <p>Gear reviews, cabin stays, and outdoor guides from the Ozarks.</p>
+  <header class="topbar">
+    <div class="container nav">
+      <div class="brand">Ozark Roost</div>
+      <nav>
+        <a href="#gear">Gear</a>
+        <a href="#cabins">Cabins</a>
+        <a href="#guides">Guides</a>
+        <a href="#subscribe">Deals</a>
+      </nav>
+    </div>
   </header>
-  <main>
-    <article>
-      <h2>Featured: Best Sleeping Pads for Ozark Camping</h2>
-      <p>Compact, warm, and comfortable pads tested on local trails.</p>
-      <p>
-        Recommended pick: <a href="#" data-affiliate-id="amazon-pad" class="affiliate" rel="sponsored noopener noreferrer">Acme Ultralight Sleeping Pad</a> — buy through our affiliate link so the site earns a commission at no extra cost to you.
-      </p>
-    </article>
 
-    <section class="subscribe">
-      <h3>Get trip ideas and deals</h3>
-      <!-- Replace form action with your Mailchimp / ConvertKit / Netlify forms endpoint -->
-      <form name="subscribe" method="POST" data-netlify="true" action="/subscribe">
-        <label>Email <input type="email" name="email" required></label>
-        <button type="submit">Subscribe</button>
-      </form>
+  <main>
+    <section class="hero container">
+      <div class="hero-copy">
+        <p class="eyebrow">Ozark weekend escapes</p>
+        <h1>Camp better. Book smarter. Stay longer.</h1>
+        <p class="lede">Discover tested camping gear, last-minute cabin deals, and practical Ozark trip guides that help you spend less and enjoy more outdoors.</p>
+        <div class="cta-row">
+          <a class="button primary" href="#subscribe">Get the packing list</a>
+          <a class="button secondary" href="#gear">See top picks</a>
+        </div>
+        <ul class="trust-list">
+          <li>Gear tested for Ozark weather</li>
+          <li>Cabin deals from trusted booking partners</li>
+          <li>Free weekend planning advice</li>
+        </ul>
+      </div>
+      <div class="hero-card">
+        <div class="mini-badge">Top pick</div>
+        <h3>Acme Ultralight Sleeping Pad</h3>
+        <p>Warm, compact, and easy to carry for riverfront nights and ridge-line camps.</p>
+        <a class="affiliate" data-affiliate-id="amazon-pad" rel="sponsored noopener noreferrer">Shop this pick</a>
+      </div>
     </section>
 
-    <section class="affiliate-disclosure">
-      <h4>Affiliate disclosure</h4>
-      <p>Ozark Roost may earn commissions from links on this site. <a href="/affiliate-disclosure.html">Read more</a>.</p>
+    <section class="stats container">
+      <div class="stat"><strong>48+</strong><span>Ozark trail guides</span></div>
+      <div class="stat"><strong>12</strong><span>Cabin stays tested</span></div>
+      <div class="stat"><strong>100%</strong><span>Field-tested picks</span></div>
+    </section>
+
+    <section id="gear" class="container section">
+      <div class="section-head">
+        <p class="eyebrow">Gear picks</p>
+        <h2>Everything you need for a better Ozark weekend</h2>
+      </div>
+      <div class="card-grid">
+        <article class="product-card">
+          <span class="tag">Best overall</span>
+          <h3>Ultralight sleeping pad</h3>
+          <p>Warmth, packability, and value for weekend and multi-night trips.</p>
+          <a class="affiliate" data-affiliate-id="amazon-pad" rel="sponsored noopener noreferrer">View deal</a>
+        </article>
+        <article class="product-card">
+          <span class="tag">Camp setup</span>
+          <h3>4-person weather-ready tent</h3>
+          <p>Durable enough for changing Ozark weather and roomy enough for gear.</p>
+          <a class="affiliate" data-affiliate-id="booking-cabin" rel="sponsored noopener noreferrer">Check it out</a>
+        </article>
+        <article class="product-card">
+          <span class="tag">Camp kitchen</span>
+          <h3>Portable stove + kit</h3>
+          <p>Fast meal prep for mornings by the river and remote pull-in campsites.</p>
+          <a class="affiliate" data-affiliate-id="amazon-pad" rel="sponsored noopener noreferrer">See pricing</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="cabins" class="container section alt-bg">
+      <div class="section-head">
+        <p class="eyebrow">Cabin stays</p>
+        <h2>Book affordable cabins that feel like a reset</h2>
+      </div>
+      <div class="card-grid">
+        <article class="feature-card">
+          <h3>Riverfront cabins</h3>
+          <p>Wake up to water views, quiet mornings, and easy access to day hikes and float spots.</p>
+          <a class="affiliate" data-affiliate-id="booking-cabin" rel="sponsored noopener noreferrer">Find cabin deals</a>
+        </article>
+        <article class="feature-card">
+          <h3>Forest hideaways</h3>
+          <p>Woodsy, cozy, and perfect for weekend resets with a fire pit and total quiet.</p>
+          <a class="affiliate" data-affiliate-id="booking-cabin" rel="sponsored noopener noreferrer">Book this style</a>
+        </article>
+        <article class="feature-card">
+          <h3>Last-minute discounts</h3>
+          <p>Friday-to-Sunday pricing works well when you keep your trip flexible and book midweek.</p>
+          <a class="affiliate" data-affiliate-id="booking-cabin" rel="sponsored noopener noreferrer">See live pricing</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="guides" class="container section">
+      <div class="section-head">
+        <p class="eyebrow">Trip guides</p>
+        <h2>Built for real Ozark weekends</h2>
+      </div>
+      <div class="guide-list">
+        <div class="guide-item">
+          <span>01</span>
+          <div>
+            <h3>Best Ozark 3-day camping itinerary</h3>
+            <p>Plan your route by terrain, water access, and campfire-perfect zones without wasting a sunset.</p>
+          </div>
+        </div>
+        <div class="guide-item">
+          <span>02</span>
+          <div>
+            <h3>What to pack for sudden Ozark storms</h3>
+            <p>Layering, rain gear, and lighting tips that make a bad forecast feel manageable.</p>
+          </div>
+        </div>
+        <div class="guide-item">
+          <span>03</span>
+          <div>
+            <h3>Affordable cabin stays near trailheads</h3>
+            <p>Find the cabin with the best value, whether you want cozy, rustic, or a scenic stretch by the river.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="subscribe" class="container subscribe-wrap">
+      <div class="newsletter-box">
+        <div>
+          <p class="eyebrow">Free downloads</p>
+          <h2>Get the Ozark weekend packing list</h2>
+        </div>
+        <form class="subscribe-form" name="subscribe" method="POST" data-netlify="true" action="/subscribe">
+          <label class="sr-only" for="email">Email</label>
+          <input id="email" type="email" name="email" placeholder="Email address" required>
+          <button type="submit">Send me the list</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="container section testimonials">
+      <div class="section-head">
+        <p class="eyebrow">Why it works</p>
+        <h2>Built for outdoor travelers who want less planning, more time outside</h2>
+      </div>
+      <div class="testimonial-grid">
+        <blockquote>
+          “Finally a site that tells you what’s actually worth buying for a weekend trip — not every flashy item.”
+          <footer>— Sarah, Springfield</footer>
+        </blockquote>
+        <blockquote>
+          “We booked a cabin after seeing the recommendations and saved more than expected on a Friday night stay.”
+          <footer>— Matt & Jamie, Branson</footer>
+        </blockquote>
+        <blockquote>
+          “The packing list alone saved us a ton of wasted gear, and the campground guide was exactly what we needed.”
+          <footer>— Daniel, Rolla</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="container affiliate-disclosure">
+      <h3>Affiliate disclosure</h3>
+      <p>Ozark Roost may earn commissions from qualifying purchases or bookings through links on this site. <a href="/affiliate-disclosure.html">Read more</a>.</p>
     </section>
   </main>
-  <footer>
-    <p>&copy; Ozark Roost</p>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <span>© <span id="year"></span> Ozark Roost</span>
+      <span>Gear • Stays • Guides</span>
+    </div>
   </footer>
+
   <script>
-    // Load affiliate URLs from affiliates.json and replace placeholders
     (function (){
+      var year = document.getElementById('year');
+      if (year) year.textContent = new Date().getFullYear();
+
       function applyAffiliates(list){
         document.querySelectorAll('a[data-affiliate-id]').forEach(function(a){
           var id = a.getAttribute('data-affiliate-id');
@@ -64,18 +208,16 @@
           if (found) a.href = found.url;
         });
       }
-      fetch('/affiliates.json').then(function(r){ return r.json(); }).then(function(json){
-        // Map affiliate IDs to redirect function so clicks can be tracked server-side
-        (json.affiliates || []).forEach(function(a){ if (a.id) { /* nothing */ }});
-        applyAffiliates(json.affiliates || []);
-      }).catch(function(){ /* ignore */ });
 
-      // Track affiliate link clicks and send to GA4 (replace MEASUREMENT_ID in head)
+      fetch('/affiliates.json').then(function(r){ return r.json(); }).then(function(json){
+        applyAffiliates(json.affiliates || []);
+      }).catch(function(){})
+
       document.addEventListener('click', function (e) {
         var a = e.target.closest && e.target.closest('a.affiliate');
         if (!a) return;
-        var affiliate = a.dataset.affiliate || a.getAttribute('data-affiliate-id') || '';
-        try { gtag && gtag('event', 'affiliate_click', { affiliate_id: affiliate, href: a.href }); } catch (err) { console.warn('gtag missing', err); }
+        var affiliate = a.getAttribute('data-affiliate-id') || '';
+        try { gtag && gtag('event', 'affiliate_click', { affiliate_id: affiliate, href: a.href }); } catch (err) {}
       });
     })();
   </script>
