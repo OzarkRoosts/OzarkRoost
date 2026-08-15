@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: ozarkroost-track
+    env: node
+    region: oregon
+    plan: free
+    branch: gh-pages
+    buildCommand: npm install
+    startCommand: node netlify/functions/track.js
+    healthCheckPath: /
+    envVars:
+      - key: GA_ID
+        sync: false
+      - key: GA_API_SECRET
+        sync: false
+      - key: NODE_ENV
+        value: production
+
+  - type: static
+    name: ozarkroost-site
+    rootDir: .
+    buildCommand: ""
+    staticPublishPath: ./
+    envVars:
+      - key: GA_ID
+        sync: false
