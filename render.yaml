@@ -1,6 +1,8 @@
 # OzarkRoost — Render Blueprint
-# Deploy: Render Dashboard → New → Blueprint → connect OzarkRoosts/OzarkRoost (main)
-# Database: use Neon (free) and paste DATABASE_URL — do not use Render free Postgres (expires).
+# Production web service only. The nurture-email cron is intentionally not
+# declared here because Render does not offer free cron-job instances.
+# If/when paid cron is enabled, add it as a separate Render service.
+# Database: use Neon (free) and set DATABASE_URL in Render.
 
 services:
   - type: web
@@ -68,30 +70,3 @@ services:
         value: "false"
       - key: OPSBOT_ENABLED
         value: "false"
-
-  - type: cron
-    name: ozarkroost-nurture-emails
-    runtime: node
-    plan: free
-    region: oregon
-    branch: main
-    schedule: "0 * * * *"
-    buildCommand: npm ci
-    startCommand: node jobs/send-nurture-emails.js
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: DATABASE_URL
-        sync: false
-      - key: APP_URL
-        sync: false
-      - key: SMTP_HOST
-        sync: false
-      - key: SMTP_PORT
-        sync: false
-      - key: SMTP_USER
-        sync: false
-      - key: SMTP_PASS
-        sync: false
-      - key: EMAIL_FROM
-        sync: false
