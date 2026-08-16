@@ -11,8 +11,10 @@ services:
     plan: free
     region: oregon
     branch: main
-    buildCommand: npm ci
-    preDeployCommand: npm run migrate
+    # Free Render web services cannot use pre-deploy commands.
+    # Migrations are run during the build instead; server startup also
+    # performs an idempotent migration pass as a safety net.
+    buildCommand: npm ci && npm run migrate
     startCommand: npm start
     healthCheckPath: /health
     envVars:
