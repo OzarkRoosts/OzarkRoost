@@ -7,6 +7,11 @@ const { applySecurityHeaders, isSafeExternalUrl, sanitizeText } = require('./lib
 const { createRateLimiter } = require('./middleware/rate-limit');
 const errorTracker = require('./middleware/error-tracker');
 
+// Keep provider/model configuration resilient to retired defaults.
+// Render environment variables still take precedence when explicitly configured.
+if (process.env.GROQ_API_KEY && !process.env.GROQ_MODEL) process.env.GROQ_MODEL = 'llama-3.3-70b-versatile';
+if (!process.env.APP_URL && process.env.RENDER_EXTERNAL_URL) process.env.APP_URL = process.env.RENDER_EXTERNAL_URL;
+
 function softRequire(modulePath) {
   try { return require(modulePath); }
   catch (err) { console.warn(`[startup] optional module missing: ${modulePath} (${err.message})`); return null; }
@@ -71,6 +76,7 @@ async function startServer() {
   app.get('/health', (_req, res) => res.json({ status: 'healthy' }));
   function publicBaseUrl(req) {
     if (process.env.APP_URL) return String(process.env.APP_URL).replace(/\/$/, '');
+    if (process.env.RENDER_EXTERNAL_URL) return String(process.env.RENDER_EXTERNAL_URL).replace(/\/$/, '');
     const proto = req.get('x-forwarded-proto') || req.protocol || 'https';
     return `${proto}://${req.get('host')}`;
   }
@@ -93,7 +99,7 @@ async function startServer() {
     const listingId = sanitizeText(req.query.listing, 32), partner = sanitizeText(req.query.partner, 40).toLowerCase(), toRaw = typeof req.query.to === 'string' ? req.query.to : '';
     if (toRaw && !listingId) { let target = toRaw; try { target = decodeURIComponent(toRaw); } catch {} if (!isAllowedPartnerUrl(target)) return res.redirect('/guides/hot-tub-cabins'); pool.query('INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1,$2,$3,NOW())',[null,partner||'direct',sanitizeText(req.headers['user-agent'],300)||null]).catch(()=>{}); return res.redirect(302,target); }
     if (!listingId || !partner || !/^\d+$/.test(listingId)) return res.redirect('/listings');
-    try { const row = await pool.query('SELECT website_url FROM listing_submissions WHERE id=$1 AND payment_status=$2',[listingId,'paid']); if (!row.rows[0]) return res.redirect('/listings'); const target=row.rows[0].website_url; if (!isSafeExternalUrl(target)) return res.redirect('/listings'); pool.query('INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1,$2,$3,NOW())',[listingId,partner,sanitizeText(req.headers['user-agent'],300)||null]).catch(()=>{}); res.redirect(302,target); } catch (err) { console.error('[/out route] error:',err?.message); res.redirect('/listings'); }
+    try { const row = await pool.query('SELECT website_url FROM listing_submissions WHERE id=$1 AND payment_status=$2',[listingId,'paid']); if (!row.rows[0]) return res.redirect('/listings'); const target=row.rows[0].website_url; if (!isSafeExternalUrl(target)) return res.redirect('/listings'); pool.query('INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1,$2,$3,$4)',[listingId,partner,sanitizeText(req.headers['user-agent'],300)||null,new Date()]).catch(()=>{}); res.redirect(302,target); } catch (err) { console.error('[/out route] error:',err?.message); res.redirect('/listings'); }
   });
   app.use('/list-your-cabin', formLimiter, require('./routes/list-your-cabin'));
   app.use('/referral', formLimiter, require('./routes/referral'));
