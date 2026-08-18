@@ -8,9 +8,19 @@ const { createRateLimiter } = require('./middleware/rate-limit');
 const errorTracker = require('./middleware/error-tracker');
 
 // Keep provider/model configuration resilient to retired defaults.
-// Render environment variables still take precedence when explicitly configured.
-if (process.env.GROQ_API_KEY && !process.env.GROQ_MODEL) process.env.GROQ_MODEL = 'llama-3.3-70b-versatile';
+// Groq retired llama-3.1-8b-instant and llama-3.3-70b-versatile on 2026-08-16.
+// Prefer the current production-recommended GPT-OSS 120B model when no model is configured.
+if (process.env.GROQ_API_KEY) {
+  const retired = new Set(['llama-3.1-8b-instant', 'llama-3.3-70b-versatile']);
+  if (!process.env.GROQ_MODEL || retired.has(process.env.GROQ_MODEL)) {
+    process.env.GROQ_MODEL = 'openai/gpt-oss-120b';
+    console.log('[AI] Groq model selected: openai/gpt-oss-120b');
+  } else {
+    console.log(`[AI] Groq model selected: ${process.env.GROQ_MODEL}`);
+  }
+}
 if (!process.env.APP_URL && process.env.RENDER_EXTERNAL_URL) process.env.APP_URL = process.env.RENDER_EXTERNAL_URL;
+if (!process.env.SITE_URL && process.env.RENDER_EXTERNAL_URL) process.env.SITE_URL = process.env.RENDER_EXTERNAL_URL;
 
 function softRequire(modulePath) {
   try { return require(modulePath); }
@@ -80,39 +90,3 @@ async function startServer() {
     const proto = req.get('x-forwarded-proto') || req.protocol || 'https';
     return `${proto}://${req.get('host')}`;
   }
-  const SITEMAP_PATHS = ['/', '/listings', '/adventures', '/list-your-cabin', '/referral', '/operators', '/faq', '/guides/about-the-ozarks', '/guides/buffalo-river-cabins', '/guides/ozarks-adventures', '/guides/ozarks-camping-rv', '/guides/hidden-gem-cabins', '/guides/buffalo-river-kayaking', '/guides/hot-tub-cabins', '/guides/pet-friendly-cabins', '/guides/treehouse-rentals', '/guides/glamping-ozarks', '/guides/luxury-cabins', '/guides/ozarks-road-trip', '/guides/trip-planner'];
-  app.get('/sitemap.xml', (req, res) => {
-    const base = publicBaseUrl(req);
-    const body = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', ...SITEMAP_PATHS.map(p => `<url><loc>${base}${p}</loc><changefreq>weekly</changefreq><priority>${p === '/' ? '1.0' : p.startsWith('/guides/') ? '0.9' : '0.7'}</priority></url>`), '</urlset>', ''].join('\n');
-    res.type('application/xml').send(body);
-  });
-  app.get('/robots.txt', (req, res) => res.type('text/plain').send(`User-agent: *\nAllow: /\n\nSitemap: ${publicBaseUrl(req)}/sitemap.xml\n`));
-  app.get('/superagent-status', (_req, res) => { try { res.json(require('./lib/super-agent').getStatus()); } catch (err) { res.status(503).json({ error: 'Super Agent not enabled', detail: err.message }); } });
-  app.use(express.static(path.join(__dirname, 'public'), { index: false }));
-  app.get('/campaign', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'campaign', 'index.html')));
-  app.get('/', (_req, res) => res.render('layout', buildLandingContext()));
-  app.get('/listings', async (_req, res) => { const { getAllListings } = require('./db/listing-submissions'); res.render('listings', { listings: await getAllListings() }); });
-  app.get('/adventures', (_req, res) => { const { getAffiliateLinks, getFeaturedListings } = require('./lib/affiliate-links'); res.render('adventures', { affiliateLinks: getAffiliateLinks(), featuredListings: getFeaturedListings() }); });
-  const PARTNER_HOST_ALLOW = new Set(['stay22.com','www.stay22.com','hipcamp.com','www.hipcamp.com','rei.com','www.rei.com','getyourguide.com','www.getyourguide.com','viator.com','www.viator.com','outdoorsy.com','www.outdoorsy.com','rvshare.com','www.rvshare.com','vrbo.com','www.vrbo.com','booking.com','www.booking.com','publiclands.com','www.publiclands.com','expedia.com','www.expedia.com','hotels.com','www.hotels.com','kayak.com','www.kayak.com','tripadvisor.com','www.tripadvisor.com','klook.com','www.klook.com','alltrails.com','www.alltrails.com','amazon.com','www.amazon.com','airbnb.com','www.airbnb.com','recreation.gov','www.recreation.gov']);
-  function isAllowedPartnerUrl(raw) { if (!isSafeExternalUrl(raw)) return false; try { const u = new URL(raw); return u.protocol === 'https:' && PARTNER_HOST_ALLOW.has(u.hostname.toLowerCase()); } catch { return false; } }
-  app.get('/out', outLimiter, async (req, res) => {
-    const listingId = sanitizeText(req.query.listing, 32), partner = sanitizeText(req.query.partner, 40).toLowerCase(), toRaw = typeof req.query.to === 'string' ? req.query.to : '';
-    if (toRaw && !listingId) { let target = toRaw; try { target = decodeURIComponent(toRaw); } catch {} if (!isAllowedPartnerUrl(target)) return res.redirect('/guides/hot-tub-cabins'); pool.query('INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1,$2,$3,NOW())',[null,partner||'direct',sanitizeText(req.headers['user-agent'],300)||null]).catch(()=>{}); return res.redirect(302,target); }
-    if (!listingId || !partner || !/^\d+$/.test(listingId)) return res.redirect('/listings');
-    try { const row = await pool.query('SELECT website_url FROM listing_submissions WHERE id=$1 AND payment_status=$2',[listingId,'paid']); if (!row.rows[0]) return res.redirect('/listings'); const target=row.rows[0].website_url; if (!isSafeExternalUrl(target)) return res.redirect('/listings'); pool.query('INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1,$2,$3,$4)',[listingId,partner,sanitizeText(req.headers['user-agent'],300)||null,new Date()]).catch(()=>{}); res.redirect(302,target); } catch (err) { console.error('[/out route] error:',err?.message); res.redirect('/listings'); }
-  });
-  app.use('/list-your-cabin', formLimiter, require('./routes/list-your-cabin'));
-  app.use('/referral', formLimiter, require('./routes/referral'));
-  app.use('/operators', formLimiter, require('./routes/operators'));
-  app.use('/guides', require('./routes/guides'));
-  app.use('/api/affiliate', apiLimiter, require('./routes/affiliate-api'));
-  app.use('/api/health', apiLimiter, require('./routes/health-api'));
-  app.use('/api/killer', apiLimiter, require('./routes/killer-api'));
-  app.use('/api/autonomous', apiLimiter, require('./routes/autonomous-api'));
-  app.use('/api/opsbot', apiLimiter, require('./routes/opsbot-api'));
-  app.use('/api/rover', apiLimiter, require('./routes/rover'));
-  app.get('/faq', (_req, res) => res.render('faq'));
-  app.use(errorTracker.errorHandler());
-  app.listen(port, () => console.log(`Server running on port ${port}`));
-}
-startServer().catch(err => { console.error('[startup] Fatal error:', err.message); process.exit(1); });
