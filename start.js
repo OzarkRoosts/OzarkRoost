@@ -6,6 +6,8 @@ async function start() {
   await runAllMigrations(pool);
   const fundingAgent = require('./lib/funding-opportunity-agent');
   fundingAgent.start();
+  const growthAgent = require('./lib/free-growth-agent');
+  growthAgent.start();
   require('./server');
 }
 
