@@ -26,11 +26,6 @@ if (process.env.DATABASE_URL) {
   };
 }
 
-// Bound helper so `const { query } = require('./index')` never loses `this`
-async function query(text, params) {
-  return pool.query(text, params);
-}
-
+// Export the pool itself. Do not overwrite pool.query with a wrapper that
+// calls pool.query, which would recurse indefinitely and exhaust the stack.
 module.exports = pool;
-module.exports.query = query;
-module.exports.pool = pool;
