@@ -64,6 +64,8 @@ services:
         value: "true"
       - key: AFFILIATE_OPS_ENABLED
         value: "true"
+      - key: PARTNER_DISCOVERY_ENABLED
+        value: "true"
       - key: SUPERAGENT_ENABLED
         value: "true"
       - key: AUTONOMOUS_MODE
