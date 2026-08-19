@@ -33,13 +33,10 @@ services:
         value: "true"
       - key: OPSBOT_ENABLED
         value: "true"
-      # Full autonomous sales is intentionally gated until the sales engine's
-      # contract-acceptance path is hardened against false positives.
       - key: AUTONOMOUS_MODE
         value: "false"
       - key: BILLING_AUTONOMOUS_MODE
         value: "false"
-      # Optional integrations; inactive until real credentials/URLs exist.
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
@@ -56,6 +53,8 @@ services:
         sync: false
       - key: EMAIL_FROM
         sync: false
+      # Supply the actual partner-generated URLs/IDs from each affiliate dashboard.
+      # The app never fabricates commissionable IDs.
       - key: AFF_STAY22_URL
         sync: false
       - key: AFF_HIPCAMP_URL
@@ -71,4 +70,32 @@ services:
       - key: AFF_VRBO_URL
         sync: false
       - key: AFF_BOOKING_URL
+        sync: false
+      - key: AFF_OUTDOORSY_URL
+        sync: false
+      - key: AFF_RVSHARE_URL
+        sync: false
+      - key: AFF_EXPEDIA_URL
+        sync: false
+      - key: AFF_HOTELS_URL
+        sync: false
+      - key: AFF_KAYAK_URL
+        sync: false
+      - key: AFF_TRIPADVISOR_URL
+        sync: false
+      - key: AFF_KLOOK_URL
+        sync: false
+      - key: AFF_ALLTRAILS_URL
+        sync: false
+      - key: AFF_AIRBNB_URL
+        sync: false
+      - key: AFF_RECREATION_URL
+        sync: false
+      - key: AFF_AMAZON_TAG
+        sync: false
+      - key: AFF_AMAZON_CAMPING_URL
+        sync: false
+      - key: AFF_AMAZON_KAYAK_URL
+        sync: false
+      - key: AFF_AMAZON_BINOCULARS_URL
         sync: false
