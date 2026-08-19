@@ -1,9 +1,5 @@
 # OzarkRoost — Render Blueprint
-# Production web service only. The nurture-email cron is intentionally not
-# declared here because Render does not offer free cron-job instances.
-# If/when paid cron is enabled, add it as a separate Render service.
-# Database: use Neon (free) and set DATABASE_URL in Render.
-
+# Production web service. Secrets stay in Render, never in Git.
 services:
   - type: web
     runtime: node
@@ -11,9 +7,6 @@ services:
     plan: free
     region: oregon
     branch: main
-    # Free Render web services cannot use pre-deploy commands.
-    # Migrations are run during the build instead; server startup also
-    # performs an idempotent migration pass as a safety net.
     buildCommand: npm ci && npm run migrate
     startCommand: npm start
     healthCheckPath: /health
@@ -24,20 +17,39 @@ services:
         sync: false
       - key: APP_URL
         sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: SITE_HEALTH_ENABLED
+        value: "true"
+      - key: AFFILIATE_OPS_ENABLED
+        value: "true"
+      - key: PARTNER_DISCOVERY_ENABLED
+        value: "true"
+      - key: SUPERAGENT_ENABLED
+        value: "true"
+      - key: MARKETING_ENABLED
+        value: "true"
+      - key: OPSBOT_ENABLED
+        value: "true"
+      # Full autonomous sales is intentionally gated until the sales engine's
+      # contract-acceptance path is hardened against false positives.
+      - key: AUTONOMOUS_MODE
+        value: "false"
+      - key: BILLING_AUTONOMOUS_MODE
+        value: "false"
+      # Optional integrations; inactive until real credentials/URLs exist.
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
       - key: STRIPE_PAYMENT_LINK_URL
         sync: false
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: OPENAI_MODEL
-        value: gpt-4o-mini
       - key: SMTP_HOST
         sync: false
       - key: SMTP_PORT
-        sync: false
+        value: "587"
       - key: SMTP_USER
         sync: false
       - key: SMTP_PASS
@@ -60,17 +72,3 @@ services:
         sync: false
       - key: AFF_BOOKING_URL
         sync: false
-      - key: SITE_HEALTH_ENABLED
-        value: "true"
-      - key: AFFILIATE_OPS_ENABLED
-        value: "true"
-      - key: PARTNER_DISCOVERY_ENABLED
-        value: "true"
-      - key: SUPERAGENT_ENABLED
-        value: "true"
-      - key: AUTONOMOUS_MODE
-        value: "false"
-      - key: MARKETING_ENABLED
-        value: "false"
-      - key: OPSBOT_ENABLED
-        value: "false"
