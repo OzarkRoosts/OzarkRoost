@@ -31,13 +31,10 @@ function softStart(label, fn) {
 
 async function startServer() {
   errorTracker.installProcessHooks();
-  try {
-    console.log('[startup] Running migrations...');
-    const { runAllMigrations } = require('./migrate-runner');
-    await runAllMigrations();
-    console.log('[startup] Migrations complete.');
-  } catch (err) { console.error('[startup] Migration error:', err.message); }
 
+  // Migrations are intentionally owned by start.js. Keeping one migration
+  // owner prevents duplicate runs and makes migration failure a true
+  // deployment/startup failure instead of serving a partially initialized app.
   const siteHealth = softRequire('./lib/site-health-agent');
   softStart('site-health', () => siteHealth?.start?.());
   const affiliateOps = softRequire('./lib/affiliate-ops-agent');
