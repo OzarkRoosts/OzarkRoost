@@ -6,7 +6,8 @@
     "start": "node start.js",
     "dev": "node start.js",
     "build": "npm run migrate",
-    "migrate": "node migrate.js"
+    "migrate": "node migrate.js",
+    "postinstall": "node scripts/repair-guide-affiliate-markup.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
