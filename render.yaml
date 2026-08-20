@@ -27,6 +27,8 @@ services:
         value: "true"
       - key: AFFILIATE_OPS_ENABLED
         value: "true"
+      - key: AFFILIATE_APPLICATION_EXECUTION
+        value: "true"
       - key: PARTNER_DISCOVERY_ENABLED
         value: "true"
       - key: SUPERAGENT_ENABLED
@@ -36,7 +38,7 @@ services:
       - key: OPSBOT_ENABLED
         value: "true"
       - key: AUTONOMOUS_MODE
-        value: "false"
+        value: "true"
       - key: BILLING_AUTONOMOUS_MODE
         value: "false"
       - key: STRIPE_SECRET_KEY
@@ -54,6 +56,20 @@ services:
       - key: SMTP_PASS
         sync: false
       - key: EMAIL_FROM
+        sync: false
+      - key: AFFILIATE_APPLICANT_NAME
+        sync: false
+      - key: AFFILIATE_APPLICANT_EMAIL
+        sync: false
+      - key: AFFILIATE_APPLICANT_COMPANY
+        sync: false
+      - key: AFFILIATE_APPLICANT_PHONE
+        sync: false
+      - key: AFFILIATE_APPLICANT_ADDRESS
+        sync: false
+      - key: AFFILIATE_APPLICANT_COUNTRY
+        value: "United States"
+      - key: AFFILIATE_APPLICANT_DESCRIPTION
         sync: false
       # Supply the actual partner-generated URLs/IDs from each affiliate dashboard.
       # The app never fabricates commissionable IDs.
