@@ -7,6 +7,20 @@ const { applySecurityHeaders, isSafeExternalUrl, sanitizeText } = require('./lib
 const { createRateLimiter } = require('./middleware/rate-limit');
 const errorTracker = require('./middleware/error-tracker');
 
+// Render can invoke server.js directly, bypassing start.js. Keep the
+// affiliate executor armed in either startup path so queued applications
+// do not remain permanently in `drafted`.
+function startAffiliateExecutor() {
+  if (process.env.AFFILIATE_APPLICATION_EXECUTION === 'false') return;
+  try {
+    const executor = require('./lib/affiliate-application-executor');
+    executor.start();
+  } catch (err) {
+    console.warn('[startup] affiliate-executor failed soft-start:', err.message);
+  }
+}
+startAffiliateExecutor();
+
 // Keep provider/model configuration resilient to retired defaults.
 if (process.env.GROQ_API_KEY) {
   const retired = new Set(['llama-3.1-8b-instant', 'llama-3.3-70b-versatile']);
