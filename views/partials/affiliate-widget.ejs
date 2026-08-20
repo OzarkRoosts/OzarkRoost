@@ -1,13 +1,8 @@
 <%
-  /**
-   * affiliate-widget.ejs
-   * Renders one or more monetization partner CTAs.
-   *
-   * Usage:
-   *   <%- include('../partials/affiliate-widget', { widgets: ['stay22','hipcamp'] }) %>
-   *   or single: { widget: 'rei' }
-   *   or bundle: { bundle: 'stays' }  // stays|luxury|camping|adventure|roadtrip|gear|monetize_all
-   */
+  // affiliate-widget.ejs
+  // Renders one or more monetization partner CTAs.
+  // Inputs: widgets, widget, or bundle.
+  // Bundles: stays|luxury|camping|adventure|roadtrip|gear|monetize_all
   const bundleMap = {
     stays: ['stay22', 'hipcamp', 'vrbo', 'booking', 'airbnb'],
     luxury: ['stay22', 'vrbo', 'booking', 'expedia'],
@@ -29,29 +24,15 @@
   }
   const aff = typeof affiliateLinks !== 'undefined' ? affiliateLinks : {};
   const labels = {
-    stay22: 'Find cabins on Stay22 map',
-    hipcamp: 'Browse Hipcamp stays',
-    rei: 'Gear up at REI',
-    getyourguide: 'Book tours on GetYourGuide',
-    viator: 'Book experiences on Viator',
-    outdoorsy: 'Rent an RV on Outdoorsy',
-    rvshare: 'Find RVs on RVshare',
-    vrbo: 'Browse Vrbo cabins',
-    booking: 'Search Booking.com',
-    publiclands: 'Outfit at Public Lands',
-    expedia: 'Compare hotels on Expedia',
-    hotels: 'Search Hotels.com',
-    kayak: 'Compare stays on Kayak',
-    tripadvisor: 'Read reviews on Tripadvisor',
-    klook: 'Browse activities on Klook',
-    alltrails: 'Map trails on AllTrails',
-    amazon_camping: 'Camping essentials on Amazon',
-    amazon_kayak: 'Kayaks & paddles on Amazon',
-    amazon_binoculars: 'Travel binoculars on Amazon',
-    airbnb: 'Browse Airbnb Ozarks homes',
-    recreation: 'Reserve on Recreation.gov',
-    list_cabin: 'List your cabin on OzarkRoost',
-    operators: 'Partner with OzarkRoost',
+    stay22: 'Find cabins on Stay22 map', hipcamp: 'Browse Hipcamp stays', rei: 'Gear up at REI',
+    getyourguide: 'Book tours on GetYourGuide', viator: 'Book experiences on Viator',
+    outdoorsy: 'Rent an RV on Outdoorsy', rvshare: 'Find RVs on RVshare', vrbo: 'Browse Vrbo cabins',
+    booking: 'Search Booking.com', publiclands: 'Outfit at Public Lands', expedia: 'Compare hotels on Expedia',
+    hotels: 'Search Hotels.com', kayak: 'Compare stays on Kayak', tripadvisor: 'Read reviews on Tripadvisor',
+    klook: 'Browse activities on Klook', alltrails: 'Map trails on AllTrails',
+    amazon_camping: 'Camping essentials on Amazon', amazon_kayak: 'Kayaks & paddles on Amazon',
+    amazon_binoculars: 'Travel binoculars on Amazon', airbnb: 'Browse Airbnb Ozarks homes',
+    recreation: 'Reserve on Recreation.gov', list_cabin: 'List your cabin on OzarkRoost', operators: 'Partner with OzarkRoost',
   };
   const blurbs = {
     stay22: 'Interactive map of bookable cabins near your route — compare prices in one place.',
