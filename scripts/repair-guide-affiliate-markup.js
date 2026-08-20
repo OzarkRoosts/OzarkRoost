@@ -2,7 +2,7 @@
 /**
  * Repairs malformed affiliate-widget EJS insertions in guide templates.
  *
- * The affiliate widget is a block include, not a CSS class expression.  Keep
+ * The affiliate widget is a block include, not a CSS class expression. Keep
  * this repair idempotent so deployments and local installs can safely run it.
  */
 const fs = require('fs');
@@ -21,7 +21,7 @@ for (const file of fs.readdirSync(guidesDir).filter(name => name.endsWith('.ejs'
   const fullPath = path.join(guidesDir, file);
   const before = fs.readFileSync(fullPath, 'utf8');
   const after = before.replace(malformed, (_match, bundle) =>
-    `section class="guide-section guide-section--cta">\n    <%- include('../partials/affiliate-widget', { bundle: '${bundle}' }) %>`
+    `<section class="guide-section guide-section--cta">\n    <%- include('../partials/affiliate-widget', { bundle: '${bundle}' }) %>`
   );
   if (after !== before) {
     fs.writeFileSync(fullPath, after);
