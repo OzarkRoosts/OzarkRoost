@@ -16,6 +16,15 @@ async function start() {
     partnerDiscovery.start();
   }
 
+  // Affiliate applications now move beyond perpetual drafts. The executor
+  // submits supported HTML forms automatically and records needs_human when
+  // a target requires CAPTCHA, MFA, a login, an external JS portal, or an
+  // otherwise unsafe/unmappable field.
+  if (process.env.AFFILIATE_APPLICATION_EXECUTION !== 'false') {
+    const affiliateExecutor = require('./lib/affiliate-application-executor');
+    affiliateExecutor.start();
+  }
+
   require('./server');
 }
 
