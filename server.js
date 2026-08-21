@@ -1,4 +1,18 @@
 require('dotenv').config();
+
+// Local-first AI: Marketing and OpsBot now use deterministic in-process code
+// with no API calls. External OpenAI/Groq is reserved for an explicit emergency
+// fallback via LOCAL_AI_EMERGENCY=true.
+try {
+  const { OpenAI: ExternalOpenAI } = require('openai');
+  const { createEmergencyClient } = require('./lib/local-ai-engine');
+  const LocalFirstOpenAI = createEmergencyClient(ExternalOpenAI);
+  require.cache[require.resolve('openai')].exports = { OpenAI: LocalFirstOpenAI };
+  console.log('[AI] Local-first engine armed — external AI disabled unless LOCAL_AI_EMERGENCY=true');
+} catch (err) {
+  console.warn('[AI] Local-first engine could not be armed:', err.message);
+}
+
 const express = require('express');
 const path = require('path');
 const { buildLandingContext } = require('./lib/landing-context');
