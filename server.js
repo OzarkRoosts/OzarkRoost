@@ -7,9 +7,6 @@ const { applySecurityHeaders, isSafeExternalUrl, sanitizeText } = require('./lib
 const { createRateLimiter } = require('./middleware/rate-limit');
 const errorTracker = require('./middleware/error-tracker');
 
-// Render can invoke server.js directly, bypassing start.js. Keep the
-// affiliate executor armed in either startup path so queued applications
-// do not remain permanently in `drafted`.
 function startAffiliateExecutor() {
   if (process.env.AFFILIATE_APPLICATION_EXECUTION === 'false') return;
   try {
@@ -21,16 +18,7 @@ function startAffiliateExecutor() {
 }
 startAffiliateExecutor();
 
-// Keep provider/model configuration resilient to retired defaults.
-if (process.env.GROQ_API_KEY) {
-  const retired = new Set(['llama-3.1-8b-instant', 'llama-3.3-70b-versatile']);
-  if (!process.env.GROQ_MODEL || retired.has(process.env.GROQ_MODEL)) {
-    process.env.GROQ_MODEL = 'openai/gpt-oss-120b';
-    console.log('[AI] Groq model selected: openai/gpt-oss-120b');
-  } else {
-    console.log(`[AI] Groq model selected: ${process.env.GROQ_MODEL}`);
-  }
-}
+// AI is local-first. Legacy provider credentials are deliberately ignored.
 if (!process.env.APP_URL && process.env.RENDER_EXTERNAL_URL) process.env.APP_URL = process.env.RENDER_EXTERNAL_URL;
 if (!process.env.SITE_URL && process.env.RENDER_EXTERNAL_URL) process.env.SITE_URL = process.env.RENDER_EXTERNAL_URL;
 
@@ -45,10 +33,6 @@ function softStart(label, fn) {
 
 async function startServer() {
   errorTracker.installProcessHooks();
-
-  // Migrations are intentionally owned by start.js. Keeping one migration
-  // owner prevents duplicate runs and makes migration failure a true
-  // deployment/startup failure instead of serving a partially initialized app.
   const siteHealth = softRequire('./lib/site-health-agent');
   softStart('site-health', () => siteHealth?.start?.());
   const affiliateOps = softRequire('./lib/affiliate-ops-agent');
@@ -102,7 +86,6 @@ async function startServer() {
     const proto = req.get('x-forwarded-proto') || req.protocol || 'https';
     return `${proto}://${req.get('host')}`;
   }
-
   const SITEMAP_PATHS = ['/', '/listings', '/adventures', '/list-your-cabin', '/referral', '/operators', '/faq', '/guides/about-the-ozarks', '/guides/buffalo-river-cabins', '/guides/ozarks-adventures', '/guides/ozarks-camping-rv', '/guides/hidden-gem-cabins', '/guides/buffalo-river-kayaking', '/guides/hot-tub-cabins', '/guides/pet-friendly-cabins', '/guides/treehouse-rentals', '/guides/glamping-ozarks', '/guides/luxury-cabins', '/guides/ozarks-road-trip', '/guides/trip-planner'];
   app.get('/sitemap.xml', (req, res) => {
     const base = publicBaseUrl(req);
@@ -116,7 +99,6 @@ async function startServer() {
   app.get('/', (_req, res) => res.render('layout', buildLandingContext()));
   app.get('/listings', async (_req, res) => { const { getAllListings } = require('./db/listing-submissions'); const listings = await getAllListings(); res.render('listings', { listings }); });
   app.get('/adventures', (_req, res) => { const { getAffiliateLinks, getFeaturedListings } = require('./lib/affiliate-links'); res.render('adventures', { affiliateLinks: getAffiliateLinks(), featuredListings: getFeaturedListings() }); });
-
   const PARTNER_HOST_ALLOW = new Set(['stay22.com', 'www.stay22.com', 'hipcamp.com', 'www.hipcamp.com', 'rei.com', 'www.rei.com', 'getyourguide.com', 'www.getyourguide.com', 'viator.com', 'www.viator.com', 'outdoorsy.com', 'www.outdoorsy.com', 'rvshare.com', 'www.rvshare.com', 'vrbo.com', 'www.vrbo.com', 'booking.com', 'www.booking.com', 'publiclands.com', 'www.publiclands.com', 'expedia.com', 'www.expedia.com', 'hotels.com', 'www.hotels.com', 'kayak.com', 'www.kayak.com', 'tripadvisor.com', 'www.tripadvisor.com', 'klook.com', 'www.klook.com', 'alltrails.com', 'www.alltrails.com', 'amazon.com', 'www.amazon.com', 'airbnb.com', 'www.airbnb.com', 'recreation.gov', 'www.recreation.gov']);
   function isAllowedPartnerUrl(raw) { if (!isSafeExternalUrl(raw)) return false; try { const u = new URL(raw); return u.protocol === 'https:' && PARTNER_HOST_ALLOW.has(u.hostname.toLowerCase()); } catch { return false; } }
   app.get('/out', outLimiter, async (req, res) => {
@@ -125,7 +107,6 @@ async function startServer() {
     if (!listingId || !partner || !/^\d+$/.test(listingId)) return res.redirect('/listings');
     try { const row = await pool.query('SELECT website_url FROM listing_submissions WHERE id = $1 AND payment_status = $2', [listingId, 'paid']); if (!row.rows[0]) return res.redirect('/listings'); const target = row.rows[0].website_url; if (!isSafeExternalUrl(target)) return res.redirect('/listings'); pool.query('INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1, $2, $3, NOW())', [listingId, partner, sanitizeText(req.headers['user-agent'], 300) || null]).catch(err => console.error('[affiliate_clicks] insert error:', err?.message)); return res.redirect(302, target); } catch (err) { console.error('[/out route] error:', err?.message); return res.redirect('/listings'); }
   });
-
   app.use('/list-your-cabin', formLimiter, require('./routes/list-your-cabin'));
   app.use('/referral', formLimiter, require('./routes/referral'));
   app.use('/operators', formLimiter, require('./routes/operators'));
@@ -140,5 +121,4 @@ async function startServer() {
   app.use(errorTracker.errorHandler());
   app.listen(port, () => console.log(`Server running on port ${port}`));
 }
-
 startServer().catch(err => { console.error('[startup] Fatal error:', err.message); process.exit(1); });
