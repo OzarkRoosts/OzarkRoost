@@ -1,9 +1,6 @@
 <%
-  /**
-   * related-guides.ejs
-   * Cross-link block for SEO internal linking.
-   * Usage: <%- include('../partials/related-guides', { currentSlug: 'hot-tub-cabins' }) %>
-   */
+  // related-guides.ejs
+  // Cross-link block for SEO internal linking.
   const slug = typeof currentSlug !== 'undefined' ? currentSlug : '';
   const all = typeof relatedGuides !== 'undefined' ? relatedGuides : [
     { slug: 'hot-tub-cabins', title: 'Hot Tub Cabins' },
