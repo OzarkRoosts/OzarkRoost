@@ -7,7 +7,11 @@ try {
   const { OpenAI: ExternalOpenAI } = require('openai');
   const { createEmergencyClient } = require('./lib/local-ai-engine');
   const LocalFirstOpenAI = createEmergencyClient(ExternalOpenAI);
-  require.cache[require.resolve('openai')].exports = { OpenAI: LocalFirstOpenAI };
+  // Support both OpenAI SDK import styles used by legacy modules:
+  //   const OpenAI = require('openai')
+  //   const { OpenAI } = require('openai')
+  LocalFirstOpenAI.OpenAI = LocalFirstOpenAI;
+  require.cache[require.resolve('openai')].exports = LocalFirstOpenAI;
   console.log('[AI] Local-first engine armed — external AI disabled unless LOCAL_AI_EMERGENCY=true');
 } catch (err) {
   console.warn('[AI] Local-first engine could not be armed:', err.message);
@@ -21,9 +25,6 @@ const { applySecurityHeaders, isSafeExternalUrl, sanitizeText } = require('./lib
 const { createRateLimiter } = require('./middleware/rate-limit');
 const errorTracker = require('./middleware/error-tracker');
 
-// Render can invoke server.js directly, bypassing start.js. Keep the
-// affiliate executor armed in either startup path so queued applications
-// do not remain permanently in `drafted`.
 function startAffiliateExecutor() {
   if (process.env.AFFILIATE_APPLICATION_EXECUTION === 'false') return;
   try {
@@ -35,7 +36,6 @@ function startAffiliateExecutor() {
 }
 startAffiliateExecutor();
 
-// Keep provider/model configuration resilient to retired defaults.
 if (process.env.GROQ_API_KEY) {
   const retired = new Set(['llama-3.1-8b-instant', 'llama-3.3-70b-versatile']);
   if (!process.env.GROQ_MODEL || retired.has(process.env.GROQ_MODEL)) {
@@ -59,10 +59,6 @@ function softStart(label, fn) {
 
 async function startServer() {
   errorTracker.installProcessHooks();
-
-  // Migrations are intentionally owned by start.js. Keeping one migration
-  // owner prevents duplicate runs and makes migration failure a true
-  // deployment/startup failure instead of serving a partially initialized app.
   const siteHealth = softRequire('./lib/site-health-agent');
   softStart('site-health', () => siteHealth?.start?.());
   const affiliateOps = softRequire('./lib/affiliate-ops-agent');
@@ -116,13 +112,8 @@ async function startServer() {
     const proto = req.get('x-forwarded-proto') || req.protocol || 'https';
     return `${proto}://${req.get('host')}`;
   }
-
   const SITEMAP_PATHS = ['/', '/listings', '/adventures', '/list-your-cabin', '/referral', '/operators', '/faq', '/guides/about-the-ozarks', '/guides/buffalo-river-cabins', '/guides/ozarks-adventures', '/guides/ozarks-camping-rv', '/guides/hidden-gem-cabins', '/guides/buffalo-river-kayaking', '/guides/hot-tub-cabins', '/guides/pet-friendly-cabins', '/guides/treehouse-rentals', '/guides/glamping-ozarks', '/guides/luxury-cabins', '/guides/ozarks-road-trip', '/guides/trip-planner'];
-  app.get('/sitemap.xml', (req, res) => {
-    const base = publicBaseUrl(req);
-    const body = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', ...SITEMAP_PATHS.map((p) => { const priority = p === '/' ? '1.0' : p.startsWith('/guides/') ? '0.9' : '0.7'; return ['  <url>', `    <loc>${base}${p}</loc>`, '    <changefreq>weekly</changefreq>', `    <priority>${priority}</priority>`, '  </url>'].join('\n'); }), '</urlset>', ''].join('\n');
-    res.type('application/xml').send(body);
-  });
+  app.get('/sitemap.xml', (req, res) => { const base = publicBaseUrl(req); const body = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', ...SITEMAP_PATHS.map((p) => { const priority = p === '/' ? '1.0' : p.startsWith('/guides/') ? '0.9' : '0.7'; return ['  <url>', `    <loc>${base}${p}</loc>`, '    <changefreq>weekly</changefreq>', `    <priority>${priority}</priority>`, '  </url>'].join('\n'); }), '</urlset>', ''].join('\n'); res.type('application/xml').send(body); });
   app.get('/robots.txt', (req, res) => { const base = publicBaseUrl(req); res.type('text/plain').send(`User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`); });
   app.get('/superagent-status', (_req, res) => { try { const superagent = require('./lib/super-agent'); res.json(superagent.getStatus()); } catch (err) { res.status(503).json({ error: 'Super Agent not enabled', detail: err.message }); } });
   app.use(express.static(path.join(__dirname, 'public'), { index: false }));
@@ -130,7 +121,6 @@ async function startServer() {
   app.get('/', (_req, res) => res.render('layout', buildLandingContext()));
   app.get('/listings', async (_req, res) => { const { getAllListings } = require('./db/listing-submissions'); const listings = await getAllListings(); res.render('listings', { listings }); });
   app.get('/adventures', (_req, res) => { const { getAffiliateLinks, getFeaturedListings } = require('./lib/affiliate-links'); res.render('adventures', { affiliateLinks: getAffiliateLinks(), featuredListings: getFeaturedListings() }); });
-
   const PARTNER_HOST_ALLOW = new Set(['stay22.com', 'www.stay22.com', 'hipcamp.com', 'www.hipcamp.com', 'rei.com', 'www.rei.com', 'getyourguide.com', 'www.getyourguide.com', 'viator.com', 'www.viator.com', 'outdoorsy.com', 'www.outdoorsy.com', 'rvshare.com', 'www.rvshare.com', 'vrbo.com', 'www.vrbo.com', 'booking.com', 'www.booking.com', 'publiclands.com', 'www.publiclands.com', 'expedia.com', 'www.expedia.com', 'hotels.com', 'www.hotels.com', 'kayak.com', 'www.kayak.com', 'tripadvisor.com', 'www.tripadvisor.com', 'klook.com', 'www.klook.com', 'alltrails.com', 'www.alltrails.com', 'amazon.com', 'www.amazon.com', 'airbnb.com', 'www.airbnb.com', 'recreation.gov', 'www.recreation.gov']);
   function isAllowedPartnerUrl(raw) { if (!isSafeExternalUrl(raw)) return false; try { const u = new URL(raw); return u.protocol === 'https:' && PARTNER_HOST_ALLOW.has(u.hostname.toLowerCase()); } catch { return false; } }
   app.get('/out', outLimiter, async (req, res) => {
@@ -139,7 +129,6 @@ async function startServer() {
     if (!listingId || !partner || !/^\d+$/.test(listingId)) return res.redirect('/listings');
     try { const row = await pool.query('SELECT website_url FROM listing_submissions WHERE id = $1 AND payment_status = $2', [listingId, 'paid']); if (!row.rows[0]) return res.redirect('/listings'); const target = row.rows[0].website_url; if (!isSafeExternalUrl(target)) return res.redirect('/listings'); pool.query('INSERT INTO affiliate_clicks (listing_id, partner, user_agent, clicked_at) VALUES ($1, $2, $3, NOW())', [listingId, partner, sanitizeText(req.headers['user-agent'], 300) || null]).catch(err => console.error('[affiliate_clicks] insert error:', err?.message)); return res.redirect(302, target); } catch (err) { console.error('[/out route] error:', err?.message); return res.redirect('/listings'); }
   });
-
   app.use('/list-your-cabin', formLimiter, require('./routes/list-your-cabin'));
   app.use('/referral', formLimiter, require('./routes/referral'));
   app.use('/operators', formLimiter, require('./routes/operators'));
