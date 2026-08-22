@@ -1,0 +1,1 @@
+Scope: legitimate free/organic promotion surfaces. No CAPTCHA bypass, fake accounts, private-data scraping, or unsolicited mass posting.
