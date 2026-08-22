@@ -15,11 +15,11 @@ function getDatabaseConfig() {
     process.exit(1);
   }
 
-  const config = {
-    connectionString: databaseUrl
-  };
+  const config = { connectionString: databaseUrl };
 
   if (!isLocalDatabaseUrl(databaseUrl)) {
+    // Preserve the application's existing certificate behavior while making
+    // the pg-connection-string intent explicit for future driver versions.
     config.ssl = { rejectUnauthorized: false };
   }
 
