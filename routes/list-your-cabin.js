@@ -22,6 +22,19 @@ function getTier(value) {
   return Object.prototype.hasOwnProperty.call(STRIPE_LINKS, value) ? value : 'starter';
 }
 
+function buildStripePaymentUrl(baseLink, submissionId, ownerEmail, tier) {
+  const url = new URL(baseLink);
+  // Stripe Payment Links support client_reference_id for server-side reconciliation
+  // and UTM parameters for conversion/source attribution.
+  url.searchParams.set('client_reference_id', String(submissionId));
+  url.searchParams.set('prefilled_email', ownerEmail);
+  url.searchParams.set('utm_source', 'ozarkroost');
+  url.searchParams.set('utm_medium', 'website');
+  url.searchParams.set('utm_campaign', 'premium_listing');
+  url.searchParams.set('utm_content', tier);
+  return url.toString();
+}
+
 // GET /list-your-cabin — render the form
 router.get('/', (_req, res) => {
   res.render('list-your-cabin', { tier: 'starter', tierMeta: TIER_META });
@@ -78,9 +91,7 @@ router.post('/', async (req, res) => {
   }
 
   if (/^https:\/\/buy\.stripe\.com\//i.test(baseLink)) {
-    const separator = baseLink.includes('?') ? '&' : '?';
-    const paymentLinkUrl = `${baseLink}${separator}client_reference_id=${encodeURIComponent(submission.id)}&prefilled_email=${encodeURIComponent(ownerEmail)}`;
-    return res.redirect(paymentLinkUrl);
+    return res.redirect(buildStripePaymentUrl(baseLink, submission.id, ownerEmail.toLowerCase(), tier));
   }
 
   res.redirect('/list-your-cabin/thank-you?email=' + encodeURIComponent(ownerEmail) + '&manual=true');
