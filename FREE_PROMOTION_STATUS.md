@@ -1,0 +1,1 @@
+Free promotion sweep is enabled in the daily marketing campaign. Opportunities are tracked in marketing_directory_submissions and reusable brand copy is prepared in marketing_outreach.
