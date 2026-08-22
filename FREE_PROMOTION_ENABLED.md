@@ -1,0 +1,1 @@
+Free promotion sweep enabled in the daily marketing campaign.
