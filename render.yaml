@@ -45,6 +45,15 @@ services:
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
+      # Tier-specific Payment Links used by /list-your-cabin.
+      # Keep these in Render so the checkout configuration can be changed without code changes.
+      - key: STRIPE_STARTER_PAYMENT_LINK_URL
+        sync: false
+      - key: STRIPE_FEATURED_PAYMENT_LINK_URL
+        sync: false
+      - key: STRIPE_DOMINANT_PAYMENT_LINK_URL
+        sync: false
+      # Legacy/general payment-link variable retained for compatibility.
       - key: STRIPE_PAYMENT_LINK_URL
         sync: false
       - key: SMTP_HOST
