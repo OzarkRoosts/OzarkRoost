@@ -1,29 +1,37 @@
 <%
   /**
    * affiliate-button.ejs
-   * Reusable affiliate CTA button component
+   * Reusable affiliate CTA button component.
+   *
+   * All affiliate CTAs are routed through /out so OzarkRoost records
+   * the click before sending the visitor to the partner URL.
    *
    * Usage:
-   *   <%- include('partials/affiliate-button', { 
+   *   <%- include('partials/affiliate-button', {
    *     platform: 'vrbo',
    *     url: '/out?listing=123&partner=vrbo',
    *     label: 'View on Vrbo'
    *   }) %>
    *
-   * Or for direct URLs (Viator, AllTrails):
-   *   <%- include('partials/affiliate-button', {
-   *     platform: 'viator',
-   *     url: 'https://www.viator.com/...',
-   *     label: 'Guided Tours on Viator',
-   *     external: true
-   *   }) %>
+   * For partner URLs, pass the configured affiliate URL and let this
+   * component wrap it in the tracking redirect.
    */
 %>
+<%
+  const partnerKey = String(platform || 'direct').toLowerCase();
+  const rawUrl = typeof url === 'string' ? url : '';
+  let trackedUrl = rawUrl;
 
-<a href="<%= url %>" 
-   target="<%= external ? '_blank' : '_self' %>"
-   rel="<%= external ? 'noopener noreferrer' : '' %>"
+  // Preserve an existing /out URL so callers that already supply a
+  // listing-aware redirect are not double-wrapped.
+  if (rawUrl && !rawUrl.startsWith('/out?')) {
+    trackedUrl = `/out?partner=${encodeURIComponent(partnerKey)}&to=${encodeURIComponent(rawUrl)}`;
+  }
+%>
+
+<a href="<%= trackedUrl %>"
+   target="_self"
+   rel="sponsored noopener noreferrer"
    class="affiliate-btn affiliate-btn--<%= platform %>">
   <%= label %>
-  <% if (external) { %><span class="affiliate-btn__icon">→</span><% } %>
 </a>
