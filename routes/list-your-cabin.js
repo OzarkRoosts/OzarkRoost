@@ -6,6 +6,8 @@ const router = express.Router();
 const { createListingSubmission } = require('../db/listing-submissions');
 const { isValidEmail, sanitizeText } = require('../lib/security');
 
+// Live Stripe payment links currently attached to the OzarkRoost account.
+// Render environment variables can override these without another code deploy.
 const STRIPE_LINKS = {
   starter: process.env.STRIPE_STARTER_PAYMENT_LINK_URL || 'https://buy.stripe.com/6oU8wO1w57h03jkdU97wA01',
   featured: process.env.STRIPE_FEATURED_PAYMENT_LINK_URL || 'https://buy.stripe.com/3cI8wOgqZ58S5rseYd7wA02',
@@ -13,8 +15,8 @@ const STRIPE_LINKS = {
 };
 
 const TIER_META = {
-  starter: { label: 'Starter', price: 99 },
-  featured: { label: 'Featured', price: 149 },
+  starter: { label: 'Starter', price: 49 },
+  featured: { label: 'Featured', price: 99 },
   dominant: { label: 'Dominant', price: 199 },
 };
 
