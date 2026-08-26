@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node start.js",
     "dev": "node start.js",
-    "build": "npm run migrate",
+    "build": "node scripts/build.js",
     "migrate": "node migrate.js",
     "postinstall": "node scripts/repair-guide-affiliate-markup.js"
   },
