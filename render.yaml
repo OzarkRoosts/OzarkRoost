@@ -45,15 +45,12 @@ services:
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
-      # Tier-specific Payment Links used by /list-your-cabin.
-      # Keep these in Render so the checkout configuration can be changed without code changes.
       - key: STRIPE_STARTER_PAYMENT_LINK_URL
         sync: false
       - key: STRIPE_FEATURED_PAYMENT_LINK_URL
         sync: false
       - key: STRIPE_DOMINANT_PAYMENT_LINK_URL
         sync: false
-      # Legacy/general payment-link variable retained for compatibility.
       - key: STRIPE_PAYMENT_LINK_URL
         sync: false
       - key: SMTP_HOST
@@ -71,6 +68,9 @@ services:
         sync: false
       - key: TRAVELPAYOUTS_API_ENABLED
         value: "true"
+      # Stay22 credentials stay in Render; never commit the token.
+      - key: STAY22_API_TOKEN
+        sync: false
       - key: AFFILIATE_APPLICANT_NAME
         sync: false
       - key: AFFILIATE_APPLICANT_EMAIL
@@ -85,15 +85,12 @@ services:
         value: "United States"
       - key: AFFILIATE_APPLICANT_DESCRIPTION
         sync: false
-      # Supply the actual partner-generated URLs/IDs from each affiliate dashboard.
-      # The app never fabricates commissionable IDs.
+      # Supply actual partner-generated URLs/IDs from each affiliate dashboard.
       - key: AFF_STAY22_URL
         sync: false
       - key: AFF_HIPCAMP_URL
         sync: false
       - key: AFF_GETYOURGUIDE_URL
-        sync: false
-      - key: AFF_VIATOR_URL
         sync: false
       - key: AFF_REI_URL
         sync: false
