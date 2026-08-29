@@ -42,8 +42,13 @@ async function start() {
     localOutreach.start();
   }
 
-  if (process.env.TRAVELPAYOUTS_API_ENABLED !== 'false') {
-    const travelpayoutsOps = require('./lib/travelpayouts-ops');
+  // Travelpayouts is enabled automatically whenever the Render secret exists.
+  // TRAVELPAYOUTS_API_ENABLED=false remains the only explicit kill switch.
+  const travelpayoutsOps = require('./lib/travelpayouts-ops');
+  const travelpayoutsApiEnabled = travelpayoutsOps.configured();
+  console.log(`[Travelpayouts] API integration: configured=${travelpayoutsApiEnabled} kill_switch=${process.env.TRAVELPAYOUTS_API_ENABLED === 'false'}`);
+
+  if (travelpayoutsApiEnabled && process.env.TRAVELPAYOUTS_API_ENABLED !== 'false') {
     const syncTravelpayouts = async () => {
       await travelpayoutsOps.run();
     };
@@ -51,6 +56,10 @@ async function start() {
     const intervalMs = Number(process.env.TRAVELPAYOUTS_SYNC_INTERVAL_MS || 15 * 60 * 1000);
     setInterval(syncTravelpayouts, intervalMs);
     console.log(`[Travelpayouts] Revenue sync enabled every ${Math.round(intervalMs / 60000)} minutes`);
+  } else if (!travelpayoutsApiEnabled) {
+    console.warn('[Travelpayouts] API secret missing: set TRAVELPAYOUTS_API_TOKEN in Render to enable revenue operations.');
+  } else {
+    console.warn('[Travelpayouts] Revenue sync explicitly disabled by TRAVELPAYOUTS_API_ENABLED=false.');
   }
 
   require('./server');
