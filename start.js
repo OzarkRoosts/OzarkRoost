@@ -1,8 +1,12 @@
 // Load Render/SMTP environment aliases before ANY application module is loaded.
-// This is intentionally explicit rather than relying only on NODE_OPTIONS, because
-// OpsBot constructs its SMTP transport at module-load time.
 require('./lib/runtime-env');
 require('dotenv').config();
+
+// Travelpayouts bootstrap is intentionally loaded at process startup so the
+// deployment log proves whether the Render secret is visible to Node.
+const travelpayoutsApi = require('./lib/travelpayouts-api');
+const travelpayoutsOps = require('./lib/travelpayouts-ops');
+console.log(`[Travelpayouts] bootstrap loaded — configured=${travelpayoutsApi.configured()} token_source=${process.env.TRAVELPAYOUTS_API_TOKEN ? 'TRAVELPAYOUTS_API_TOKEN' : (process.env.TRAVELPAYOUTS_API_KEY ? 'TRAVELPAYOUTS_API_KEY' : 'none')}`);
 
 async function repairAffiliateExecutionSchema(pool) {
   await pool.query(`
@@ -42,15 +46,14 @@ async function start() {
     localOutreach.start();
   }
 
-  // Travelpayouts is enabled automatically whenever the Render secret exists.
-  // TRAVELPAYOUTS_API_ENABLED=false remains the only explicit kill switch.
-  const travelpayoutsOps = require('./lib/travelpayouts-ops');
   const travelpayoutsApiEnabled = travelpayoutsOps.configured();
   console.log(`[Travelpayouts] API integration: configured=${travelpayoutsApiEnabled} kill_switch=${process.env.TRAVELPAYOUTS_API_ENABLED === 'false'}`);
 
   if (travelpayoutsApiEnabled && process.env.TRAVELPAYOUTS_API_ENABLED !== 'false') {
     const syncTravelpayouts = async () => {
-      await travelpayoutsOps.run();
+      const result = await travelpayoutsOps.run();
+      if (result?.error) console.error(`[Travelpayouts] sync error: ${result.error}`);
+      return result;
     };
     await syncTravelpayouts();
     const intervalMs = Number(process.env.TRAVELPAYOUTS_SYNC_INTERVAL_MS || 15 * 60 * 1000);
