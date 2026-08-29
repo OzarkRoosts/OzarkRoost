@@ -1,3 +1,7 @@
+// Load Render/SMTP environment aliases before ANY application module is loaded.
+// This is intentionally explicit rather than relying only on NODE_OPTIONS, because
+// OpsBot constructs its SMTP transport at module-load time.
+require('./lib/runtime-env');
 require('dotenv').config();
 
 async function repairAffiliateExecutionSchema(pool) {
