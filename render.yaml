@@ -66,6 +66,11 @@ services:
         sync: false
       - key: EMAIL_FROM
         sync: false
+      # Travelpayouts API credentials stay in Render; never commit the token.
+      - key: TRAVELPAYOUTS_API_TOKEN
+        sync: false
+      - key: TRAVELPAYOUTS_API_ENABLED
+        value: "true"
       - key: AFFILIATE_APPLICANT_NAME
         sync: false
       - key: AFFILIATE_APPLICANT_EMAIL
