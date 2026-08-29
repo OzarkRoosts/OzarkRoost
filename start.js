@@ -2,11 +2,14 @@
 require('./lib/runtime-env');
 require('dotenv').config();
 
-// Travelpayouts bootstrap is intentionally loaded at process startup so the
-// deployment log proves whether the Render secret is visible to Node.
+// Revenue integrations are loaded at process startup so Render logs prove whether
+// the production secrets are visible to Node. Never print secret values.
 const travelpayoutsApi = require('./lib/travelpayouts-api');
 const travelpayoutsOps = require('./lib/travelpayouts-ops');
-console.log(`[Travelpayouts] bootstrap loaded — configured=${travelpayoutsApi.configured()} token_source=${process.env.TRAVELPAYOUTS_API_TOKEN ? 'TRAVELPAYOUTS_API_TOKEN' : (process.env.TRAVELPAYOUTS_API_KEY ? 'TRAVELPAYOUTS_API_KEY' : 'none')}`);
+const stay22TokenConfigured = Boolean(process.env.STAY22_API_TOKEN);
+const stay22AffiliateUrlConfigured = Boolean(process.env.AFF_STAY22_URL);
+console.log(`[Revenue] startup — Travelpayouts configured=${travelpayoutsApi.configured()} token_source=${process.env.TRAVELPAYOUTS_API_TOKEN ? 'TRAVELPAYOUTS_API_TOKEN' : (process.env.TRAVELPAYOUTS_API_KEY ? 'TRAVELPAYOUTS_API_KEY' : 'none')}`);
+console.log(`[Revenue] startup — Stay22 token_configured=${stay22TokenConfigured} affiliate_url_configured=${stay22AffiliateUrlConfigured}`);
 
 async function repairAffiliateExecutionSchema(pool) {
   await pool.query(`
@@ -63,6 +66,14 @@ async function start() {
     console.warn('[Travelpayouts] API secret missing: set TRAVELPAYOUTS_API_TOKEN in Render to enable revenue operations.');
   } else {
     console.warn('[Travelpayouts] Revenue sync explicitly disabled by TRAVELPAYOUTS_API_ENABLED=false.');
+  }
+
+  if (stay22AffiliateUrlConfigured) {
+    console.log('[Stay22] affiliate URL configured — Stay22 monetization link is active');
+  } else if (stay22TokenConfigured) {
+    console.warn('[Stay22] API token configured but AFF_STAY22_URL is missing — configure the partner URL before expecting commissionable clicks');
+  } else {
+    console.warn('[Stay22] partner credentials/URL not configured — Stay22 cannot be verified as commissionable yet');
   }
 
   require('./server');
