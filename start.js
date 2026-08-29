@@ -42,6 +42,17 @@ async function start() {
     localOutreach.start();
   }
 
+  if (process.env.TRAVELPAYOUTS_API_ENABLED !== 'false') {
+    const travelpayoutsOps = require('./lib/travelpayouts-ops');
+    const syncTravelpayouts = async () => {
+      await travelpayoutsOps.run();
+    };
+    await syncTravelpayouts();
+    const intervalMs = Number(process.env.TRAVELPAYOUTS_SYNC_INTERVAL_MS || 15 * 60 * 1000);
+    setInterval(syncTravelpayouts, intervalMs);
+    console.log(`[Travelpayouts] Revenue sync enabled every ${Math.round(intervalMs / 60000)} minutes`);
+  }
+
   require('./server');
 }
 
