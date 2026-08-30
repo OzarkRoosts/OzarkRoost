@@ -39,6 +39,11 @@ async function start() {
     partnerDiscovery.start();
   }
 
+  if (process.env.PARTNER_AI_ENABLED !== 'false') {
+    const partnerAI = require('./lib/openai-partner-adventure-agent');
+    partnerAI.start();
+  }
+
   if (process.env.AFFILIATE_APPLICATION_EXECUTION !== 'false') {
     const affiliateExecutor = require('./lib/affiliate-application-executor');
     affiliateExecutor.start();
