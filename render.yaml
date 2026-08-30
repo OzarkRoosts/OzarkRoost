@@ -21,8 +21,10 @@ services:
         sync: false
       - key: OPENAI_API_KEY
         sync: false
+      - key: OPENAI_AI_ENABLED
+        value: "true"
       - key: OPENAI_MODEL
-        value: gpt-4o-mini
+        value: gpt-5.6-luna
       - key: SITE_HEALTH_ENABLED
         value: "true"
       - key: AFFILIATE_OPS_ENABLED
@@ -63,12 +65,10 @@ services:
         sync: false
       - key: EMAIL_FROM
         sync: false
-      # Travelpayouts API credentials stay in Render; never commit the token.
       - key: TRAVELPAYOUTS_API_TOKEN
         sync: false
       - key: TRAVELPAYOUTS_API_ENABLED
         value: "true"
-      # Stay22 credentials stay in Render; never commit the token.
       - key: STAY22_API_TOKEN
         sync: false
       - key: AFFILIATE_APPLICANT_NAME
@@ -85,7 +85,6 @@ services:
         value: "United States"
       - key: AFFILIATE_APPLICANT_DESCRIPTION
         sync: false
-      # Supply actual partner-generated URLs/IDs from each affiliate dashboard.
       - key: AFF_STAY22_URL
         sync: false
       - key: AFF_HIPCAMP_URL
