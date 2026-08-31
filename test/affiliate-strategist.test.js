@@ -26,3 +26,5 @@ test('builds an actionable placement prompt with conversion and compliance rules
   assert.match(prompt, /approved links/i);
   assert.match(prompt, /do not invent/i);
 });
+
+// CI verification trigger: approved-link fixtures are intentionally explicit.
