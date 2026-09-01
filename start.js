@@ -1,6 +1,9 @@
 // Load Render/SMTP environment aliases before ANY application module is loaded.
 require('./lib/runtime-env');
 require('dotenv').config();
+// When Mailtrap is configured, transparently route legacy Nodemailer senders
+// (OpsBot, outreach, SuperAgent, autonomous sales) through the Mailtrap Email API.
+require('./lib/mailtrap-nodemailer');
 
 // Revenue integrations are loaded at process startup so Render logs prove whether
 // the production secrets are visible to Node. Never print secret values.
