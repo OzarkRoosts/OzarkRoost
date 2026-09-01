@@ -3,6 +3,12 @@
  * Captures 5xx responses and unhandled exceptions without external deps.
  */
 
+// Bootstrap email configuration before OpsBot or any other mailer module loads.
+// This is intentionally here as well as in start.js because Render may run
+// server.js directly from a dashboard Start Command override.
+require('../lib/runtime-env');
+require('../lib/mailtrap-nodemailer');
+
 const RING_MAX = 200;
 const WINDOW_MS = 15 * 60 * 1000;
 
