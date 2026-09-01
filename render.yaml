@@ -8,8 +8,6 @@ services:
     region: oregon
     branch: main
     buildCommand: npm install && npm run migrate
-    # Explicitly preload the email runtime and Mailtrap shim even if the
-    # Render Dashboard start command is set to server.js instead of npm start.
     startCommand: node -r ./lib/runtime-env.js -r ./lib/mailtrap-nodemailer.js server.js
     healthCheckPath: /health
     envVars:
@@ -40,6 +38,8 @@ services:
       - key: MARKETING_ENABLED
         value: "true"
       - key: OPSBOT_ENABLED
+        value: "true"
+      - key: OPSBOT_EMAIL_SMOKE_TEST
         value: "true"
       - key: AUTONOMOUS_MODE
         value: "true"
