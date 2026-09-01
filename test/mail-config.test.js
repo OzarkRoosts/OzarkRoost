@@ -42,12 +42,14 @@ test('uses Mailtrap sender as the OpsBot owner address when EMAIL_USER is absent
   try {
     delete process.env.EMAIL_USER;
     delete process.env.EMAIL_FROM;
+    process.env.MAILTRAP_TOKEN = 'token-for-test-only';
     process.env.MAILTRAP_FROM_EMAIL = 'sender@example.test';
     delete require.cache[runtimePath];
 
     require('../lib/runtime-env');
 
     assert.equal(process.env.EMAIL_USER, 'sender@example.test');
+    assert.equal(process.env.EMAIL_FROM, 'sender@example.test');
   } finally {
     delete require.cache[runtimePath];
     for (const key of Object.keys(process.env)) {
