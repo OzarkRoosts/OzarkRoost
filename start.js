@@ -84,6 +84,15 @@ async function start() {
     console.warn('[Stay22] partner credentials/URL not configured — Stay22 cannot be verified as commissionable yet');
   }
 
+  // SAFETY: autonomous-sales.js currently contains a simulated contract-acceptance
+  // path that can create a Stripe subscription without a verified customer payment.
+  // Never enable that path in production. Sales can still be handled through the
+  // explicit payment-link/invoice flows while the acceptance workflow is rebuilt.
+  if (process.env.AUTONOMOUS_MODE === 'true') {
+    console.warn('[Autonomous] BLOCKED: unsafe simulated acceptance path disabled in production');
+    process.env.AUTONOMOUS_MODE = 'false';
+  }
+
   require('./server');
 }
 
