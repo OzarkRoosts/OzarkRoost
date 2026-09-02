@@ -8,7 +8,10 @@ services:
     region: oregon
     branch: main
     buildCommand: npm install && npm run migrate
-    startCommand: node -r ./lib/runtime-env.js -r ./lib/mailtrap-nodemailer.js server.js
+    # start.js is the canonical production bootstrap: it loads env aliases,
+    # Mailtrap routing, migrations, OpsBot, funnel/outreach, affiliate agents,
+    # SuperAgent, marketing, and the HTTP server in the correct order.
+    startCommand: node start.js
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -42,7 +45,7 @@ services:
       - key: OPSBOT_EMAIL_SMOKE_TEST
         value: "true"
       - key: AUTONOMOUS_MODE
-        value: "true"
+        value: "false"
       - key: BILLING_AUTONOMOUS_MODE
         value: "false"
       - key: STRIPE_SECRET_KEY
