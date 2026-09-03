@@ -3,32 +3,25 @@
 // Does NOT own: Stripe integration, payment link creation.
 const pool = require('./index');
 
-// Cache for listings — expires after 5 minutes (user can always refresh)
 let listingsCache = null;
 let listingsCacheTime = 0;
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 5 * 60 * 1000;
 
 async function createListingSubmission({
-  ownerName,
-  ownerEmail,
-  propertyName,
-  location,
-  propertyType,
-  description,
-  photoUrl,
-  websiteUrl,
-  paymentLinkUrl
+  ownerName, ownerEmail, propertyName, location, propertyType, description,
+  photoUrl, websiteUrl, paymentLinkUrl, listingTier = 'starter', acquisitionSource = 'website',
+  acquisitionCampaign = 'premium_listing', acquisitionContent = listingTier
 }) {
   const result = await pool.query(
     `INSERT INTO listing_submissions
        (owner_name, owner_email, property_name, location, property_type,
-        description, photo_url, website_url, payment_link_url, payment_status)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'unpaid')
+        description, photo_url, website_url, payment_link_url, payment_status,
+        listing_tier, acquisition_source, acquisition_campaign, acquisition_content)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'unpaid', $10, $11, $12, $13)
      RETURNING *`,
-    [ownerName, ownerEmail, propertyName, location, propertyType,
-     description, photoUrl, websiteUrl, paymentLinkUrl]
+    [ownerName, ownerEmail, propertyName, location, propertyType, description, photoUrl,
+      websiteUrl, paymentLinkUrl, listingTier, acquisitionSource, acquisitionCampaign, acquisitionContent]
   );
-  // Invalidate cache on new submission
   listingsCache = null;
   return result.rows[0];
 }
@@ -43,35 +36,20 @@ async function getSubmissionByEmail(email) {
 
 async function getAllListings({ location, type } = {}) {
   const now = Date.now();
-  
-  // Return cached results if fresh
   if (listingsCache && (now - listingsCacheTime) < CACHE_TTL) {
     let rows = listingsCache;
-    if (location && location !== 'all') {
-      rows = rows.filter(r => r.location === location);
-    }
-    if (type && type !== 'all') {
-      rows = rows.filter(r => r.property_type === type);
-    }
+    if (location && location !== 'all') rows = rows.filter(r => r.location === location);
+    if (type && type !== 'all') rows = rows.filter(r => r.property_type === type);
     return rows;
   }
-
-  // Fetch and cache results
   const result = await pool.query(
-    'SELECT * FROM listing_submissions WHERE payment_status = $1 ORDER BY id',
-    ['paid']
+    'SELECT * FROM listing_submissions WHERE payment_status = $1 ORDER BY id', ['paid']
   );
   listingsCache = result.rows;
   listingsCacheTime = now;
-
   let rows = listingsCache;
-  if (location && location !== 'all') {
-    rows = rows.filter(r => r.location === location);
-  }
-  if (type && type !== 'all') {
-    rows = rows.filter(r => r.property_type === type);
-  }
-
+  if (location && location !== 'all') rows = rows.filter(r => r.location === location);
+  if (type && type !== 'all') rows = rows.filter(r => r.property_type === type);
   return rows;
 }
 
@@ -80,8 +58,7 @@ async function markListingPaid(id, stripeSessionId) {
     `UPDATE listing_submissions
      SET payment_status = 'paid', stripe_checkout_session_id = $2, paid_at = NOW()
      WHERE id = $1
-     RETURNING *`,
-    [id, stripeSessionId]
+     RETURNING *`, [id, stripeSessionId]
   );
   listingsCache = null;
   return result.rows[0];
