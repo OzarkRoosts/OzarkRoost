@@ -17,7 +17,7 @@ const STRIPE_LINKS = {
 const TIER_META = {
   starter: { label: 'Starter', price: 49 },
   featured: { label: 'Featured', price: 99 },
-  dominant: { label: 'Dominant', price: 199 },
+  dominant: { label: 'Dominant', price: 149 },
 };
 
 function getTier(value) {
