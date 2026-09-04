@@ -1,26 +1,16 @@
 node_modules/
 .env
 .DS_Store
-npm-debug.log*
-.temp/
-.tmp/
-.tmp-server.err
-.tmp-server.out
 
-# Secrets / local only
-.env.local
-.env.*.local
-
-# Keep templates
-!.env.example
-
-# Polsia / editor noise
+# Polsia safety (auto-injected)
+.env
+.env.*
 .claude/
 .claude.json*
+.tmp/
 debug/
 projects/
 shell-snapshots/
 statsig/
 todos/
 *.jsonl
-.quadcodeai/
