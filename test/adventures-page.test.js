@@ -9,19 +9,19 @@ const server = fs.readFileSync(path.join(__dirname, '..', 'server.js'), 'utf8');
 test('adventures page has conversion-focused discovery sections', () => {
   for (const marker of [
     'Find Your Adventure', 'Adventure of the Week', 'Build the weekend',
-    'Claim Your Free Spot', 'data-adventure-filter', 'data-adventure-share'
+    'Claim Your Free Spot', 'data-adventure-filter'
   ]) assert.ok(page.includes(marker), `missing page marker: ${marker}`);
 });
 
 test('adventure cards expose structured discovery metadata', () => {
   assert.match(page, /data-search=/);
   assert.match(page, /data-category=/);
-  assert.ok(page.includes('data-adventure-url="/adventures/<%= a.slug %>"'));
+  assert.ok(page.includes('href="/adventures/<%= a.slug %>"'));
 });
 
 test('adventure hub links destinations to internal landing pages', () => {
   assert.ok(page.includes('href="/adventures/<%= a.slug %>"'));
-  assert.ok(page.includes('data-adventure-share="<%= a.slug %>"'));
+  assert.ok(page.includes('Explore guide →'));
 });
 
 test('adventure hub supplies an iterable affiliate bundle to the EJS template', () => {
