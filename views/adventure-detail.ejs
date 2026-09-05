@@ -1,0 +1,66 @@
+<% const title = `${adventure.name} | OzarkRoost Adventures`; const description = `${adventure.name} in ${adventure.region}: ${adventure.description} Find official destination information, nearby trip ideas and ways to build an Ozarks getaway.`; const canonical = `${baseUrl}/adventures/${adventure.slug}`; const jsonLd = { '@context': 'https://schema.org', '@type': 'TouristAttraction', name: adventure.name, description: adventure.description, url: canonical, mainEntityOfPage: canonical }; %>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><%= title %></title>
+  <meta name="description" content="<%= description %>">
+  <link rel="canonical" href="<%= canonical %>">
+  <link rel="stylesheet" href="/css/theme.css">
+  <style>
+    :root{--ink:#102317;--green:#214b31;--gold:#d59a35;--paper:#f8f6f0;--line:#e6e2d8;--muted:#69736b}
+    *{box-sizing:border-box}.page{min-height:100vh;background:var(--paper);color:var(--ink);font-family:system-ui,sans-serif}.wrap{max-width:1120px;margin:auto;padding:0 22px}.hero{background:radial-gradient(circle at 80% 10%,#5d8065,#183a25 42%,#091b10);color:#fff;padding:24px 0 76px}.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px}.logo{font:26px Georgia,serif;color:#fff;text-decoration:none}.nav a:not(.logo){color:#dce5dd;text-decoration:none;margin-left:20px;font-size:13px}.crumbs{font-size:12px;color:#cbd7ce;margin-bottom:18px}.crumbs a{color:#dce5dd}.eyebrow{color:#f2c66c;text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:900}.hero h1{font:400 clamp(46px,7vw,84px)/.94 Georgia,serif;max-width:900px;margin:10px 0 18px}.hero p{max-width:780px;color:#dce5dd;font-size:18px;line-height:1.65}.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.pill{border:1px solid #ffffff26;background:#ffffff12;border-radius:999px;padding:9px 13px;font-size:11px;font-weight:800}.main{padding:42px 0 90px}.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,.8fr);gap:22px}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 8px 24px #1023170d}.card h2{font:400 31px Georgia,serif;margin:0 0 9px}.card p,.card li{color:var(--muted);line-height:1.7;font-size:14px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{display:inline-block;border-radius:999px;padding:13px 17px;text-decoration:none;font-size:12px;font-weight:900}.primary{background:var(--green);color:#fff}.secondary{background:#f1eee5;color:var(--green)}.side{display:grid;gap:14px;align-content:start}.side h3{font:400 23px Georgia,serif;margin:0 0 7px}.affiliate{display:grid;gap:8px}.affiliate a{display:block;background:#f4f1e9;color:var(--ink);padding:12px;border-radius:10px;text-decoration:none;font-size:11px;font-weight:850}.trust{font-size:11px!important;color:#818981!important}.related{margin-top:22px}.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.related a{border:1px solid var(--line);background:#fff;border-radius:14px;padding:16px;text-decoration:none;color:var(--ink)}.related strong{display:block;font:400 18px Georgia,serif;margin-bottom:5px}.related span{font-size:10px;color:#7b837c}.disclosure{margin-top:18px;padding:13px 15px;background:#f1eee5;border-radius:12px;color:#687269;font-size:11px;line-height:1.55}@media(max-width:800px){.layout{grid-template-columns:1fr}.related-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.navlinks{display:none}.hero{padding-bottom:52px}.hero p{font-size:16px}.card{padding:21px}.related-grid{grid-template-columns:1fr}}
+  </style>
+  <script type="application/ld+json"><%- JSON.stringify(jsonLd).replace(/</g,'\\u003c') %></script>
+</head>
+<body>
+<div class="page">
+  <header class="hero">
+    <div class="wrap">
+      <nav class="nav"><a class="logo" href="/">OzarkRoost</a><div class="navlinks"><a href="/">Home</a><a href="/listings">Stays</a><a href="/adventures">Adventures</a><a href="/list-your-cabin">List Free</a></div></nav>
+      <div class="crumbs"><a href="/">Home</a> / <a href="/adventures">Adventures</a> / <span><%= adventure.name %></span></div>
+      <div class="eyebrow"><%= adventure.category %> · <%= adventure.region %></div>
+      <h1><%= adventure.name %></h1>
+      <p><%= adventure.description %></p>
+      <div class="hero-meta"><span class="pill">Ozark adventure</span><span class="pill"><%= adventure.category %></span><span class="pill"><%= adventure.region %></span></div>
+    </div>
+  </header>
+  <main class="main wrap">
+    <div class="layout">
+      <section>
+        <article class="card">
+          <h2>Plan your visit</h2>
+          <p><%= adventure.description %></p>
+          <p>Use this page as your starting point, then confirm current conditions, access details, rules and schedules with the official destination before you go.</p>
+          <div class="actions">
+            <a class="btn primary" href="<%= adventure.url %>" target="_blank" rel="noopener noreferrer">Explore the official destination →</a>
+            <a class="btn secondary" href="/adventures">Back to all adventures</a>
+          </div>
+        </article>
+        <article class="card related">
+          <h2>More Ozark adventures</h2>
+          <p>Keep building the route with other destinations from the OzarkRoost adventure directory.</p>
+          <div class="related-grid"><% relatedAdventures.forEach(a=>{ %><a href="/adventures/<%= a.slug %>"><strong><%= a.name %></strong><span><%= a.category %> · <%= a.region %></span></a><% }) %></div>
+        </article>
+      </section>
+      <aside class="side">
+        <article class="card">
+          <h3>Build the weekend</h3>
+          <p>Find stays, activities and outdoor gear through the travel options currently configured for OzarkRoost.</p>
+          <div class="affiliate"><% affiliateLinks.forEach(link=>{ %><a href="<%= link.url %>" target="_blank" rel="sponsored noopener noreferrer"><%= link.label %> ↗</a><% }) %></div>
+          <p class="trust">Affiliate disclosure: some links may earn OzarkRoost a commission when configured. A link does not mean the destination or provider has endorsed or partnered with OzarkRoost.</p>
+        </article>
+        <article class="card">
+          <h3>Own this adventure?</h3>
+          <p>This is a founding directory entry. If you represent this destination or business, claim the free spot and add your official information.</p>
+          <a class="btn primary" href="/list-your-cabin">Claim this free founding spot →</a>
+          <p class="trust">Founding directory entry · unclaimed</p>
+        </article>
+      </aside>
+    </div>
+    <div class="disclosure">OzarkRoost is an independent travel directory. Always verify current conditions, access rules, reservations and operating details with the official destination before traveling.</div>
+  </main>
+</div>
+</body>
+</html>
