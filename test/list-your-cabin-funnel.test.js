@@ -15,7 +15,7 @@ test('owner funnel leads with a free founding listing and optional paid upgrades
 });
 
 test('owner funnel explains conversion benefits without fabricated performance claims', () => {
-  assert.match(view, /direct (traffic|bookings)|bookings.*direct/i);
+  assert.match(view, /directly to your website|direct visits and bookings/i);
   assert.match(view, /featured placement/i);
   assert.doesNotMatch(view, /guaranteed bookings|guaranteed traffic|\b[0-9]+,?[0-9]*\+ travelers/i);
 });
@@ -29,7 +29,7 @@ test('owner funnel exposes measurable conversion stages', () => {
 
 test('founding claim is a real free listing path and paid tiers remain available', () => {
   assert.match(route, /founding/i);
-  assert.match(route, /payment_status.*free|free.*payment_status/s);
+  assert.match(route, /paymentStatus:\s*isFounding \? 'free' : 'unpaid'/);
   assert.match(db, /paymentStatus/);
   assert.match(db, /payment_status.*\$[0-9]+/);
   assert.match(view, /Starter — \$49\/month/);
