@@ -9,16 +9,16 @@ test('adventures page has conversion-focused discovery sections', () => {
   for (const marker of [
     'Find Your Adventure',
     'Adventure of the Week',
-    'Build Your Weekend',
+    'Build the weekend',
     'Claim Your Free Spot',
     'data-adventure-filter',
     'data-adventure-share'
   ]) assert.ok(page.includes(marker), `missing page marker: ${marker}`);
 });
 
-test('adventure cards expose useful structured metadata and tracked exploration', () => {
+test('adventure cards expose structured discovery metadata', () => {
   assert.match(page, /data-search=/);
   assert.match(page, /data-category=/);
   assert.match(page, /data-adventure-url=/);
-  assert.match(page, /\/out\?url=/);
+  assert.match(page, /target="_blank"/);
 });
