@@ -1,12 +1,8 @@
 // Load Render/SMTP environment aliases before ANY application module is loaded.
 require('./lib/runtime-env');
 require('dotenv').config();
-// When Mailtrap is configured, transparently route legacy Nodemailer senders
-// (OpsBot, outreach, SuperAgent, autonomous sales) through the Mailtrap Email API.
 require('./lib/mailtrap-nodemailer');
 
-// Revenue integrations are loaded at process startup so Render logs prove whether
-// the production secrets are visible to Node. Never print secret values.
 const travelpayoutsApi = require('./lib/travelpayouts-api');
 const travelpayoutsOps = require('./lib/travelpayouts-ops');
 const stay22TokenConfigured = Boolean(process.env.STAY22_API_TOKEN);
@@ -34,6 +30,9 @@ async function start() {
   await runAllMigrations(pool);
   await repairAffiliateExecutionSchema(pool);
 
+  const affiliateLinkRegistry = require('./lib/affiliate-link-registry-db');
+  affiliateLinkRegistry.start();
+
   const fundingAgent = require('./lib/funding-opportunity-agent');
   fundingAgent.start();
 
@@ -41,22 +40,18 @@ async function start() {
     const partnerDiscovery = require('./lib/partner-discovery-agent');
     partnerDiscovery.start();
   }
-
   if (process.env.PARTNER_AI_ENABLED !== 'false') {
     const partnerAI = require('./lib/openai-partner-adventure-agent');
     partnerAI.start();
   }
-
   if (process.env.AFFILIATE_APPLICATION_EXECUTION !== 'false') {
     const affiliateExecutor = require('./lib/affiliate-application-executor');
     affiliateExecutor.start();
   }
-
   if (process.env.LOCAL_OUTREACH_ENABLED !== 'false') {
     const localOutreach = require('./lib/local-outreach-agent');
     localOutreach.start();
   }
-
   if (process.env.OPSBOT_PROACTIVE_OUTREACH === 'true') {
     const proactiveOutreach = require('./lib/proactive-outreach');
     proactiveOutreach.start();
@@ -64,7 +59,6 @@ async function start() {
 
   const travelpayoutsApiEnabled = travelpayoutsOps.configured();
   console.log(`[Travelpayouts] API integration: configured=${travelpayoutsApiEnabled} kill_switch=${process.env.TRAVELPAYOUTS_API_ENABLED === 'false'}`);
-
   if (travelpayoutsApiEnabled && process.env.TRAVELPAYOUTS_API_ENABLED !== 'false') {
     const syncTravelpayouts = async () => {
       const result = await travelpayoutsOps.run();
@@ -81,27 +75,14 @@ async function start() {
     console.warn('[Travelpayouts] Revenue sync explicitly disabled by TRAVELPAYOUTS_API_ENABLED=false.');
   }
 
-  if (stay22AffiliateUrlConfigured) {
-    console.log('[Stay22] affiliate URL configured — Stay22 monetization link is active');
-  } else if (stay22TokenConfigured) {
-    console.warn('[Stay22] API token configured but AFF_STAY22_URL is missing — configure the partner URL before expecting commissionable clicks');
-  } else {
-    console.warn('[Stay22] partner credentials/URL not configured — Stay22 cannot be verified as commissionable yet');
-  }
+  if (stay22AffiliateUrlConfigured) console.log('[Stay22] affiliate URL configured — Stay22 monetization link is active');
+  else if (stay22TokenConfigured) console.warn('[Stay22] API token configured but AFF_STAY22_URL is missing — configure the partner URL before expecting commissionable clicks');
+  else console.warn('[Stay22] partner credentials/URL not configured — Stay22 cannot be verified as commissionable yet');
 
-  // SAFETY: autonomous-sales.js currently contains a simulated contract-acceptance
-  // path that can create a Stripe subscription without a verified customer payment.
-  // Never enable that path in production. Sales can still be handled through the
-  // explicit payment-link/invoice flows while the acceptance workflow is rebuilt.
   if (process.env.AUTONOMOUS_MODE === 'true') {
     console.warn('[Autonomous] BLOCKED: unsafe simulated acceptance path disabled in production');
     process.env.AUTONOMOUS_MODE = 'false';
   }
-
   require('./server');
 }
-
-start().catch(err => {
-  console.error('Startup failed:', err.message);
-  process.exit(1);
-});
+start().catch(err => { console.error('Startup failed:', err.message); process.exit(1); });
