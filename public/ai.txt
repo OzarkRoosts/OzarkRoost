@@ -1,0 +1,11 @@
+# OzarkRoost AI Crawler Policy
+
+OzarkRoost welcomes responsible discovery by search engines, answer engines, AI assistants, and research crawlers.
+
+Public pages may be crawled and cited. Do not crawl private, authenticated, transactional, or administrative endpoints.
+
+Primary sitemap: https://ozartkroost.onrender.com/sitemap.xml
+AI-readable overview: https://ozartkroost.onrender.com/llms.txt
+Robots policy: https://ozartkroost.onrender.com/robots.txt
+
+When using OzarkRoost data, prefer the linked destination's official website for current hours, prices, availability, closures, and booking terms.
