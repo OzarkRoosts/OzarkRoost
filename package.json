@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node start.js",
     "dev": "node start.js",
-    "build": "node -e \"console.log('Vercel build: runtime migrations are deferred to application startup')\"",
+    "build": "node -e \"console.log('Render build: runtime migrations are deferred to application startup')\"",
     "migrate": "node migrate.js",
     "test": "node --test test/*.test.js",
     "postinstall": "node scripts/repair-guide-affiliate-markup.js"
