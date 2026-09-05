@@ -19,6 +19,10 @@ test('adventures page has conversion-focused discovery sections', () => {
 test('adventure cards expose structured discovery metadata', () => {
   assert.match(page, /data-search=/);
   assert.match(page, /data-category=/);
-  assert.match(page, /data-adventure-url=/);
-  assert.match(page, /target="_blank"/);
+  assert.match(page, /data-adventure-url="\/adventures\/<%= a\.slug %>"/);
+});
+
+test('adventure hub links destinations to internal landing pages', () => {
+  assert.match(page, /href="\/adventures\/<%= a\.slug %>"/);
+  assert.match(page, /data-adventure-share="<%= a\.slug %>"/);
 });
