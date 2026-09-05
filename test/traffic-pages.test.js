@@ -3,9 +3,10 @@ const { test } = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const routes = fs.readFileSync(path.join(__dirname, '..', 'routes', 'guides.js'), 'utf8');
+const routes = fs.readFileSync(path.join(__dirname, '..', 'routes', 'high-intent-guides.js'), 'utf8');
 const template = fs.readFileSync(path.join(__dirname, '..', 'views', 'guides', 'high-intent.ejs'), 'utf8');
 const sitemap = fs.readFileSync(path.join(__dirname, '..', 'server.js'), 'utf8');
+const guideData = fs.readFileSync(path.join(__dirname, '..', 'lib', 'high-intent-guides.js'), 'utf8');
 
 test('high-intent traffic guide set exposes eight commercial/search landing pages', () => {
   const slugs = [
@@ -18,7 +19,10 @@ test('high-intent traffic guide set exposes eight commercial/search landing page
     'romantic-getaways-ozarks',
     'best-hiking-ozarks'
   ];
-  for (const slug of slugs) assert.match(routes, new RegExp(`'${slug}'`), `missing guide route: ${slug}`);
+  for (const slug of slugs) {
+    assert.match(guideData, new RegExp(`'${slug}'`), `missing guide data: ${slug}`);
+    assert.match(routes, new RegExp(`'/${slug}'`), `missing guide route: ${slug}`);
+  }
 });
 
 test('high-intent template has indexable SEO and conversion structure', () => {
