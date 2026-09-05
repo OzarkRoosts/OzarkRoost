@@ -92,9 +92,9 @@ module.exports = {
       await client.query(
         `INSERT INTO listing_submissions
           (owner_name, owner_email, property_name, location, property_type, description, photo_url, website_url, payment_link_url, payment_status)
-         SELECT $1, $2, $3, $4, $5, $6, NULL, $7, NULL, 'free'
+         SELECT $1::text, $2::text, $3::text, $4::text, $5::text, $6::text, NULL, $7::text, NULL, 'free'
          WHERE NOT EXISTS (
-           SELECT 1 FROM listing_submissions WHERE property_name = $3 AND location = $4
+           SELECT 1 FROM listing_submissions WHERE property_name = $3::text AND location = $4::text
          )`,
         [
           'Unclaimed — Founding Listing',
