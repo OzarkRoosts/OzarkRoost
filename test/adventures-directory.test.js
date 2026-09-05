@@ -1,9 +1,9 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const { adventures, categories } = require('../lib/adventures');
+const { adventures, categories } = require('../lib/adventure-directory');
 
-test('adventure directory ships 100 real Ozark destinations with usable metadata', () => {
+test('public adventure directory ships exactly 100 real Ozark destinations with usable metadata', () => {
   assert.equal(adventures.length, 100);
   assert.equal(new Set(adventures.map(a => a.slug)).size, 100);
   assert.ok(categories.length >= 8);
