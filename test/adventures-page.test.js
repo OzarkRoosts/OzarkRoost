@@ -1,8 +1,8 @@
 const assert = require('node:assert/strict');
+const { test } = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
 
-describe = undefined;
 const page = fs.readFileSync(path.join(__dirname, '..', 'views', 'adventures.ejs'), 'utf8');
 
 test('adventures page has conversion-focused discovery sections', () => {
