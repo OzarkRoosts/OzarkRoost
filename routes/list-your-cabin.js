@@ -15,19 +15,19 @@ const STRIPE_LINKS = {
 };
 
 const TIER_META = {
+  founding: { label: 'Founding', price: 0 },
   starter: { label: 'Starter', price: 49 },
   featured: { label: 'Featured', price: 99 },
   dominant: { label: 'Dominant', price: 149 },
 };
 
 function getTier(value) {
+  if (value === 'founding') return 'founding';
   return Object.prototype.hasOwnProperty.call(STRIPE_LINKS, value) ? value : 'starter';
 }
 
 function buildStripePaymentUrl(baseLink, submissionId, ownerEmail, tier) {
   const url = new URL(baseLink);
-  // Stripe Payment Links support client_reference_id for server-side reconciliation
-  // and UTM parameters for conversion/source attribution.
   url.searchParams.set('client_reference_id', String(submissionId));
   url.searchParams.set('prefilled_email', ownerEmail);
   url.searchParams.set('utm_source', 'ozarkroost');
@@ -37,12 +37,10 @@ function buildStripePaymentUrl(baseLink, submissionId, ownerEmail, tier) {
   return url.toString();
 }
 
-// GET /list-your-cabin — render the form
 router.get('/', (_req, res) => {
-  res.render('list-your-cabin', { tier: 'starter', tierMeta: TIER_META });
+  res.render('list-your-cabin', { tier: 'founding', tierMeta: TIER_META });
 });
 
-// POST /list-your-cabin — handle form submission, redirect to Stripe, save record
 router.post('/', async (req, res) => {
   const ownerName = sanitizeText(req.body?.owner_name, 120);
   const ownerEmail = sanitizeText(req.body?.owner_email, 254);
@@ -54,7 +52,6 @@ router.post('/', async (req, res) => {
   const websiteUrlRaw = sanitizeText(req.body?.website_url, 500);
   const tier = getTier(sanitizeText(req.body?.tier, 30));
   const tierMeta = TIER_META[tier];
-
   const values = { owner_name: ownerName, owner_email: ownerEmail, property_name: propertyName, location, property_type: propertyType, description: description || '', photo_url: photoUrlRaw, website_url: websiteUrlRaw };
 
   if (!ownerName || !ownerEmail || !propertyName || !location || !propertyType) {
@@ -73,7 +70,8 @@ router.post('/', async (req, res) => {
     websiteUrl = websiteUrlRaw;
   }
 
-  const baseLink = STRIPE_LINKS[tier];
+  const isFounding = tier === 'founding';
+  const baseLink = isFounding ? null : STRIPE_LINKS[tier];
   let submission;
   try {
     submission = await createListingSubmission({
@@ -86,21 +84,24 @@ router.post('/', async (req, res) => {
       photoUrl,
       websiteUrl,
       paymentLinkUrl: baseLink,
+      paymentStatus: isFounding ? 'free' : 'unpaid',
     });
   } catch (dbErr) {
     console.error('[list-your-cabin] DB error:', dbErr && dbErr.message);
     return res.status(503).render('list-your-cabin', { error: 'We could not save your listing. Please try again in a moment.', values, tier, tierMeta: TIER_META });
   }
 
+  if (isFounding) {
+    return res.redirect('/list-your-cabin/thank-you?email=' + encodeURIComponent(ownerEmail) + '&founding=true');
+  }
   if (/^https:\/\/buy\.stripe\.com\//i.test(baseLink)) {
     return res.redirect(buildStripePaymentUrl(baseLink, submission.id, ownerEmail.toLowerCase(), tier));
   }
-
   res.redirect('/list-your-cabin/thank-you?email=' + encodeURIComponent(ownerEmail) + '&manual=true');
 });
 
 router.get('/thank-you', (req, res) => {
-  res.render('thank-you', { email: sanitizeText(req.query.email, 254) || null, manual: req.query.manual === 'true' });
+  res.render('thank-you', { email: sanitizeText(req.query.email, 254) || null, manual: req.query.manual === 'true', founding: req.query.founding === 'true' });
 });
 
 module.exports = router;
