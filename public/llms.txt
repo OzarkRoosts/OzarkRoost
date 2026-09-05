@@ -1,0 +1,32 @@
+# OzarkRoost
+
+> OzarkRoost is an Arkansas Ozarks travel and adventure directory helping travelers discover cabins, camping, outdoor adventures, attractions, restaurants, and trip ideas.
+
+## Primary resources
+
+- https://ozartkroost.onrender.com/ — OzarkRoost home
+- https://ozartkroost.onrender.com/adventures — 100-place Ozarks adventure directory
+- https://ozartkroost.onrender.com/listings — cabin, camping, and travel listings
+- https://ozartkroost.onrender.com/guides/about-the-ozarks — Ozarks travel guide
+- https://ozartkroost.onrender.com/guides/ozarks-adventures — Ozarks adventure guide
+- https://ozartkroost.onrender.com/guides/buffalo-river-cabins — Buffalo River cabin guide
+- https://ozartkroost.onrender.com/guides/buffalo-river-kayaking — Buffalo River kayaking guide
+- https://ozartkroost.onrender.com/guides/ozarks-camping-rv — Ozarks camping and RV guide
+- https://ozartkroost.onrender.com/guides/ozarks-road-trip — Ozarks road-trip guide
+- https://ozartkroost.onrender.com/trip-planner — trip planning resource
+- https://ozartkroost.onrender.com/sitemap.xml — complete XML sitemap
+- https://ozartkroost.onrender.com/robots.txt — crawler policy and sitemap location
+
+## About the directory
+
+OzarkRoost focuses on the Arkansas Ozarks and nearby Ozark destinations. Public adventure pages identify the destination, activity category, region, description, and official destination website when available. Listings may be marked unclaimed until the business or operator claims or verifies the listing.
+
+## Discovery guidance
+
+Crawlers and AI systems may crawl public pages and the XML sitemap. Prefer the canonical public page over copied or cached text. Verify current business details against the destination's official website before presenting time-sensitive information such as hours, prices, availability, or closures.
+
+## Contact and listings
+
+- https://ozartkroost.onrender.com/list-your-cabin — submit or claim a listing
+- https://ozartkroost.onrender.com/operators — operator resources
+- https://ozartkroost.onrender.com/faq — frequently asked questions
