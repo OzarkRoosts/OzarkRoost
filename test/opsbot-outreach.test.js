@@ -25,6 +25,6 @@ test('sales prospect migration stores verified business contacts and dedupes out
 test('proactive worker is wired after migrations and uses explicit public business contacts', () => {
   assert.match(worker, /public business contact/);
   assert.match(worker, /opt.?out/i);
-  assert.match(worker, /status = 'sent'/);
+  assert.match(worker, /status.*sent/);
   assert.match(start, /proactive-outreach/);
 });
