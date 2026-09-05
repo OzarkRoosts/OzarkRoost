@@ -28,7 +28,6 @@ async function createListingSubmission({
     [ownerName, ownerEmail, propertyName, location, propertyType,
      description, photoUrl, websiteUrl, paymentLinkUrl]
   );
-  // Invalidate cache on new submission
   listingsCache = null;
   return result.rows[0];
 }
@@ -43,35 +42,28 @@ async function getSubmissionByEmail(email) {
 
 async function getAllListings({ location, type } = {}) {
   const now = Date.now();
-  
-  // Return cached results if fresh
+
   if (listingsCache && (now - listingsCacheTime) < CACHE_TTL) {
     let rows = listingsCache;
-    if (location && location !== 'all') {
-      rows = rows.filter(r => r.location === location);
-    }
-    if (type && type !== 'all') {
-      rows = rows.filter(r => r.property_type === type);
-    }
+    if (location && location !== 'all') rows = rows.filter(r => r.location === location);
+    if (type && type !== 'all') rows = rows.filter(r => r.property_type === type);
     return rows;
   }
 
-  // Fetch and cache results
+  // Paid listings stay live. Founding free listings are visible for 90 days,
+  // giving operators a real promotional window while keeping the directory honest.
   const result = await pool.query(
-    'SELECT * FROM listing_submissions WHERE payment_status = $1 ORDER BY id',
-    ['paid']
+    `SELECT * FROM listing_submissions
+     WHERE payment_status = 'paid'
+        OR (payment_status = 'free' AND created_at >= NOW() - INTERVAL '90 days')
+     ORDER BY CASE WHEN payment_status = 'paid' THEN 0 ELSE 1 END, id`
   );
   listingsCache = result.rows;
   listingsCacheTime = now;
 
   let rows = listingsCache;
-  if (location && location !== 'all') {
-    rows = rows.filter(r => r.location === location);
-  }
-  if (type && type !== 'all') {
-    rows = rows.filter(r => r.property_type === type);
-  }
-
+  if (location && location !== 'all') rows = rows.filter(r => r.location === location);
+  if (type && type !== 'all') rows = rows.filter(r => r.property_type === type);
   return rows;
 }
 
