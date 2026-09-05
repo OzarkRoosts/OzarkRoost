@@ -57,6 +57,11 @@ async function start() {
     localOutreach.start();
   }
 
+  if (process.env.OPSBOT_PROACTIVE_OUTREACH === 'true') {
+    const proactiveOutreach = require('./lib/proactive-outreach');
+    proactiveOutreach.start();
+  }
+
   const travelpayoutsApiEnabled = travelpayoutsOps.configured();
   console.log(`[Travelpayouts] API integration: configured=${travelpayoutsApiEnabled} kill_switch=${process.env.TRAVELPAYOUTS_API_ENABLED === 'false'}`);
 
