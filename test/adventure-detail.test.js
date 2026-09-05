@@ -34,6 +34,13 @@ test('detail template has SEO, trust, conversion, and structured-data contract',
   ]) assert.ok(detail.includes(marker), `missing detail marker: ${marker}`);
 });
 
+test('adventure affiliate CTAs route through the click-tracking redirect', () => {
+  assert.match(detail, /href="\/out\?to=<%= encodeURIComponent\(link\.url\) %>&partner=<%= encodeURIComponent\(link\.key\) %>"/);
+  assert.doesNotMatch(detail, /href="<%= link\.url %>"/);
+  assert.match(serverText, /app\.get\('\/out'/);
+  assert.match(serverText, /INSERT INTO affiliate_clicks/);
+});
+
 test('server exposes the adventure detail route and 404 behavior', () => {
   assert.match(serverText, /app\.get\('\/adventures\/:slug'/);
   assert.match(serverText, /status\(404\)/);
