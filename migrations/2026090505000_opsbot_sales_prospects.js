@@ -25,8 +25,7 @@ module.exports = {
       ['My Blue Heaven Cabin & Guesthouse', 'Buffalo River region', 'info@myblueheavencabin.com', '870-446-5783', 'https://buffaloriver.org/river-lodging/places-to-stay/', 'Local cabin and guesthouse prospect.'],
       ['The Ponca House / Low Gap Cabin', 'Ponca', 'walnutgrove@ritternet.com', '870-861-5835', 'https://buffaloriver.org/river-lodging/places-to-stay/', 'Lodging near Ponca and the Upper Buffalo.'],
       ['Rimrock Cove Ranch', 'Buffalo River region', 'rimrockcove@gmail.com', '870-553-2556', 'https://buffaloriver.org/river-lodging/places-to-stay/', 'Ranch lodging with an outdoor-focused audience.'],
-      ['Steel Creek Cabins', 'Ponca', 'mlangdon@steelcreekcabins.com', '870-861-5890', 'https://buffaloriver.org/river-lodging/places-to-stay/', 'Direct Upper Buffalo and Steel Creek positioning.'],
-      ['Buffalo River Lodging', 'Jasper / Upper Buffalo', 'info@buffaloriverlodging.com', '877-428-3563', 'https://www.buffaloriverlodging.com/accommodations-overview', 'Secluded accommodations with strong Upper Buffalo positioning.']
+      ['Steel Creek Cabins', 'Ponca', 'mlangdon@steelcreekcabins.com', '870-861-5890', 'https://buffaloriver.org/river-lodging/places-to-stay/', 'Direct Upper Buffalo and Steel Creek positioning.']
     ];
 
     for (const [business_name, area, email, phone, source_url, hook] of prospects) {
