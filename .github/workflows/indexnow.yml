@@ -1,0 +1,23 @@
+name: IndexNow Discovery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'views/**'
+      - 'public/**'
+      - 'lib/adventures.js'
+      - 'lib/adventure-directory.js'
+      - 'routes/**'
+      - 'scripts/indexnow-submit.js'
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for deployment
+        run: sleep 60
+      - name: Submit sitemap URLs to IndexNow
+        env:
+          SITE_URL: https://ozartkroost.onrender.com
+        run: node scripts/indexnow-submit.js
