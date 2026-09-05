@@ -48,7 +48,7 @@
         <article class="card">
           <h3>Build the weekend</h3>
           <p>Find stays, activities and outdoor gear through the travel options currently configured for OzarkRoost.</p>
-          <div class="affiliate"><% affiliateLinks.forEach(link=>{ %><a href="<%= link.url %>" target="_blank" rel="sponsored noopener noreferrer"><%= link.label %> ↗</a><% }) %></div>
+          <div class="affiliate"><% affiliateLinks.forEach(link=>{ %><a href="/out?to=<%= encodeURIComponent(link.url) %>&partner=<%= encodeURIComponent(link.key) %>" rel="sponsored noopener noreferrer"><%= link.label %> ↗</a><% }) %></div>
           <p class="trust">Affiliate disclosure: some links may earn OzarkRoost a commission when configured. A link does not mean the destination or provider has endorsed or partnered with OzarkRoost.</p>
         </article>
         <article class="card">
