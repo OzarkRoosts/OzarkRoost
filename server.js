@@ -15,7 +15,7 @@ try {
 const express = require('express');
 const path = require('path');
 const { buildLandingContext } = require('./lib/landing-context');
-const { adventures, getAdventureBySlug } = require('./lib/adventure-directory');
+const { adventures, getAdventureBySlug, categories } = require('./lib/adventure-directory');
 const pool = require('./db/index');
 const { applySecurityHeaders, isSafeExternalUrl, sanitizeText } = require('./lib/security');
 const { createRateLimiter } = require('./middleware/rate-limit');
@@ -83,7 +83,7 @@ async function startServer() {
     const listings = await getAllListings();
     res.render('listings', { listings, directoryCategories: getDirectoryCategories(), affiliateBundles: { stays: getBundle('stays'), camping: getBundle('camping'), adventure: getBundle('adventure'), gear: getBundle('gear') } });
   });
-  app.get('/adventures', (_req, res) => { const { getAffiliateLinks, getFeaturedListings } = require('./lib/affiliate-links'); res.render('adventures', { affiliateLinks: getAffiliateLinks(), featuredListings: getFeaturedListings() }); });
+  app.get('/adventures', (_req, res) => { const { getAffiliateLinks } = require('./lib/affiliate-links'); res.render('adventures', { adventures, categories, affiliateLinks: getAffiliateLinks() }); });
   app.get('/adventures/:slug', (req, res) => {
     const adventure = getAdventureBySlug(req.params.slug);
     if (!adventure) return res.status(404).send('Adventure not found');
