@@ -70,7 +70,7 @@ async function startServer() {
   app.set('view engine', 'ejs'); app.set('views', path.join(__dirname, 'views'));
   app.get('/health', (_req, res) => res.json({ status: 'healthy' }));
   function publicBaseUrl(req) { if (process.env.APP_URL) return String(process.env.APP_URL).replace(/\/$/, ''); if (process.env.RENDER_EXTERNAL_URL) return String(process.env.RENDER_EXTERNAL_URL).replace(/\/$/, ''); const proto = req.get('x-forwarded-proto') || req.protocol || 'https'; return `${proto}://${req.get('host')}`; }
-  const STATIC_SITEMAP_PATHS = ['/', '/listings', '/adventures', '/list-your-cabin', '/referral', '/operators', '/faq', '/guides/about-the-ozarks', '/guides/buffalo-river-cabins', '/guides/ozarks-adventures', '/guides/ozarks-camping-rv', '/guides/hidden-gem-cabins', '/guides/buffalo-river-kayaking', '/guides/hot-tub-cabins', '/guides/pet-friendly-cabins', '/guides/treehouse-rentals', '/guides/glamping-ozarks', '/guides/luxury-cabins', '/guides/ozarks-road-trip', '/guides/trip-planner'];
+  const STATIC_SITEMAP_PATHS = ['/', '/listings', '/adventures', '/list-your-cabin', '/referral', '/operators', '/faq', '/guides/about-the-ozarks', '/guides/buffalo-river-cabins', '/guides/ozarks-adventures', '/guides/ozarks-camping-rv', '/guides/hidden-gem-cabins', '/guides/buffalo-river-kayaking', '/guides/hot-tub-cabins', '/guides/pet-friendly-cabins', '/guides/treehouse-rentals', '/guides/glamping-ozarks', '/guides/luxury-cabins', '/guides/ozarks-road-trip', '/guides/trip-planner', '/guides/best-things-to-do-eureka-springs', '/guides/buffalo-river-float-trips', '/guides/ozarks-waterfalls', '/guides/ozarks-weekend-getaway', '/guides/cabins-near-eureka-springs', '/guides/family-things-to-do-ozarks', '/guides/romantic-getaways-ozarks', '/guides/best-hiking-ozarks'];
   app.get('/sitemap.xml', (req, res) => { const base = publicBaseUrl(req); const paths = [...STATIC_SITEMAP_PATHS, ...adventures.map(a => `/adventures/${a.slug}`)]; const body = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', ...paths.map(p => ['  <url>', `    <loc>${base}${p}</loc>`, '    <changefreq>weekly</changefreq>', `    <priority>${p === '/' ? '1.0' : p.startsWith('/adventures/') || p.startsWith('/guides/') ? '0.9' : '0.7'}</priority>`, '  </url>'].join('\n')), '</urlset>', ''].join('\n'); res.type('application/xml').send(body); });
   app.get('/robots.txt', (req, res) => { const base = publicBaseUrl(req); res.type('text/plain').send(`User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`); });
   app.get('/superagent-status', (_req, res) => { try { res.json(require('./lib/super-agent').getStatus()); } catch (err) { res.status(503).json({ error: 'Super Agent not enabled', detail: err.message }); } });
@@ -103,6 +103,7 @@ async function startServer() {
   app.use('/referral', formLimiter, require('./routes/referral'));
   app.use('/operators', formLimiter, require('./routes/operators'));
   app.use('/guides', require('./routes/guides'));
+  app.use('/guides', require('./routes/high-intent-guides'));
   app.use('/api/affiliate', apiLimiter, require('./routes/affiliate-api'));
   app.use('/api/health', apiLimiter, require('./routes/health-api'));
   app.use('/api/killer', apiLimiter, require('./routes/killer-api'));
