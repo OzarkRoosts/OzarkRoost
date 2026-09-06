@@ -21,8 +21,10 @@ test('high-intent traffic guide set exposes eight commercial/search landing page
   ];
   for (const slug of slugs) {
     assert.match(guideData, new RegExp(`'${slug}'`), `missing guide data: ${slug}`);
-    assert.match(routes, new RegExp(`'/${slug}'`), `missing guide route: ${slug}`);
   }
+  assert.match(routes, /const GUIDE_SLUGS = \[/);
+  assert.match(routes, /router\.get\(`\/$\{slug\}`/);
+  for (const slug of slugs) assert.match(routes, new RegExp(`'${slug}'`), `missing route slug: ${slug}`);
 });
 
 test('high-intent template has indexable SEO and conversion structure', () => {
