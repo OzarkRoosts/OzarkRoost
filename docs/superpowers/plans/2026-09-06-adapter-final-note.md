@@ -1,0 +1,1 @@
+Final adapter implementation checkpoint.
