@@ -8,9 +8,6 @@ services:
     region: oregon
     branch: main
     buildCommand: npm install && npm run migrate
-    # start.js is the canonical production bootstrap: it loads env aliases,
-    # Mailtrap routing, migrations, OpsBot, funnel/outreach, affiliate agents,
-    # SuperAgent, marketing, and the HTTP server in the correct order.
     startCommand: node start.js
     healthCheckPath: /health
     envVars:
@@ -41,8 +38,6 @@ services:
       - key: MARKETING_ENABLED
         value: "true"
       - key: OPSBOT_ENABLED
-        value: "true"
-      - key: OPSBOT_EMAIL_SMOKE_TEST
         value: "true"
       - key: AUTONOMOUS_MODE
         value: "false"
@@ -98,9 +93,13 @@ services:
         sync: false
       - key: AFF_STAY22_URL
         sync: false
+      - key: AFF_TRAVELPAYOUTS_URL
+        sync: false
       - key: AFF_HIPCAMP_URL
         sync: false
       - key: AFF_GETYOURGUIDE_URL
+        sync: false
+      - key: AFF_VIATOR_URL
         sync: false
       - key: AFF_REI_URL
         sync: false
@@ -129,6 +128,12 @@ services:
       - key: AFF_AIRBNB_URL
         sync: false
       - key: AFF_RECREATION_URL
+        sync: false
+      - key: AFF_KOA_URL
+        sync: false
+      - key: AFF_CABELA_URL
+        sync: false
+      - key: AFF_NATIONALPARKTRIPS_URL
         sync: false
       - key: AFF_AMAZON_TAG
         sync: false
