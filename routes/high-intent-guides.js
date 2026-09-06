@@ -13,7 +13,17 @@ const GUIDE_SLUGS = [
   'cabins-near-eureka-springs',
   'family-things-to-do-ozarks',
   'romantic-getaways-ozarks',
-  'best-hiking-ozarks'
+  'best-hiking-ozarks',
+  'missouri-ozarks-float-trips',
+  'best-ozarks-springs',
+  'best-caves-in-the-ozarks',
+  'ozarks-fishing-trips',
+  'ozarks-camping',
+  'ozarks-scenic-drives',
+  'branson-outdoor-adventures',
+  'bentonville-mountain-biking',
+  'fayetteville-arkansas-outdoors',
+  'ozarks-swimming-holes'
 ];
 
 for (const slug of GUIDE_SLUGS) {
