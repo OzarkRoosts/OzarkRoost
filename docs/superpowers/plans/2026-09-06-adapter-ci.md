@@ -1,0 +1,1 @@
+Specialist adapter wiring is ready for CI verification.
