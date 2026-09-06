@@ -11,17 +11,17 @@ test('directory covers commercial Ozarks categories', () => {
 });
 
 test('monetizable activity bundles expose affiliate destinations', () => {
-  for (const bundle of ['stays', 'camping', 'adventure', 'gear', 'monetize_all']) {
+  for (const bundle of ['stays', 'camping', 'adventure', 'gear', 'parks', 'monetize_all']) {
     const widgets = getBundle(bundle);
     assert.ok(widgets.length > 0, `empty bundle: ${bundle}`);
     assert.ok(widgets.every(widget => widget.url && widget.label), `invalid widget in ${bundle}`);
   }
 });
 
-test('affiliate catalog contains all core travel monetization partners', () => {
+test('affiliate catalog contains the expanded travel monetization partners', () => {
   const widgets = getAllWidgets();
   const keys = new Set(widgets.map(widget => widget.key));
-  for (const key of ['stay22', 'hipcamp', 'getyourguide', 'outdoorsy', 'alltrails', 'rei', 'amazon_camping']) {
+  for (const key of ['stay22', 'travelpayouts', 'hipcamp', 'getyourguide', 'viator', 'outdoorsy', 'rvshare', 'vrbo', 'booking', 'expedia', 'hotels', 'kayak', 'alltrails', 'rei', 'recreation', 'koa', 'cabela', 'nationalparktrips', 'amazon_camping']) {
     assert.ok(keys.has(key), `missing affiliate: ${key}`);
   }
 });
