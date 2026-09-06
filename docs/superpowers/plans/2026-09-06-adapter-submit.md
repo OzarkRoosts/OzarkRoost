@@ -1,0 +1,1 @@
+Specialist adapter implementation submission checkpoint.
