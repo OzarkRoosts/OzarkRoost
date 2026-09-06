@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/guides.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": <%- JSON.stringify(meta.title) %>,
+    "description": <%- JSON.stringify(meta.description) %>,
+    "url": <%- JSON.stringify(meta.canonical) %>
+  }
+  </script>
+</head>
+<body>
+<%- include('../partials/guide-nav') %>
+<header class="guide-hero">
+  <div class="guide-hero__overlay"></div>
+  <div class="guide-hero__content">
+    <p class="guide-hero__eyebrow">OzarkRoost Trip Guide</p>
+    <h1><%= page.h1 %></h1>
+    <p class="guide-hero__sub"><%= page.subhead %></p>
+    <a href="/listings" class="btn btn--primary btn--lg">Find a Place to Stay</a>
+  </div>
+</header>
+<main class="guide-body">
+  <section class="guide-section">
+    <div class="guide-prose">
+      <p><%= page.intro %></p>
+    </div>
+  </section>
+
+  <% page.sections.forEach(section => { %>
+  <section class="guide-section">
+    <h2><%= section.heading %></h2>
+    <div class="guide-prose">
+      <% section.paragraphs.forEach(paragraph => { %><p><%= paragraph %></p><% }); %>
+    </div>
+  </section>
+  <% }); %>
+
+  <section class="guide-section">
+    <h2>Explore the destination directory</h2>
+    <div class="guide-numbered">
+      <% page.destinations.forEach(adventure => { %>
+      <div>
+        <h3><a href="/adventures/<%= adventure.slug %>"><%= adventure.name %></a></h3>
+        <p><%= adventure.description %> <a href="/adventures/<%= adventure.slug %>">See trip details →</a></p>
+      </div>
+      <% }); %>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Where to stay</h2>
+    <div class="guide-cta-group">
+      <a href="/listings" class="btn btn--primary btn--lg">Browse Ozark stays</a>
+      <a href="/list-your-cabin" class="guide-cta">Own a place here? Claim your free founding spot →</a>
+    </div>
+  </section>
+
+  <% if (affiliateLinks && affiliateLinks.length) { %>
+  <section class="guide-section">
+    <h2>Plan your trip</h2>
+    <div class="guide-cta-group">
+      <% affiliateLinks.forEach(link => { %>
+      <a class="guide-cta" rel="sponsored noopener noreferrer" target="_blank" href="/out?to=<%= encodeURIComponent(link.url) %>&partner=<%= encodeURIComponent(link.key) %>"><%= link.label || link.name || link.key %> →</a>
+      <% }); %>
+    </div>
+  </section>
+  <% } %>
+
+  <section class="guide-section">
+    <h2>Build the weekend</h2>
+    <div class="guide-cta-group">
+      <a href="/guides/ozarks-road-trip" class="guide-cta">Build an Ozarks road trip →</a>
+      <a href="/guides/trip-planner" class="guide-cta">Get the trip planner →</a>
+      <a href="/adventures" class="guide-cta">See all Ozark adventures →</a>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
+</body>
+</html>
