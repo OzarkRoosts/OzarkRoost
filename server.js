@@ -81,19 +81,14 @@ async function startServer() {
     const { getAllListings } = require('./db/listing-submissions');
     const { getDirectoryCategories, getBundle } = require('./lib/affiliate-links');
     const listings = await getAllListings();
-    res.render('listings', { listings, directoryCategories: getDirectoryCategories(), affiliateBundles: { stays: getBundle('stays'), camping: getBundle('camping'), adventure: getBundle('adventure'), gear: getBundle('gear') } });
+    res.render('listings', { listings, directoryCategories: getDirectoryCategories(), affiliateBundles: { stays: getBundle('stays'), camping: getBundle('camping'), adventure: getBundle('adventure'), gear: getBundle('gear') });
   });
   app.get('/adventures', (_req, res) => { const { getBundle } = require('./lib/affiliate-links'); res.render('adventures', { adventures, categories, affiliateLinks: getBundle('adventure') }); });
   app.get('/adventures/:slug', (req, res) => {
     const adventure = getAdventureBySlug(req.params.slug);
     if (!adventure) return res.status(404).send('Adventure not found');
     const { getBundle } = require('./lib/affiliate-links');
-    const relatedAdventures = adventures
-      .filter(item => item.slug !== adventure.slug)
-      .map(item => ({ item, score: (item.region === adventure.region ? 2 : 0) + (item.category === adventure.category ? 1 : 0) }))
-      .sort((a, b) => b.score - a.score || a.item.name.localeCompare(b.item.name))
-      .slice(0, 6)
-      .map(({ item }) => item);
+    const relatedAdventures = adventures.filter(item => item.slug !== adventure.slug).map(item => ({ item, score: (item.region === adventure.region ? 2 : 0) + (item.category === adventure.category ? 1 : 0) })).sort((a, b) => b.score - a.score || a.item.name.localeCompare(b.item.name)).slice(0, 6).map(({ item }) => item);
     return res.render('adventure-detail', { adventure, relatedAdventures, affiliateLinks: getBundle('adventure'), baseUrl: publicBaseUrl(req) });
   });
   const PARTNER_HOST_ALLOW = new Set(['stay22.com','www.stay22.com','hipcamp.com','www.hipcamp.com','rei.com','www.rei.com','getyourguide.com','www.getyourguide.com','viator.com','www.viator.com','outdoorsy.com','www.outdoorsy.com','rvshare.com','www.rvshare.com','vrbo.com','www.vrbo.com','booking.com','www.booking.com','publiclands.com','www.publiclands.com','expedia.com','www.expedia.com','hotels.com','www.hotels.com','kayak.com','www.kayak.com','tripadvisor.com','www.tripadvisor.com','klook.com','www.klook.com','alltrails.com','www.alltrails.com','amazon.com','www.amazon.com','airbnb.com','www.airbnb.com','recreation.gov','www.recreation.gov']);
@@ -102,6 +97,7 @@ async function startServer() {
   app.use('/list-your-cabin', formLimiter, require('./routes/list-your-cabin'));
   app.use('/referral', formLimiter, require('./routes/referral'));
   app.use('/operators', formLimiter, require('./routes/operators'));
+  app.use('/subscribe', formLimiter, require('./routes/subscribe'));
   app.use('/guides', require('./routes/guides'));
   app.use('/guides', require('./routes/high-intent-guides'));
   app.use('/api/affiliate', apiLimiter, require('./routes/affiliate-api'));
