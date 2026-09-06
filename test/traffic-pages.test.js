@@ -8,17 +8,28 @@ const template = fs.readFileSync(path.join(__dirname, '..', 'views', 'guides', '
 const sitemap = fs.readFileSync(path.join(__dirname, '..', 'server.js'), 'utf8');
 const guideData = fs.readFileSync(path.join(__dirname, '..', 'lib', 'high-intent-guides.js'), 'utf8');
 
-test('high-intent traffic guide set exposes eight commercial/search landing pages', () => {
-  const slugs = [
-    'best-things-to-do-eureka-springs',
-    'buffalo-river-float-trips',
-    'ozarks-waterfalls',
-    'ozarks-weekend-getaway',
-    'cabins-near-eureka-springs',
-    'family-things-to-do-ozarks',
-    'romantic-getaways-ozarks',
-    'best-hiking-ozarks'
-  ];
+const slugs = [
+  'best-things-to-do-eureka-springs',
+  'buffalo-river-float-trips',
+  'ozarks-waterfalls',
+  'ozarks-weekend-getaway',
+  'cabins-near-eureka-springs',
+  'family-things-to-do-ozarks',
+  'romantic-getaways-ozarks',
+  'best-hiking-ozarks',
+  'missouri-ozarks-float-trips',
+  'best-ozarks-springs',
+  'best-caves-in-the-ozarks',
+  'ozarks-fishing-trips',
+  'ozarks-camping',
+  'ozarks-scenic-drives',
+  'branson-outdoor-adventures',
+  'bentonville-mountain-biking',
+  'fayetteville-arkansas-outdoors',
+  'ozarks-swimming-holes'
+];
+
+test('traffic guide set exposes eighteen high-intent search landing pages', () => {
   for (const slug of slugs) assert.match(guideData, new RegExp(`'${slug}'`), `missing guide data: ${slug}`);
   assert.match(routes, /const GUIDE_SLUGS = \[/);
   assert.match(routes, /router\.get\(/);
@@ -44,7 +55,5 @@ test('high-intent pages link into real adventure detail pages and the tracked ou
 });
 
 test('sitemap includes the high-intent guide routes', () => {
-  for (const slug of ['best-things-to-do-eureka-springs', 'buffalo-river-float-trips', 'ozarks-waterfalls', 'ozarks-weekend-getaway']) {
-    assert.match(sitemap, new RegExp(`/guides/${slug}`));
-  }
+  for (const slug of slugs) assert.match(sitemap, new RegExp(`/guides/${slug}`));
 });
