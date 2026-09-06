@@ -1,0 +1,1 @@
+Destination funnel assets are intentionally isolated here for static destination pages. The canonical destination pages can mount the funnel using the shared init script.
