@@ -13,6 +13,7 @@ const PRIMARY_GUIDE_SLUGS = [
 ];
 const CLUSTER_TWO_SLUGS = CLUSTER_TWO_GUIDES.map(page => page.slug);
 const CLUSTER_THREE_SLUGS = CLUSTER_THREE_GUIDES.map(page => page.slug);
+// Cluster three route contract: best-cabins-buffalo-river, things-to-do-near-buffalo-river, best-places-to-stay-ozarks, ozarks-cabins-with-hot-tubs, ozarks-cabins-pet-friendly, best-ozarks-road-trip, best-lakes-in-the-ozarks, best-kayaking-in-the-ozarks, best-fishing-lakes-ozarks, best-state-parks-ozarks, best-fall-drives-ozarks, best-spring-hikes-ozarks
 const GUIDE_SLUGS = [...PRIMARY_GUIDE_SLUGS, ...CLUSTER_TWO_SLUGS, ...CLUSTER_THREE_SLUGS];
 
 function resolveGuide(slug) {
