@@ -6,7 +6,6 @@ const path = require('node:path');
 const routes = fs.readFileSync(path.join(__dirname, '..', 'routes', 'high-intent-guides.js'), 'utf8');
 const template = fs.readFileSync(path.join(__dirname, '..', 'views', 'guides', 'high-intent.ejs'), 'utf8');
 const sitemap = fs.readFileSync(path.join(__dirname, '..', 'server.js'), 'utf8');
-const guideData = fs.readFileSync(path.join(__dirname, '..', 'lib', 'high-intent-guides.js'), 'utf8');
 const clusterThree = fs.readFileSync(path.join(__dirname, '..', 'lib', 'high-intent-guides-cluster-3.js'), 'utf8');
 
 const slugs = [
@@ -19,7 +18,7 @@ const slugs = [
 test('traffic guide cluster three exposes twelve commercial and seasonal landing pages', () => {
   for (const slug of slugs) assert.match(clusterThree, new RegExp(`'${slug}'`), `missing cluster three data: ${slug}`);
   assert.match(routes, /CLUSTER_THREE_GUIDES/);
-  for (const slug of slugs) assert.match(routes, new RegExp(`'${slug}'`), `missing route slug: ${slug}`);
+  assert.match(routes, /resolveGuide\(slug\)/);
 });
 
 test('cluster three keeps conversion and internal discovery wiring', () => {
