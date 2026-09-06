@@ -81,7 +81,7 @@ async function startServer() {
     const { getAllListings } = require('./db/listing-submissions');
     const { getDirectoryCategories, getBundle } = require('./lib/affiliate-links');
     const listings = await getAllListings();
-    res.render('listings', { listings, directoryCategories: getDirectoryCategories(), affiliateBundles: { stays: getBundle('stays'), camping: getBundle('camping'), adventure: getBundle('adventure'), gear: getBundle('gear') });
+    res.render('listings', { listings, directoryCategories: getDirectoryCategories(), affiliateBundles: { stays: getBundle('stays'), camping: getBundle('camping'), adventure: getBundle('adventure'), gear: getBundle('gear') } });
   });
   app.get('/adventures', (_req, res) => { const { getBundle } = require('./lib/affiliate-links'); res.render('adventures', { adventures, categories, affiliateLinks: getBundle('adventure') }); });
   app.get('/adventures/:slug', (req, res) => {
