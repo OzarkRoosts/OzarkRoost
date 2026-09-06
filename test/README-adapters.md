@@ -1,0 +1,1 @@
+Adapter tests: agent-specialist-adapters.test.js and production-agent-runtime.test.js.
