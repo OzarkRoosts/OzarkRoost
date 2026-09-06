@@ -1,0 +1,1 @@
+Adapter review boundary: use only concrete existing handlers; no invented Marketing/SEO executor is wired until its real implementation is identified.
