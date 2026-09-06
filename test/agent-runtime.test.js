@@ -61,3 +61,12 @@ test('runtime deduplicates identical work keys', async () => {
   assert.equal(second.status, 'deduplicated');
   assert.equal(count, 1);
 });
+
+test('runtime loads default specialist adapters when none are supplied', () => {
+  const runtime = new AgentRuntime();
+  assert.equal(typeof runtime.adapters['affiliate-ai:discover_affiliate'], 'function');
+  assert.equal(typeof runtime.adapters['affiliate-executor:execute_affiliate'], 'function');
+  assert.equal(typeof runtime.adapters['affiliate-ops:audit_affiliate'], 'function');
+  assert.equal(typeof runtime.adapters['autonomous-sales:prepare_outreach'], 'function');
+  assert.equal(typeof runtime.adapters['rover:answer'], 'function');
+});
