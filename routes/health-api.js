@@ -1,12 +1,14 @@
 /**
  * Health Superagent API
  * GET  /api/health/status
+ * GET  /api/health/traffic?days=7   (optional key)
  * POST /api/health/scan   (optional key)
  */
 
 const express = require('express');
 const siteHealth = require('../lib/site-health-agent');
 const errorTracker = require('../middleware/error-tracker');
+const siteTraffic = require('../lib/site-traffic');
 
 const router = express.Router();
 
@@ -29,6 +31,17 @@ router.get('/status', (req, res) => {
       env: process.env.NODE_ENV || 'development',
     },
   });
+});
+
+router.get('/traffic', async (req, res) => {
+  if (!authorize(req, res)) return;
+  try {
+    const summary = await siteTraffic.getSummary(req.query.days);
+    res.json({ ok: true, ...summary });
+  } catch (err) {
+    console.error('[health-api] traffic summary failed:', err.message);
+    res.status(503).json({ ok: false, error: 'Traffic analytics unavailable' });
+  }
 });
 
 router.post('/scan', async (req, res) => {
