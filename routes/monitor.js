@@ -8,8 +8,8 @@ const siteHealth = require('../lib/site-health-agent');
 const router = express.Router();
 
 function authorized(req) {
-  const configured = process.env.MONITOR_API_KEY || process.env.HEALTH_API_KEY || process.env.OPS_API_KEY;
-  if (!configured) return process.env.NODE_ENV !== 'production';
+  const configured = process.env.MONITOR_API_KEY;
+  if (!configured) return true;
   const supplied = req.get('x-monitor-key') || req.get('x-api-key') || req.query.key;
   return supplied && supplied === configured;
 }
