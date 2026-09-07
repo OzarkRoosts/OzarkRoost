@@ -24,6 +24,13 @@ test('adventure hub links destinations to internal landing pages', () => {
   assert.ok(page.includes('Explore guide →'));
 });
 
+test('adventure hub uses verified real-destination photography instead of generic stock placeholders', () => {
+  assert.ok(page.includes('commons.wikimedia.org/wiki/Special:Redirect/file/'), 'missing Wikimedia destination photography');
+  assert.ok(page.includes('nps.gov/common/uploads/structured_data/'), 'missing official NPS destination photography');
+  assert.ok(page.includes('photo-credit'), 'missing photo credit treatment');
+  assert.doesNotMatch(page, /images\.unsplash\.com|source\.unsplash\.com/, 'generic Unsplash placeholders must not be used');
+});
+
 test('adventure hub supplies an iterable affiliate bundle to the EJS template', () => {
   assert.match(
     server,
