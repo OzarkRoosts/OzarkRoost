@@ -48,10 +48,15 @@ async function start() {
     const affiliateExecutor = require('./lib/affiliate-application-executor');
     affiliateExecutor.start();
   }
-  if (process.env.LOCAL_OUTREACH_ENABLED !== 'false') {
-    const localOutreach = require('./lib/local-outreach-agent');
-    localOutreach.start();
+
+  // One owner for outbound local-business execution. The legacy local outreach
+  // loop is intentionally not started so it cannot race or double-send.
+  if (process.env.OUTREACH_AUTOMATION_ENABLED !== 'false') {
+    const aggressiveOutreach = require('./lib/aggressive-outreach-runner');
+    aggressiveOutreach.start({ intervalMs: Number(process.env.OUTREACH_INTERVAL_MS || 5 * 60 * 1000) });
+    console.log('[AggressiveOutreach] production executor armed');
   }
+
   if (process.env.OPSBOT_PROACTIVE_OUTREACH === 'true') {
     const proactiveOutreach = require('./lib/proactive-outreach');
     proactiveOutreach.start();
