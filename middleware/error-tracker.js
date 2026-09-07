@@ -9,6 +9,8 @@
 require('../lib/runtime-env');
 require('../lib/mailtrap-nodemailer');
 
+const { recordPageview } = require('../lib/site-traffic');
+
 const RING_MAX = 200;
 const WINDOW_MS = 15 * 60 * 1000;
 
@@ -28,6 +30,7 @@ function requestTracker() {
     totalRequests += 1;
     const start = Date.now();
     res.on('finish', () => {
+      recordPageview(req, res);
       if (res.statusCode >= 500) {
         total5xx += 1;
         pushEvent({ type: 'http5xx', method: req.method, path: req.originalUrl || req.url, status: res.statusCode, ms: Date.now() - start });
