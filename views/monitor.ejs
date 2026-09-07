@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ozark Roost Monitor</title>
+  <style>
+    :root{color-scheme:dark;--bg:#08110d;--panel:#101c16;--line:#22362a;--text:#edf7ef;--muted:#9eb0a2;--good:#57d68a;--warn:#f3c969;--bad:#ff7777;--accent:#8ed081}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#14261b 0,#08110d 55%);font-family:Inter,system-ui,sans-serif;color:var(--text)}main{max-width:1250px;margin:auto;padding:28px 18px 60px}.top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:24px}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:800}.top h1{font-size:34px;margin:5px 0}.muted{color:var(--muted)}button{border:1px solid var(--line);background:#16261c;color:var(--text);border-radius:10px;padding:10px 14px;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:rgba(16,28,22,.94);border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:0 12px 30px rgba(0,0,0,.18)}.label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.value{font-size:30px;font-weight:850;margin:6px 0}.status{display:inline-flex;align-items:center;gap:7px;font-weight:800;text-transform:capitalize}.dot{width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 12px var(--good)}.status.warn .dot{background:var(--warn);box-shadow:0 0 12px var(--warn)}.status.bad .dot{background:var(--bad);box-shadow:0 0 12px var(--bad)}section{margin-top:14px}.section-title{margin:0 0 10px;font-size:18px}.wide{grid-column:span 2}.rows{display:grid;gap:8px}.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}.row:last-child{border-bottom:0}.pill{padding:4px 8px;border-radius:999px;background:#183021;font-size:11px;text-transform:uppercase;font-weight:800}.pill.bad{background:#422021;color:#ffb0b0}.pill.warn{background:#443a1e;color:#ffe4a0}.agent{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}.empty{color:var(--muted);padding:10px 0}@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.wide{grid-column:span 2}.top{align-items:flex-start;flex-direction:column}}@media(max-width:520px){.grid{grid-template-columns:1fr}.wide{grid-column:span 1}.top h1{font-size:27px}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div><div class="eyebrow">Ozark Roost · Operations</div><h1>Monitor Command Center</h1><div class="muted">Live health, traffic, automation and verified outcomes.</div></div>
+    <button onclick="location.reload()">↻ Refresh</button>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="label">Site health</div><div class="value"><span class="status <%= health.report?.status === 'critical' ? 'bad' : health.report?.status === 'degraded' ? 'warn' : '' %>"><span class="dot"></span><%= health.report?.status || 'starting' %></span></div><div class="muted">Last scan: <%= health.last_run || 'not yet run' %></div></div>
+    <div class="card"><div class="label">7-day pageviews</div><div class="value"><%= Number(traffic.pageviews || traffic.total_pageviews || 0).toLocaleString() %></div><div class="muted">Sessions: <%= Number(traffic.sessions || 0).toLocaleString() %></div></div>
+    <div class="card"><div class="label">Affiliate clicks</div><div class="value"><%= Number(traffic.affiliate_clicks || 0).toLocaleString() %></div><div class="muted">Verified first-party events</div></div>
+    <div class="card"><div class="label">Paid listings</div><div class="value"><%= Number(listings.active_count || 0).toLocaleString() %></div><div class="muted">MRR is only shown when billing records support it.</div></div>
+
+    <section class="card wide"><h2 class="section-title">System health</h2><div class="rows">
+      <div class="row"><span>Database</span><span class="status <%= health.report?.database?.ok === false ? 'bad' : '' %>"><span class="dot"></span><%= health.report?.database?.ok === false ? 'fail' : 'ok' %></span></div>
+      <div class="row"><span>Critical probes</span><span><%= health.report?.probe_summary?.ok || 0 %> / <%= health.report?.probe_summary?.total || 0 %> passing</span></div>
+      <div class="row"><span>Memory</span><span><%= health.report?.memory?.heap_mb || 0 %> MB heap</span></div>
+      <div class="row"><span>5xx error rate</span><span><%= ((errors.rate || 0) * 100).toFixed(2) %>% · <%= errors.total_5xx || 0 %> total</span></div>
+    </div></section>
+
+    <section class="card wide"><h2 class="section-title">Automation</h2><div class="rows">
+      <% const agentMap = agents.agents || {}; %>
+      <% Object.keys(agentMap).sort().forEach(name => { const a = agentMap[name]; %>
+        <div class="agent"><span><%= name %></span><span><%= a.verified || 0 %> verified · <%= a.failed || 0 %> failed</span></div>
+      <% }); %>
+      <% if (!Object.keys(agentMap).length) { %><div class="empty">No verified agent actions recorded yet.</div><% } %>
+    </div></section>
+
+    <section class="card wide"><h2 class="section-title">Money truth</h2><div class="rows">
+      <div class="row"><span>Verified realized revenue</span><strong>$<%= Number(agents.revenue?.realized?.amount || 0).toFixed(2) %></strong></div>
+      <div class="row"><span>Forecast / opportunity</span><strong>$<%= Number(agents.revenue?.forecast?.amount || 0).toFixed(2) %></strong></div>
+      <div class="row"><span>Gap</span><strong>$<%= Number(agents.revenue?.gap || 0).toFixed(2) %></strong></div>
+      <div class="muted">Forecast is never counted as revenue. Only verified outcomes are treated as realized.</div>
+    </div></section>
+
+    <section class="card wide"><h2 class="section-title">Recent incidents</h2><div class="rows">
+      <% (incidents || []).forEach(item => { %><div class="row"><span><strong><%= item.agent %></strong> · <%= item.message %></span><span class="pill <%= item.severity === 'critical' ? 'bad' : item.severity === 'warning' ? 'warn' : '' %>"><%= item.severity %></span></div><% }); %>
+      <% if (!(incidents || []).length) { %><div class="empty">No persisted incidents reported.</div><% } %>
+    </div></section>
+  </div>
+  <p class="muted" style="margin-top:18px;font-size:12px">Generated <%= generatedAt %>. Keep this route protected with MONITOR_API_KEY in production.</p>
+</main>
+</body>
+</html>
