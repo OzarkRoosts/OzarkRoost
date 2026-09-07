@@ -9,8 +9,8 @@ const visualFiles = [
   'views/partials/hero.ejs',
   'views/partials/destinations.ejs',
   'views/partials/visual-explore.ejs',
-  'views/listings.ejs',
   'routes/guides.js',
+  'views/guides/about-the-ozarks.ejs',
 ];
 
 test('core visual surfaces use real Ozarks photography sources', () => {
@@ -22,6 +22,7 @@ test('core visual surfaces use real Ozarks photography sources', () => {
   const combined = visualFiles.map(read).join('\n');
   assert.match(combined, /nps\.gov\/common\/uploads\/structured_data/);
   assert.match(combined, /upload\.wikimedia\.org\/wikipedia\/commons/);
+  assert.match(combined, /commons\.wikimedia\.org\/wiki\/Special:FilePath/);
 });
 
 test('real-photo attribution is present on the homepage visual treatment', () => {
