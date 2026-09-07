@@ -16,22 +16,21 @@ const { createRateLimiter } = require('../middleware/rate-limit');
 const BASE_URL = (process.env.APP_URL || 'http://localhost:3000').replace(/\/$/, '');
 const formLimiter = createRateLimiter({ windowMs: 60_000, max: 15 });
 
-/* ---------- hero images (R2-hosted) ---------- */
+/* ---------- real Ozarks photography ---------- */
 const HERO_IMAGES = {
-  buffaloRiverCabins: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/1da12ea6-9762-4418-aec4-f0db946b2776.jpg',
-  ozarksAdventures: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/2519cf24-2238-4de2-b2cd-9f03c7708da7.jpg',
-  campingRv: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/a7e643a3-79e4-4a6c-819b-eef5f1824545.jpg',
-  hiddenGemCabins: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/45feb759-0cd4-4ec0-91d2-1b88d27586d9.jpg',
-  buffaloRiverKayaking: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/3e9d12aa-48b6-4507-a983-bd992c68e524.jpg',
-  hotTub: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/1da12ea6-9762-4418-aec4-f0db946b2776.jpg',
-  petFriendly: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/45feb759-0cd4-4ec0-91d2-1b88d27586d9.jpg',
-  treehouse: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/2519cf24-2238-4de2-b2cd-9f03c7708da7.jpg',
-  glamping: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/a7e643a3-79e4-4a6c-819b-eef5f1824545.jpg',
-  luxury: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/1da12ea6-9762-4418-aec4-f0db946b2776.jpg',
-  roadTrip: 'https://pub-629428d185ca4960a0a73c850d32294b.r2.dev/generated-images/company_197924/3e9d12aa-48b6-4507-a983-bd992c68e524.jpg',
+  buffaloRiverCabins: 'https://www.nps.gov/common/uploads/structured_data/3C7AAF4E-1DD8-B71B-0B9952E34C998383.jpg?maxHeight=1600&maxWidth=2400&quality=90',
+  ozarksAdventures: 'https://www.nps.gov/common/uploads/structured_data/3C7AAF4E-1DD8-B71B-0B9952E34C998383.jpg?maxHeight=1600&maxWidth=2400&quality=90',
+  campingRv: 'https://www.nps.gov/common/uploads/structured_data/3C7D6A90-1DD8-B71B-0BD085428D039686.jpg?maxHeight=1600&maxWidth=2400&quality=90',
+  hiddenGemCabins: 'https://commons.wikimedia.org/wiki/Special:FilePath/October_Ozark_Woodlands.jpg?width=1800',
+  buffaloRiverKayaking: 'https://www.nps.gov/common/uploads/structured_data/3C7D6BE9-1DD8-B71B-0BE7024117A6287B.jpg?maxHeight=1600&maxWidth=2400&quality=90',
+  hotTub: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Beaver_Lake_in_Arkansas.jpg',
+  petFriendly: 'https://www.nps.gov/common/uploads/structured_data/3C7AAF4E-1DD8-B71B-0B9952E34C998383.jpg?maxHeight=1600&maxWidth=2400&quality=90',
+  treehouse: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Eureka_Springs_Dwntwn.jpg',
+  glamping: 'https://www.nps.gov/common/uploads/structured_data/3C7D6A90-1DD8-B71B-0BD085428D039686.jpg?maxHeight=1600&maxWidth=2400&quality=90',
+  luxury: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Beaver_Lake_in_Arkansas.jpg',
+  roadTrip: 'https://commons.wikimedia.org/wiki/Special:FilePath/October_Ozark_Woodlands.jpg?width=1800',
 };
 
-/* ---------- helper: render a guide ---------- */
 function renderGuide(res, templateName, meta, extra = {}) {
   const slug = templateName;
   res.render(`guides/${templateName}`, {
@@ -53,8 +52,6 @@ function defineGuide(pathSlug, templateName, metaBuilder) {
   });
 }
 
-
-/* ---------- existing guides ---------- */
 defineGuide('about-the-ozarks', 'about-the-ozarks', () => ({
   title: 'About the Ozarks — Why This Region Steals Hearts | OzarkRoost',
   description: 'Discover what makes the Arkansas Ozarks one of America\u2019s most beloved getaway destinations \u2014 from the Buffalo River to Eureka Springs, Blanchard Springs, and everything in between.',
@@ -97,7 +94,6 @@ defineGuide('buffalo-river-kayaking', 'buffalo-river-kayaking', () => ({
   ogImage: HERO_IMAGES.buffaloRiverKayaking,
 }));
 
-/* ---------- NEW SEO traffic guides ---------- */
 defineGuide('hot-tub-cabins', 'hot-tub-cabins', () => ({
   title: 'Hot Tub Cabins in Arkansas Ozarks | Best Cabins with Hot Tubs | OzarkRoost',
   description: 'Hot tub cabins Arkansas travelers book first — Eureka Springs ridge soaks, Ponca bluff decks, and Beaver Lake night views. Compare stays and book smarter.',
@@ -140,81 +136,33 @@ defineGuide('ozarks-road-trip', 'ozarks-road-trip', () => ({
   ogImage: HERO_IMAGES.roadTrip,
 }));
 
-/* ---------- trip planner (legacy lead magnet page) ---------- */
 router.get('/trip-planner', (_req, res) => {
   res.render('guides/trip-planner', { emailSubmitted: false });
 });
 
 router.post('/trip-planner', formLimiter, async (req, res) => {
   const email = sanitizeText(req.body?.email, 254);
-
-  if (!email) {
-    return res.render('guides/trip-planner', {
-      error: 'Please enter your email address.',
-      values: { email: '' },
-      emailSubmitted: false,
-    });
-  }
-
-  if (!isValidEmail(email)) {
-    return res.render('guides/trip-planner', {
-      error: 'Please enter a valid email address.',
-      values: { email },
-      emailSubmitted: false,
-    });
-  }
-
+  if (!email) return res.render('guides/trip-planner', { error: 'Please enter your email address.', values: { email: '' }, emailSubmitted: false });
+  if (!isValidEmail(email)) return res.render('guides/trip-planner', { error: 'Please enter a valid email address.', values: { email }, emailSubmitted: false });
   const normalizedEmail = email.trim().toLowerCase();
-
-  try {
-    await createLeadMagnetSubmission({ email: normalizedEmail });
-  } catch (err) {
-    console.error('Lead magnet submission error:', err);
-    return res.render('guides/trip-planner', {
-      error: 'Something went wrong. Please try again.',
-      values: { email },
-      emailSubmitted: false,
-    });
-  }
-
-  try {
-    await enqueueNurtureSequence(normalizedEmail);
-  } catch (qErr) {
-    console.error('Nurture queue error (non-fatal):', qErr);
-  }
-
+  try { await createLeadMagnetSubmission({ email: normalizedEmail }); }
+  catch (err) { console.error('Lead magnet submission error:', err); return res.render('guides/trip-planner', { error: 'Something went wrong. Please try again.', values: { email }, emailSubmitted: false }); }
+  try { await enqueueNurtureSequence(normalizedEmail); } catch (qErr) { console.error('Nurture queue error (non-fatal):', qErr); }
   res.render('guides/trip-planner', { emailSubmitted: true });
 });
 
-/* ---------- shared email capture from guide partials ---------- */
 router.post('/email-capture', formLimiter, async (req, res) => {
   const email = sanitizeText(req.body?.email, 254);
   const source = sanitizeText(req.body?.source, 80) || 'guide';
   const back = `/guides/${source}`.replace(/[^a-z0-9\-\/]/gi, '') || '/guides/trip-planner';
-
-  if (!isValidEmail(email)) {
-    return res.redirect(`${back}#email-capture`);
-  }
-
+  if (!isValidEmail(email)) return res.redirect(`${back}#email-capture`);
   const normalizedEmail = email.trim().toLowerCase();
-  try {
-    await createLeadMagnetSubmission({ email: normalizedEmail, source });
-  } catch (err) {
-    // source column may not exist — retry email-only
-    try {
-      await createLeadMagnetSubmission({ email: normalizedEmail });
-    } catch (err2) {
-      console.error('Email capture error:', err2?.message || err?.message);
-      return res.redirect(`${back}#email-capture`);
-    }
+  try { await createLeadMagnetSubmission({ email: normalizedEmail, source }); }
+  catch (err) {
+    try { await createLeadMagnetSubmission({ email: normalizedEmail }); }
+    catch (err2) { console.error('Email capture error:', err2?.message || err?.message); return res.redirect(`${back}#email-capture`); }
   }
-
-  try {
-    await enqueueNurtureSequence(normalizedEmail);
-  } catch (qErr) {
-    console.error('Nurture queue error (non-fatal):', qErr);
-  }
-
+  try { await enqueueNurtureSequence(normalizedEmail); } catch (qErr) { console.error('Nurture queue error (non-fatal):', qErr); }
   return res.redirect(`${back}?subscribed=1#email-capture`);
 });
 
