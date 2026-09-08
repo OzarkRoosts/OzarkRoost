@@ -31,14 +31,15 @@ router.get('/traffic', async (req, res) => {
 
 router.get('/outreach', (req, res) => {
   if (!authorize(req, res)) return;
-  res.json({ ok: true, outreach: proactiveOutreach.run ? { worker: { enabled: process.env.OPSBOT_PROACTIVE_OUTREACH === 'true' }, compatibility: outreachRunner.snapshot() } : outreachRunner.snapshot() });
+  res.json({ ok: true, outreach: { worker: { enabled: process.env.OPSBOT_PROACTIVE_OUTREACH === 'true' }, compatibility: outreachRunner.snapshot() } });
 });
 
 router.get('/command-center/summary', async (req, res) => {
   if (!authorize(req, res)) return;
   try {
-    const [revenue, prospects, events, clicks, followups] = await Promise.all([
-      pool.query(`SELECT COUNT(*) FILTER (WHERE payment_status='paid') AS paid_listings, COALESCE(SUM(CASE WHEN payment_status='paid' THEN price ELSE 0 END),0) AS realized_revenue FROM listing_submissions`),
+    const [revenue, contracts, prospects, events, clicks, followups] = await Promise.all([
+      pool.query(`SELECT COUNT(*) FILTER (WHERE payment_status='paid') AS paid_listings FROM listing_submissions`),
+      pool.query(`SELECT COUNT(*) AS signed_contracts, COALESCE(SUM(price),0) AS signed_contract_value FROM autonomous_contracts WHERE status='signed'`),
       pool.query(`SELECT COUNT(*) AS total, COUNT(*) FILTER (WHERE outreach_stage IS NULL) AS new, COUNT(*) FILTER (WHERE outreach_stage='first_touch') AS first_touch, COUNT(*) FILTER (WHERE outreach_stage='follow_up') AS follow_up, COUNT(*) FILTER (WHERE outreach_stage='final_offer') AS final_offer, COUNT(*) FILTER (WHERE opted_out) AS opted_out, COUNT(*) FILTER (WHERE replied_at IS NOT NULL) AS replied, COUNT(*) FILTER (WHERE bounced_at IS NOT NULL) AS bounced FROM opsbot_sales_prospects`),
       pool.query(`SELECT COUNT(*) FILTER (WHERE status='sent') AS verified_sends, COUNT(*) FILTER (WHERE status='failed') AS failed_sends, COUNT(*) FILTER (WHERE status='blocked') AS blocked_sends, COUNT(*) FILTER (WHERE sent_at >= NOW()-INTERVAL '7 days') AS verified_7d FROM outreach_execution_events`),
       pool.query(`SELECT COUNT(*) AS affiliate_clicks FROM affiliate_clicks WHERE clicked_at >= NOW()-INTERVAL '7 days'`),
@@ -46,7 +47,13 @@ router.get('/command-center/summary', async (req, res) => {
     ]);
     res.json({
       ok: true,
-      revenue: { paidListings: Number(revenue.rows[0].paid_listings), realized: Number(revenue.rows[0].realized_revenue) },
+      revenue: {
+        paidListings: Number(revenue.rows[0].paid_listings),
+        realized: null,
+        realizedNote: 'Listing payment amount is not stored in listing_submissions; no cash figure is fabricated.',
+        signedContracts: Number(contracts.rows[0].signed_contracts),
+        signedContractValue: Number(contracts.rows[0].signed_contract_value)
+      },
       prospects: Object.fromEntries(Object.entries(prospects.rows[0]).map(([k,v]) => [k, Number(v)])),
       outreach: Object.fromEntries(Object.entries(events.rows[0]).map(([k,v]) => [k, Number(v)])),
       affiliateClicks7d: Number(clicks.rows[0].affiliate_clicks),
