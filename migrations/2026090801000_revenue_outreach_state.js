@@ -2,6 +2,11 @@ module.exports = {
   name: 'revenue_outreach_state',
   up: async (client) => {
     await client.query(`
+      CREATE TABLE IF NOT EXISTS outreach_suppression (
+        email TEXT PRIMARY KEY,
+        reason TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
       CREATE TABLE IF NOT EXISTS outreach_execution_events (
         id BIGSERIAL PRIMARY KEY,
         prospect_id INTEGER NOT NULL REFERENCES opsbot_sales_prospects(id) ON DELETE CASCADE,
@@ -24,5 +29,6 @@ module.exports = {
   },
   down: async (client) => {
     await client.query('DROP TABLE IF EXISTS outreach_execution_events');
+    await client.query('DROP TABLE IF EXISTS outreach_suppression');
   }
 };
