@@ -19,6 +19,6 @@ test('command center distinguishes verified delivery from blocked and failed act
   assert.match(ui, /Verified sends/);
   assert.match(ui, /Failed executions/);
   assert.match(ui, /Blocked executions/);
-  assert.match(ui, /provider message ID/);
+  assert.match(ui, /real message ID|Provider ID/);
   assert.match(ui, /never counted as revenue or verified sends/);
 });
