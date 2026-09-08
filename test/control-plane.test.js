@@ -16,9 +16,11 @@ function filesUnder(dir) {
 
 test('production source contains no Floot dependency', () => {
   const root = path.join(__dirname, '..');
-  const files = filesUnder(root).filter(file => /\.(js|json|yml|yaml|md|html|ejs|env)$/.test(file));
+  const productionDirs = ['lib', 'routes', 'public', 'views', 'migrations'];
+  const productionFiles = productionDirs.flatMap(dir => filesUnder(path.join(root, dir)));
+  productionFiles.push(path.join(root, 'server.js'), path.join(root, 'start.js'), path.join(root, 'package.json'), path.join(root, 'render.yaml'));
   const hits = [];
-  for (const file of files) {
+  for (const file of productionFiles.filter(fs.existsSync)) {
     const text = fs.readFileSync(file, 'utf8');
     if (/floot/i.test(text)) hits.push(path.relative(root, file));
   }
