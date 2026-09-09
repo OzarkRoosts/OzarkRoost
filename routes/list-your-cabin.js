@@ -11,7 +11,7 @@ const { isValidEmail, sanitizeText } = require('../lib/security');
 const STRIPE_LINKS = {
   starter: process.env.STRIPE_STARTER_PAYMENT_LINK_URL || 'https://buy.stripe.com/6oU8wO1w57h03jkdU97wA01',
   featured: process.env.STRIPE_FEATURED_PAYMENT_LINK_URL || 'https://buy.stripe.com/3cI8wOgqZ58S5rseYd7wA02',
-  dominant: process.env.STRIPE_DOMINANT_PAYMENT_LINK_URL || 'https://buy.stripe.com/14A9AS2A9eJs5rs03j7wA03',
+  dominant: process.env.STRIPE_DOMINANT_PAYMENT_LINK_URL || 'https://buy.stripe.com/9B600i4Ih6cW8DE9DT7wA04',
 };
 
 const TIER_META = {
