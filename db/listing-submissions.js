@@ -1,12 +1,11 @@
 // Listing submission queries.
 // Owns: all read/write to listing_submissions table.
-// Does NOT own: Stripe integration, payment link creation.
+// Does NOT own: Stripe API calls or webhook signature verification.
 const pool = require('./index');
 
-// Cache for listings — expires after 5 minutes (user can always refresh)
 let listingsCache = null;
 let listingsCacheTime = 0;
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 5 * 60 * 1000;
 
 async function createListingSubmission({
   ownerName,
@@ -44,7 +43,6 @@ async function getSubmissionByEmail(email) {
 
 async function getAllListings({ location, type } = {}) {
   const now = Date.now();
-
   if (listingsCache && (now - listingsCacheTime) < CACHE_TTL) {
     let rows = listingsCache;
     if (location && location !== 'all') rows = rows.filter(r => r.location === location);
@@ -52,8 +50,6 @@ async function getAllListings({ location, type } = {}) {
     return rows;
   }
 
-  // Paid listings stay live. Founding free listings are visible for 90 days,
-  // giving operators a real promotional window while keeping the directory honest.
   const result = await pool.query(
     `SELECT * FROM listing_submissions
      WHERE payment_status = 'paid'
@@ -69,16 +65,56 @@ async function getAllListings({ location, type } = {}) {
   return rows;
 }
 
-async function markListingPaid(id, stripeSessionId) {
+async function markListingPaid(id, stripeSessionId, stripeCustomerId, stripeSubscriptionId, stripePriceId, listingTier, subscriptionStatus, periodEnd) {
   const result = await pool.query(
     `UPDATE listing_submissions
-     SET payment_status = 'paid', stripe_checkout_session_id = $2, paid_at = NOW()
+     SET payment_status = 'paid',
+         stripe_checkout_session_id = COALESCE($2, stripe_checkout_session_id),
+         stripe_customer_id = COALESCE($3, stripe_customer_id),
+         stripe_subscription_id = COALESCE($4, stripe_subscription_id),
+         stripe_price_id = COALESCE($5, stripe_price_id),
+         listing_tier = COALESCE($6, listing_tier),
+         subscription_status = COALESCE($7, subscription_status),
+         subscription_current_period_end = COALESCE($8, subscription_current_period_end),
+         paid_at = COALESCE(paid_at, NOW())
      WHERE id = $1
      RETURNING *`,
-    [id, stripeSessionId]
+    [id, stripeSessionId, stripeCustomerId, stripeSubscriptionId, stripePriceId, listingTier, subscriptionStatus, periodEnd]
   );
   listingsCache = null;
   return result.rows[0];
 }
 
-module.exports = { createListingSubmission, getSubmissionByEmail, getAllListings, markListingPaid };
+async function updateListingSubscription({ stripeSubscriptionId, status, periodEnd, paymentStatus }) {
+  const result = await pool.query(
+    `UPDATE listing_submissions
+     SET subscription_status = $2,
+         subscription_current_period_end = $3,
+         payment_status = $4
+     WHERE stripe_subscription_id = $1
+     RETURNING *`,
+    [stripeSubscriptionId, status, periodEnd, paymentStatus]
+  );
+  listingsCache = null;
+  return result.rows[0];
+}
+
+async function recordStripeWebhookEvent(eventId, eventType) {
+  const result = await pool.query(
+    `INSERT INTO stripe_webhook_events (stripe_event_id, event_type)
+     VALUES ($1, $2)
+     ON CONFLICT (stripe_event_id) DO NOTHING
+     RETURNING stripe_event_id`,
+    [eventId, eventType]
+  );
+  return result.rowCount === 1;
+}
+
+module.exports = {
+  createListingSubmission,
+  getSubmissionByEmail,
+  getAllListings,
+  markListingPaid,
+  updateListingSubscription,
+  recordStripeWebhookEvent,
+};
