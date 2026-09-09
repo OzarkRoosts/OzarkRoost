@@ -28,4 +28,4 @@ for (const slug of GUIDE_SLUGS) router.get(`/${slug}`, (_req, res) => {
   if (!page) return res.status(404).send('Guide not found');
   return res.render('guides/high-intent', { meta: { title: page.title, description: page.description, canonical: `${BASE_URL}/guides/${slug}` }, baseUrl: BASE_URL, page, affiliateLinks: getAffiliateLinks() });
 });
-module.exports = { router, GUIDE_SLUGS, resolveGuide };
+module.exports = router;
