@@ -1,19 +1,11 @@
 const express = require('express');
 const Stripe = require('stripe');
-const {
-  markListingPaid,
-  updateListingSubscription,
-  recordStripeWebhookEvent,
-} = require('../db/listing-submissions');
+const { markListingPaid, updateListingSubscription, recordStripeWebhookEvent, releaseStripeWebhookEvent } = require('../db/listing-submissions');
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  res.status(200).json({
-    service: 'stripe-webhook',
-    configured: Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_WEBHOOK_SECRET),
-    endpoint: '/webhooks/stripe',
-  });
+  res.status(200).json({ service: 'stripe-webhook', configured: Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_WEBHOOK_SECRET), endpoint: '/webhooks/stripe' });
 });
 
 function toDate(unixSeconds) {
@@ -33,7 +25,6 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   const signature = req.headers['stripe-signature'];
   const stripeKey = process.env.STRIPE_SECRET_KEY;
-
   if (!secret || !signature || !stripeKey) return res.status(400).send('Stripe webhook is not configured.');
 
   let event;
@@ -44,11 +35,10 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
     return res.status(400).send('Invalid webhook signature.');
   }
 
+  let claimed = false;
   try {
-    // Stripe retries webhook delivery. Record the event before mutating listings
-    // so duplicate deliveries become harmless no-ops.
-    const firstDelivery = await recordStripeWebhookEvent(event.id, event.type);
-    if (!firstDelivery) return res.status(200).json({ received: true, duplicate: true });
+    claimed = await recordStripeWebhookEvent(event.id, event.type);
+    if (!claimed) return res.status(200).json({ received: true, duplicate: true });
 
     const stripe = new Stripe(stripeKey);
 
@@ -62,12 +52,8 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
         return res.status(200).json({ received: true, ignored: true });
       }
 
-      const expandedSession = await stripe.checkout.sessions.retrieve(session.id, {
-        expand: ['line_items.data.price', 'subscription'],
-      });
-      const subscription = expandedSession.subscription && typeof expandedSession.subscription === 'object'
-        ? expandedSession.subscription
-        : null;
+      const expandedSession = await stripe.checkout.sessions.retrieve(session.id, { expand: ['line_items.data.price', 'subscription'] });
+      const subscription = expandedSession.subscription && typeof expandedSession.subscription === 'object' ? expandedSession.subscription : null;
       const lineItem = expandedSession.line_items?.data?.[0];
       const priceId = lineItem?.price?.id || null;
       const periodEnd = subscription?.current_period_end ? toDate(subscription.current_period_end) : null;
@@ -82,31 +68,20 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
         subscription?.status || 'active',
         periodEnd,
       );
-
       if (!listing) console.warn('[stripe webhook] listing not found:', listingId);
       else console.log(`[stripe webhook] listing ${listingId} activated (${event.type})`);
     }
 
     if (event.type === 'customer.subscription.updated' || event.type === 'customer.subscription.deleted') {
       const subscription = event.data.object;
-      const listing = await updateListingSubscription({
-        stripeSubscriptionId: subscription.id,
-        status: subscription.status,
-        periodEnd: toDate(subscription.current_period_end),
-        paymentStatus: paymentStatusForSubscription(subscription.status),
-      });
+      const listing = await updateListingSubscription({ stripeSubscriptionId: subscription.id, status: subscription.status, periodEnd: toDate(subscription.current_period_end), paymentStatus: paymentStatusForSubscription(subscription.status) });
       if (listing) console.log(`[stripe webhook] listing ${listing.id} subscription=${subscription.status}`);
     }
 
     if (event.type === 'invoice.payment_failed') {
       const invoice = event.data.object;
       if (invoice.subscription) {
-        const listing = await updateListingSubscription({
-          stripeSubscriptionId: String(invoice.subscription),
-          status: 'past_due',
-          periodEnd: null,
-          paymentStatus: 'past_due',
-        });
+        const listing = await updateListingSubscription({ stripeSubscriptionId: String(invoice.subscription), status: 'past_due', periodEnd: null, paymentStatus: 'past_due' });
         if (listing) console.warn(`[stripe webhook] listing ${listing.id} payment failed; listing hidden until recovered`);
       }
     }
@@ -114,18 +89,16 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
     if (event.type === 'invoice.paid') {
       const invoice = event.data.object;
       if (invoice.subscription) {
-        const listing = await updateListingSubscription({
-          stripeSubscriptionId: String(invoice.subscription),
-          status: 'active',
-          periodEnd: null,
-          paymentStatus: 'paid',
-        });
+        const listing = await updateListingSubscription({ stripeSubscriptionId: String(invoice.subscription), status: 'active', periodEnd: null, paymentStatus: 'paid' });
         if (listing) console.log(`[stripe webhook] listing ${listing.id} payment recovered`);
       }
     }
 
     return res.status(200).json({ received: true });
   } catch (error) {
+    if (claimed) {
+      try { await releaseStripeWebhookEvent(event.id); } catch (releaseError) { console.error('[stripe webhook] failed to release event claim:', releaseError.message); }
+    }
     console.error('[stripe webhook] processing failed:', error.message);
     return res.status(500).send('Webhook processing failed.');
   }
