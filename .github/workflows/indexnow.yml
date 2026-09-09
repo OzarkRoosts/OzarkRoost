@@ -6,10 +6,12 @@ on:
     paths:
       - 'views/**'
       - 'public/**'
-      - 'lib/adventures.js'
-      - 'lib/adventure-directory.js'
+      - 'lib/**'
       - 'routes/**'
       - 'scripts/indexnow-submit.js'
+  schedule:
+    - cron: '15 6 * * *'
+  workflow_dispatch:
 
 jobs:
   submit:
@@ -17,8 +19,16 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Wait for deployment
+      - name: Wait for deployment after push
+        if: github.event_name == 'push'
         run: sleep 60
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
       - name: Submit sitemap URLs to IndexNow
         env:
           SITE_URL: https://ozartkroost.onrender.com
