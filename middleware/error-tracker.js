@@ -5,7 +5,7 @@
 require('../lib/runtime-env');
 require('../lib/mailtrap-nodemailer');
 
-const { ensureSession, recordPageview } = require('../lib/site-traffic');
+const { ensureSession, rememberAttribution, recordPageview } = require('../lib/site-traffic');
 
 const RING_MAX = 200;
 const WINDOW_MS = 15 * 60 * 1000;
@@ -26,6 +26,7 @@ function requestTracker() {
     totalRequests += 1;
     const start = Date.now();
     try { ensureSession(req, res); } catch (err) { console.warn('[site-traffic] session setup failed:', err.message); }
+    try { rememberAttribution(req, res); } catch (err) { console.warn('[site-traffic] attribution setup failed:', err.message); }
     res.on('finish', () => {
       try { recordPageview(req, res); } catch (err) { console.warn('[site-traffic] record failed:', err.message); }
       if (res.statusCode >= 500) {
