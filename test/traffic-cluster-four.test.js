@@ -16,6 +16,7 @@ const slugs = [
 
 test('fourth traffic cluster exposes twelve new high-intent guide pages', () => {
   assert.match(routes, /CLUSTER_FOUR_GUIDES/);
+  assert.match(routes, /module\.exports = router/);
   for (const slug of slugs) assert.match(cluster, new RegExp(`slug: '${slug}'`), `missing guide: ${slug}`);
 });
 
