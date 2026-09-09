@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 const { createListingSubmission } = require('../db/listing-submissions');
 const { isValidEmail, sanitizeText } = require('../lib/security');
+const { TIERS, getTier } = require('../lib/stripe-pricing');
 
 // Live Stripe payment links currently attached to the OzarkRoost account.
 // Render environment variables can override these without another code deploy.
@@ -16,15 +17,8 @@ const STRIPE_LINKS = {
 
 const TIER_META = {
   founding: { label: 'Founding', price: 0 },
-  starter: { label: 'Starter', price: 49 },
-  featured: { label: 'Featured', price: 99 },
-  dominant: { label: 'Dominant', price: 149 },
+  ...Object.fromEntries(Object.entries(TIERS).map(([key, tier]) => [key, { label: tier.label, price: tier.monthlyPrice }])),
 };
-
-function getTier(value) {
-  if (value === 'founding') return 'founding';
-  return Object.prototype.hasOwnProperty.call(STRIPE_LINKS, value) ? value : 'starter';
-}
 
 function buildStripePaymentUrl(baseLink, submissionId, ownerEmail, tier) {
   const url = new URL(baseLink);
