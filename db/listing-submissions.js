@@ -7,19 +7,7 @@ let listingsCache = null;
 let listingsCacheTime = 0;
 const CACHE_TTL = 5 * 60 * 1000;
 
-async function createListingSubmission({
-  ownerName,
-  ownerEmail,
-  propertyName,
-  location,
-  propertyType,
-  description,
-  photoUrl,
-  websiteUrl,
-  paymentLinkUrl,
-  paymentStatus = 'unpaid',
-  listingTier = 'founding'
-}) {
+async function createListingSubmission({ ownerName, ownerEmail, propertyName, location, propertyType, description, photoUrl, websiteUrl, paymentLinkUrl, paymentStatus = 'unpaid', listingTier = 'founding' }) {
   const safePaymentStatus = ['unpaid', 'free'].includes(paymentStatus) ? paymentStatus : 'unpaid';
   const result = await pool.query(
     `INSERT INTO listing_submissions
@@ -27,18 +15,14 @@ async function createListingSubmission({
         description, photo_url, website_url, payment_link_url, payment_status, listing_tier)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
      RETURNING *`,
-    [ownerName, ownerEmail, propertyName, location, propertyType,
-     description, photoUrl, websiteUrl, paymentLinkUrl, safePaymentStatus, listingTier]
+    [ownerName, ownerEmail, propertyName, location, propertyType, description, photoUrl, websiteUrl, paymentLinkUrl, safePaymentStatus, listingTier]
   );
   listingsCache = null;
   return result.rows[0];
 }
 
 async function getSubmissionByEmail(email) {
-  const result = await pool.query(
-    `SELECT * FROM listing_submissions WHERE owner_email = $1 ORDER BY created_at DESC LIMIT 1`,
-    [email]
-  );
+  const result = await pool.query(`SELECT * FROM listing_submissions WHERE owner_email = $1 ORDER BY created_at DESC LIMIT 1`, [email]);
   return result.rows[0];
 }
 
@@ -50,7 +34,6 @@ async function getAllListings({ location, type } = {}) {
     if (type && type !== 'all') rows = rows.filter(r => r.property_type === type);
     return rows;
   }
-
   const result = await pool.query(
     `SELECT * FROM listing_submissions
      WHERE payment_status = 'paid'
@@ -59,7 +42,6 @@ async function getAllListings({ location, type } = {}) {
   );
   listingsCache = result.rows;
   listingsCacheTime = now;
-
   let rows = listingsCache;
   if (location && location !== 'all') rows = rows.filter(r => r.location === location);
   if (type && type !== 'all') rows = rows.filter(r => r.property_type === type);
@@ -90,7 +72,7 @@ async function updateListingSubscription({ stripeSubscriptionId, status, periodE
   const result = await pool.query(
     `UPDATE listing_submissions
      SET subscription_status = $2,
-         subscription_current_period_end = $3,
+         subscription_current_period_end = COALESCE($3, subscription_current_period_end),
          payment_status = $4
      WHERE stripe_subscription_id = $1
      RETURNING *`,
@@ -111,11 +93,8 @@ async function recordStripeWebhookEvent(eventId, eventType) {
   return result.rowCount === 1;
 }
 
-module.exports = {
-  createListingSubmission,
-  getSubmissionByEmail,
-  getAllListings,
-  markListingPaid,
-  updateListingSubscription,
-  recordStripeWebhookEvent,
-};
+async function releaseStripeWebhookEvent(eventId) {
+  await pool.query('DELETE FROM stripe_webhook_events WHERE stripe_event_id = $1', [eventId]);
+}
+
+module.exports = { createListingSubmission, getSubmissionByEmail, getAllListings, markListingPaid, updateListingSubscription, recordStripeWebhookEvent, releaseStripeWebhookEvent };
