@@ -2,14 +2,17 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const fs = require('node:fs');
 const path = require('node:path');
+const { TIERS } = require('../lib/stripe-pricing');
 
 const route = fs.readFileSync(path.join(__dirname, '..', 'routes', 'list-your-cabin.js'), 'utf8');
 const view = fs.readFileSync(path.join(__dirname, '..', 'views', 'list-your-cabin.ejs'), 'utf8');
 
 test('Ozark Roost canonical premium pricing is 49, 99, and 149 monthly', () => {
-  assert.match(route, /starter:\s*\{[^}]*price:\s*49/);
-  assert.match(route, /featured:\s*\{[^}]*price:\s*99/);
-  assert.match(route, /dominant:\s*\{[^}]*price:\s*149/);
+  assert.deepEqual(TIERS, {
+    starter: { label: 'Starter', monthlyPrice: 49 },
+    featured: { label: 'Featured', monthlyPrice: 99 },
+    dominant: { label: 'Dominant', monthlyPrice: 149 },
+  });
   assert.match(view, /Starter — \$49\/month/);
   assert.match(view, /Featured — \$99\/month/);
   assert.match(view, /Dominant — \$149\/month/);
