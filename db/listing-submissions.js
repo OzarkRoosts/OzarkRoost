@@ -17,17 +17,18 @@ async function createListingSubmission({
   photoUrl,
   websiteUrl,
   paymentLinkUrl,
-  paymentStatus = 'unpaid'
+  paymentStatus = 'unpaid',
+  listingTier = 'founding'
 }) {
   const safePaymentStatus = ['unpaid', 'free'].includes(paymentStatus) ? paymentStatus : 'unpaid';
   const result = await pool.query(
     `INSERT INTO listing_submissions
        (owner_name, owner_email, property_name, location, property_type,
-        description, photo_url, website_url, payment_link_url, payment_status)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        description, photo_url, website_url, payment_link_url, payment_status, listing_tier)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
      RETURNING *`,
     [ownerName, ownerEmail, propertyName, location, propertyType,
-     description, photoUrl, websiteUrl, paymentLinkUrl, safePaymentStatus]
+     description, photoUrl, websiteUrl, paymentLinkUrl, safePaymentStatus, listingTier]
   );
   listingsCache = null;
   return result.rows[0];
