@@ -1,8 +1,5 @@
 require('dotenv').config();
 
-// Local-first AI: Marketing and OpsBot now use deterministic in-process code
-// with no API calls. External OpenAI/Groq is reserved for an explicit emergency
-// fallback via LOCAL_AI_EMERGENCY=true.
 try {
   const { OpenAI: ExternalOpenAI } = require('openai');
   const { createEmergencyClient } = require('./lib/local-ai-engine');
@@ -58,6 +55,7 @@ async function startServer() {
   softStart('opsbot', () => { const opsbot = softRequire('./lib/opsbot'); if (opsbot?.startOpsBot) opsbot.startOpsBot(); else if (opsbot?.start) opsbot.start(); });
   softStart('super-agent', () => { if (process.env.SUPERAGENT_ENABLED !== 'false' && (process.env.NODE_ENV === 'production' || process.env.SUPERAGENT_ENABLED === 'true')) { const superagent = softRequire('./lib/super-agent'); superagent?.start?.(); console.log('[SuperAgent] facade armed.'); } });
   softStart('marketing', () => { if (process.env.MARKETING_ENABLED === 'true') { const marketing = softRequire('./lib/marketing-engine'); if (marketing?.startMarketingEngine) marketing.startMarketingEngine(); else marketing?.start?.(); console.log('[Marketing] engine armed.'); } });
+  softStart('social-growth', () => { const social = softRequire('./lib/social-growth-agent'); if (social?.start) social.start(); console.log('[SocialGrowth] agent initialized.'); });
 
   const app = express();
   const port = process.env.PORT || 3000;
@@ -109,6 +107,7 @@ async function startServer() {
   app.use('/api/autonomous', apiLimiter, require('./routes/autonomous-api'));
   app.use('/api/opsbot', apiLimiter, require('./routes/opsbot-api'));
   app.use('/api/rover', apiLimiter, require('./routes/rover'));
+  app.use('/api/social-growth', apiLimiter, require('./routes/social-growth'));
   app.get('/faq', (_req, res) => res.render('faq'));
   app.use(errorTracker.errorHandler());
   app.listen(port, () => console.log(`Server running on port ${port}`));
