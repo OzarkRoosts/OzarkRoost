@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OzarkRoost Money Command Center</title>
+  <style>
+    :root{color-scheme:dark;--bg:#07110b;--panel:#101c15;--line:#29402f;--text:#eff8f0;--muted:#9db0a1;--good:#58d889;--warn:#f1c75f;--bad:#ff7777;--accent:#9bd68c}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#173020,#07110b 64%);color:var(--text);font:15px system-ui,sans-serif}
+    main{max-width:1180px;margin:auto;padding:24px 16px 56px}.top{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:18px}.eyebrow{color:var(--accent);font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.top h1{font-size:34px;line-height:1.05;margin:5px 0}.muted{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:#101c15ee;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 12px 40px #0003}.wide{grid-column:span 2}.full{grid-column:1/-1}.value{font-size:29px;font-weight:900;margin:5px 0}.label{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+    h2{font-size:18px;margin:0 0 10px}.action{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid #ffffff10}.action:last-child{border:0}.rank{font-size:12px;font-weight:900;color:var(--accent);width:28px}.action-body{flex:1}.action h3{margin:0 0 3px;font-size:16px}.btn{display:inline-block;text-decoration:none;border:1px solid var(--line);background:#183a25;color:#fff;padding:9px 12px;border-radius:10px;font-weight:850;white-space:nowrap}.btn.alt{background:#18251c}.row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid #ffffff0d}.row:last-child{border:0}.status{display:inline-flex;gap:7px;align-items:center;font-weight:850}.dot{width:9px;height:9px;border-radius:50%;background:var(--good)}.note{border-left:4px solid var(--accent);background:#132219;padding:12px 14px;border-radius:10px;margin-top:12px}.small{font-size:12px}
+    @media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.wide{grid-column:span 2}}@media(max-width:560px){.grid{grid-template-columns:1fr}.wide,.full{grid-column:span 1}.top{align-items:start;flex-direction:column}.action{align-items:flex-start;flex-direction:column}.btn{width:100%;text-align:center}}
+  </style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div><div class="eyebrow">OzarkRoost · First-dollar mode</div><h1>Money Command Center</h1><div class="muted" id="updated">Loading verified production telemetry…</div></div>
+    <a class="btn alt" href="/command-center.html">Full Command Center</a>
+  </header>
+  <section class="grid">
+    <article class="card"><div class="label">Realized revenue</div><div class="value" id="revenue">—</div><div class="muted" id="paid">Checking Stripe-backed records…</div></article>
+    <article class="card"><div class="label">Verified sends</div><div class="value" id="sends">—</div><div class="muted" id="replies">Reply data loading…</div></article>
+    <article class="card"><div class="label">Prospects</div><div class="value" id="prospects">—</div><div class="muted" id="followups">Follow-ups loading…</div></article>
+    <article class="card"><div class="label">Affiliate clicks · 7d</div><div class="value" id="affiliate">—</div><div class="muted">Traffic → monetization signal</div></article>
+    <section class="card wide"><h2>Get the first dollar</h2><div id="firstDollar"></div></section>
+    <section class="card wide"><h2>What needs attention now</h2><div id="attention"></div></section>
+    <section class="card full"><h2>Money path</h2>
+      <div class="row"><span>1. Outreach reaches qualified business</span><b id="step1">Checking…</b></div>
+      <div class="row"><span>2. Business reaches listing offer</span><b>Live</b></div>
+      <div class="row"><span>3. Exact paid tiers</span><b>$49 · $99 · $149</b></div>
+      <div class="row"><span>4. Stripe records successful payment</span><b id="step4">Checking…</b></div>
+      <div class="row"><span>5. Paid listing becomes realized revenue</span><b id="step5">Checking…</b></div>
+      <div class="note small">Only production records count. A checkout link, email, click, forecast, or attempted payment is not revenue until Stripe records a successful payment and the application records the resulting paid state.</div>
+    </section>
+    <section class="card full"><h2>Fast links</h2><div class="grid" style="grid-template-columns:repeat(4,1fr)">
+      <a class="btn" href="/list-your-cabin">Get a listing</a><a class="btn" href="/campaign/advertising-hub.html">Free-ad distribution</a><a class="btn" href="/command-center.html">Revenue telemetry</a><a class="btn" href="/">Open OzarkRoost</a>
+    </div></section>
+  </section>
+</main>
+<script>
+const $=id=>document.getElementById(id);const n=v=>Number(v||0).toLocaleString();const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function json(url){const r=await fetch(url,{headers:{Accept:'application/json'}});if(!r.ok)throw new Error(String(r.status));return r.json()}
+function action(rank,title,detail,href,kind='normal'){return `<div class="action"><div class="rank">${rank}</div><div class="action-body"><h3>${esc(title)}</h3><div class="muted">${esc(detail)}</div></div><a class="btn ${kind==='urgent'?'':'alt'}" href="${href}">${kind==='urgent'?'ACT NOW':'Open'}</a></div>`}
+async function load(){try{const [summary]=await Promise.all([json('/api/health/command-center/summary'),json('/api/health/command-center/outreach')]);const r=summary.revenue||{},p=summary.prospects||{},x=summary.outreach||{};const paid=Number(r.paidListings||0);const realized=r.realized===null?null:Number(r.realized||0);const replies=Number(p.replied||0);const verified=Number(x.verified_sends||0);const followups=Number(summary.followupsDue||0);const affiliate=Number(summary.affiliateClicks7d||0);
+$('revenue').textContent=realized===null?'Not stored':`$${realized.toFixed(2)}`;$('paid').textContent=`${n(paid)} paid listings`;if(realized===null||realized===0)$('revenue').className='value warn';$('sends').textContent=n(verified);$('replies').textContent=`${n(replies)} replies · ${n(followups)} follow-ups due`;$('prospects').textContent=n(p.total);$('followups').textContent=`${n(p.new)} new · ${n(p.first_touch)} first-touch · ${n(p.final_offer)} final-offer`;$('affiliate').textContent=n(affiliate);
+$('step1').textContent=verified>0?'Verified':'Needs verified send';$('step4').textContent=paid>0?'Payment recorded':'0 successful payments';$('step5').textContent=realized>0?'Revenue recorded':'Waiting for first dollar';
+let first='';if(paid===0)first+=action('01','Send the $49 conversion path','Outreach is running, but there is no successful payment yet. Push interested businesses directly to the listing flow.','/list-your-cabin','urgent');else first+=action('01','Upsell the next qualified business','The first payment is in. Keep the same proven path moving.','/list-your-cabin');
+if(followups>0)first+=action('02','Work the follow-up queue',`${n(followups)} prospect${followups===1?'':'s'} are currently eligible for follow-up.`,'/command-center.html','urgent');else first+=action('02','Keep qualified outreach moving','No follow-up backlog is currently reported.','/command-center.html');$('firstDollar').innerHTML=first;
+let attention='';if(verified>0&&replies===0)attention+=action('01','No replies yet','Verified delivery is happening; the next bottleneck is getting a response.','/command-center.html','urgent');if(affiliate===0)attention+=action('02','Create measurable traffic','Affiliate clicks are at zero for the last 7 days. Push destination content and tracked outbound links.','/');const failed=Number(x.failed_sends||0),blocked=Number(x.blocked_sends||0);if(failed>0||blocked>0)attention+=action('03','Clear execution blockers',`${n(failed)} failed and ${n(blocked)} blocked executions are reported.`,'/command-center.html','urgent');if(!attention)attention='<div class="status"><span class="dot"></span> No immediate blocker detected.</div>';$('attention').innerHTML=attention;
+$('updated').textContent=`Live production snapshot · ${new Date().toLocaleString()}`;}catch(e){$('updated').textContent='Production telemetry unavailable';$('attention').innerHTML=`<div class="bad">Command-center telemetry unavailable (${esc(e.message)}). Use the full Command Center for diagnostics.</div>`}}
+load();setInterval(load,60000);
+</script>
+</body></html>
