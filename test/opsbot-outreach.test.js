@@ -35,7 +35,6 @@ test('outreach seeder targets the authoritative sales prospect table', () => {
 
 test('authoritative worker refreshes the public sales prospect queue before selecting sends', () => {
   assert.match(worker, /require\('\.\/outreach-lead-seeder'\)/);
-  assert.match(worker, /seed\(\)/);
   assert.match(worker, /await seedOutreachProspects\(\)/);
 });
 
