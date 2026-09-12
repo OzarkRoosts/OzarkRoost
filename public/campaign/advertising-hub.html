@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OzarkRoost Free Distribution & Advertising Hub</title>
+  <meta name="description" content="OzarkRoost's working hub for legitimate free listings, tourism directories, business promotion, and paid visibility opportunities across the Ozarks.">
+  <style>
+    :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#152018;background:#f5f2ea;line-height:1.5}
+    *{box-sizing:border-box}body{margin:0}.wrap{max-width:1180px;margin:auto;padding:24px}
+    .hero{background:#17271c;color:#fff;border-radius:24px;padding:34px;margin-bottom:20px}.hero h1{font-size:clamp(2rem,5vw,3.8rem);line-height:1.02;margin:0 0 12px}.hero p{max-width:760px;font-size:1.08rem;margin:8px 0}.eyebrow{font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.card{background:#fff;border:1px solid #d8d5cc;border-radius:18px;padding:20px;box-shadow:0 5px 18px rgba(20,30,20,.05)}
+    .card h2,.card h3{margin-top:0}.price{font-size:2rem;font-weight:900}.muted{color:#5c625d}.tag{display:inline-block;border-radius:999px;padding:4px 9px;background:#ece9df;font-size:.76rem;font-weight:800;margin:2px 3px 2px 0}.priority{background:#e7f2e8}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    a,button{font:inherit}.btn{display:inline-block;text-decoration:none;border:0;border-radius:10px;padding:10px 13px;background:#183a25;color:#fff;font-weight:800;cursor:pointer}.btn.alt{background:#e9e6dc;color:#17271c}.btn.small{padding:7px 10px;font-size:.9rem}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0}.toolbar input,.toolbar select{padding:10px 12px;border:1px solid #c8c6bd;border-radius:10px;background:#fff;min-width:190px}.status{font-size:.84rem;font-weight:800}
+    .opp{display:flex;flex-direction:column;height:100%}.opp .grow{flex:1}.notice{border-left:5px solid #183a25;background:#fff;padding:16px 18px;border-radius:12px;margin:18px 0}.copybox{white-space:pre-wrap;background:#f0eee7;border-radius:12px;padding:14px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem;overflow:auto}
+    footer{padding:30px 0;color:#646a64;font-size:.9rem}.count{font-weight:900}.hidden{display:none!important}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">OzarkRoost growth engine</div>
+      <h1>Free Distribution & Advertising Hub</h1>
+      <p><strong>Discover the Ozarks. Stay. Eat. Explore.</strong></p>
+      <p>One working place to push OzarkRoost into legitimate free directories, tourism listings, community calendars, and local business networks—then turn that exposure into traffic, affiliate clicks, leads, and paid visibility.</p>
+      <div class="actions">
+        <a class="btn" href="https://ozartkroost.onrender.com/">Open OzarkRoost</a>
+        <a class="btn alt" href="https://ozartkroost.onrender.com/listings">View Listings</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card"><div class="eyebrow">Founding offer</div><h2>Free Listing</h2><p>Use this as the acquisition hook for qualified Ozark businesses. Limited-time founding placement can convert into paid visibility later.</p><span class="tag">Acquisition</span></article>
+      <article class="card"><div class="eyebrow">Paid</div><h2>$49</h2><p>Entry listing offer for businesses that want a permanent paid presence.</p><span class="tag">Core</span></article>
+      <article class="card"><div class="eyebrow">Paid</div><h2>$99</h2><p>Higher-visibility listing tier for businesses ready for more exposure.</p><span class="tag">Growth</span></article>
+      <article class="card"><div class="eyebrow">Paid</div><h2>$149</h2><p>Top listing tier for businesses that want maximum directory visibility.</p><span class="tag">Premium</span></article>
+    </section>
+
+    <div class="notice"><strong>How we use this:</strong> submit OzarkRoost only where the site permits it, keep the listing accurate, follow each site's eligibility rules, and record the result. No duplicate spam, fake reviews, mass form abuse, or community-posting where promotion is prohibited.</div>
+
+    <section class="card">
+      <h2>Distribution queue</h2>
+      <p class="muted">These opportunities were checked on September 12, 2026. Availability and eligibility can change, so verify the destination before submitting.</p>
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Filter by name, region, or type" aria-label="Filter opportunities">
+        <select id="statusFilter" aria-label="Filter by submission status">
+          <option value="all">All statuses</option><option value="not-started">Not started</option><option value="submitted">Submitted</option><option value="verified">Verified live</option>
+        </select>
+        <span id="progress" class="status"></span>
+      </div>
+      <div id="opportunities" class="grid"></div>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <h2>Copy-ready OzarkRoost profile</h2>
+      <p class="muted">Use the short version where a directory has a tight character limit.</p>
+      <div class="copybox" id="shortCopy">OzarkRoost is an Ozarks travel and adventure guide for finding places to stay, eat, explore, fish, float, hike, camp, and experience across Arkansas and Missouri. Discover destinations, lodging, restaurants, adventures, events, and local experiences in one place.</div>
+      <div class="actions"><button class="btn small" data-copy="shortCopy">Copy description</button></div>
+      <h3>Tracking link convention</h3>
+      <div class="copybox" id="trackingCopy">https://ozartkroost.onrender.com/?utm_source=&lt;placement&gt;&amp;utm_medium=referral&amp;utm_campaign=free_distribution</div>
+      <div class="actions"><button class="btn small" data-copy="trackingCopy">Copy tracking template</button></div>
+    </section>
+
+    <footer>
+      OzarkRoost distribution hub. Submission progress is stored only in this browser using localStorage. The hub does not submit forms automatically.
+    </footer>
+  </main>
+
+<script>
+(function(){
+  const stateKey='ozarkroost-free-ad-status-v1';
+  const statuses=['not-started','submitted','verified'];
+  let data=[]; let state={};
+  try{state=JSON.parse(localStorage.getItem(stateKey)||'{}')}catch(e){state={}}
+  const $=id=>document.getElementById(id);
+  const label=s=>s==='verified'?'Verified live':s==='submitted'?'Submitted':'Not started';
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function render(){
+    const q=$('search').value.trim().toLowerCase(); const sf=$('statusFilter').value; const root=$('opportunities'); root.innerHTML='';
+    const filtered=data.filter(x=>{const hay=[x.name,x.region,x.type,x.eligibility,x.notes].join(' ').toLowerCase(); const st=state[x.id]||'not-started'; return (!q||hay.includes(q))&&(sf==='all'||sf===st)});
+    filtered.forEach(x=>{
+      const st=state[x.id]||'not-started'; const el=document.createElement('article'); el.className='card opp';
+      el.innerHTML='<div class="grow"><span class="tag">'+esc(x.cost)+'</span><span class="tag priority">'+esc(x.priority)+'</span><h3>'+esc(x.name)+'</h3><p class="muted">'+esc(x.region)+' · '+esc(x.type)+'</p><p>'+esc(x.eligibility)+'</p><p class="muted">'+esc(x.notes)+'</p></div><div><div class="status">Status: '+label(st)+'</div><div class="actions"><a class="btn small" href="'+esc(x.submissionUrl)+'" target="_blank" rel="noopener noreferrer">Open submission</a><a class="btn small alt" href="'+esc(x.sourceUrl)+'" target="_blank" rel="noopener noreferrer">Verify source</a><button class="btn small alt" data-status="'+esc(x.id)+'" data-next="'+statuses[(statuses.indexOf(st)+1)%statuses.length]+'">Mark '+label(statuses[(statuses.indexOf(st)+1)%statuses.length])+'</button></div></div>';
+      root.appendChild(el);
+    });
+    const done=data.filter(x=>state[x.id]==='verified').length; const submitted=data.filter(x=>state[x.id]==='submitted').length; $('progress').textContent=data.length+' opportunities · '+submitted+' submitted · '+done+' verified live';
+  }
+  function persist(){try{localStorage.setItem(stateKey,JSON.stringify(state))}catch(e){} render()}
+  fetch('free-ad-opportunities.json').then(r=>r.json()).then(json=>{data=json;render()}).catch(()=>{$('opportunities').innerHTML='<div class="notice">Opportunity data could not be loaded. Open the JSON file directly or refresh the page.</div>'});
+  $('search').addEventListener('input',render); $('statusFilter').addEventListener('change',render);
+  document.addEventListener('click',e=>{
+    const btn=e.target.closest('[data-status]'); if(btn){state[btn.dataset.status]=btn.dataset.next;persist()}
+    const cp=e.target.closest('[data-copy]'); if(cp){const text=$(cp.dataset.copy).textContent;navigator.clipboard?.writeText(text).then(()=>{const old=cp.textContent;cp.textContent='Copied';setTimeout(()=>cp.textContent=old,1200)}).catch(()=>{})}
+  });
+})();
+</script>
+</body>
+</html>
