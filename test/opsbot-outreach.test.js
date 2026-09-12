@@ -33,6 +33,12 @@ test('outreach seeder targets the authoritative sales prospect table', () => {
   assert.doesNotMatch(seeder, /INSERT INTO local_outreach_prospects/);
 });
 
+test('authoritative worker refreshes the public sales prospect queue before selecting sends', () => {
+  assert.match(worker, /require\('\.\/outreach-lead-seeder'\)/);
+  assert.match(worker, /seed\(\)/);
+  assert.match(worker, /await seedOutreachProspects\(\)/);
+});
+
 test('aggressive runner is only a compatibility facade', () => {
   assert.match(facade, /require\('\.\/proactive-outreach'\)/);
   assert.doesNotMatch(facade, /local_outreach_prospects/);
