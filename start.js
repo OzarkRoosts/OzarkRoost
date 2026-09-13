@@ -87,6 +87,14 @@ async function start() {
     console.warn('[Autonomous] BLOCKED: unsafe simulated acceptance path disabled in production');
     process.env.AUTONOMOUS_MODE = 'false';
   }
+
+  // Additive revenue control plane: observes and prioritizes existing workers;
+  // it does not replace their schedulers or send duplicate outreach.
+  if (process.env.REVENUE_GROWTH_AGENT_ENABLED !== 'false') {
+    const revenueGrowth = require('./lib/revenue-growth-orchestrator');
+    revenueGrowth.start({ fundingAgent });
+  }
+
   require('./server');
 }
 start().catch(err => { console.error('Startup failed:', err.message); process.exit(1); });
