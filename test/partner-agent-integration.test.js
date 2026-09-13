@@ -11,6 +11,6 @@ test('partner agent startup is explicitly environment-gated through the existing
   assert.match(discovery, /PARTNER_AGENT_ENABLED/);
   assert.match(discovery, /partner-agent-runtime/);
   assert.match(runtime, /startPartnerAgent/);
-  assert.match(runtime, /PARTNER_SPONSORSHIP_OUTREACH_ENABLED/);
+  assert.match(runtime, /PARTNER_SPONSORSHIP_INTERVAL_MINUTES/);
   assert.match(bridge, /opsbot_affiliate_applications/);
 });
