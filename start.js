@@ -30,6 +30,10 @@ async function start() {
   await runAllMigrations(pool);
   await repairAffiliateExecutionSchema(pool);
 
+  const { ensureInboundAutomationGuard } = require('./lib/opsbot-inbound-guard');
+  await ensureInboundAutomationGuard(pool);
+  console.log('[startup] OpsBot inbound automation guard verified');
+
   const affiliateLinkRegistry = require('./lib/affiliate-link-registry-db');
   affiliateLinkRegistry.start();
 
