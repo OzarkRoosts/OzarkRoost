@@ -12,6 +12,7 @@ try {
 const express = require('express');
 const path = require('path');
 const { buildLandingContext } = require('./lib/landing-context');
+const { getAffiliateLinks } = require('./lib/affiliate-links');
 const { adventures, getAdventureBySlug, categories } = require('./lib/adventure-directory');
 const pool = require('./db/index');
 const { applySecurityHeaders, isSafeExternalUrl, sanitizeText } = require('./lib/security');
@@ -77,7 +78,7 @@ async function startServer() {
   app.get('/superagent-status', (_req, res) => { try { res.json(require('./lib/super-agent').getStatus()); } catch (err) { res.status(503).json({ error: 'Super Agent not enabled', detail: err.message }); } });
   app.use(express.static(path.join(__dirname, 'public'), { index: false }));
   app.get('/campaign', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'campaign', 'index.html')));
-  app.get('/', (_req, res) => res.render('layout', buildLandingContext()));
+  app.get('/', (_req, res) => res.render('layout', { ...buildLandingContext(), affiliateLinks: getAffiliateLinks() }));
   app.get('/destinations/buffalo-river', (_req, res) => { const { getBundle } = require('./lib/affiliate-links'); res.render('destinations-buffalo-river', { affiliateLinks: getBundle('stays'), baseUrl: publicBaseUrl(_req) }); });
   app.get('/listings', async (_req, res) => {
     const { getAllListings } = require('./db/listing-submissions');
@@ -113,4 +114,4 @@ async function startServer() {
   app.use(errorTracker.errorHandler());
   app.listen(port, () => console.log(`Server running on port ${port}`));
 }
-startServer().catch(err => { console.error('[startup] Fatal error:', err.message); process.exit(1); });
+startServer().catch(err => { console.error('[startup] server failed:', err); process.exit(1); });
