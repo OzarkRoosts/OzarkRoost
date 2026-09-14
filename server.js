@@ -69,6 +69,7 @@ async function startServer() {
   const apiLimiter = createRateLimiter({ windowMs: 60_000, max: 60, message: 'Too many API requests. Slow down.' });
   const outLimiter = createRateLimiter({ windowMs: 60_000, max: 40, message: 'Too many redirects. Slow down.' });
   app.set('view engine', 'ejs'); app.set('views', path.join(__dirname, 'views'));
+  app.use((_req, res, next) => { res.locals.affiliateLinks = getAffiliateLinks(); next(); });
   app.get('/health', (_req, res) => res.json({ status: 'healthy' }));
   app.get('/api/agents/status', apiLimiter, (_req, res) => res.json(globalObservability.snapshot()));
   function publicBaseUrl(req) { if (process.env.APP_URL) return String(process.env.APP_URL).replace(/\/$/, ''); if (process.env.RENDER_EXTERNAL_URL) return String(process.env.RENDER_EXTERNAL_URL).replace(/\/$/, ''); const proto = req.get('x-forwarded-proto') || req.protocol || 'https'; return `${proto}://${req.get('host')}`; }
@@ -78,7 +79,7 @@ async function startServer() {
   app.get('/superagent-status', (_req, res) => { try { res.json(require('./lib/super-agent').getStatus()); } catch (err) { res.status(503).json({ error: 'Super Agent not enabled', detail: err.message }); } });
   app.use(express.static(path.join(__dirname, 'public'), { index: false }));
   app.get('/campaign', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'campaign', 'index.html')));
-  app.get('/', (_req, res) => res.render('layout', { ...buildLandingContext(), affiliateLinks: getAffiliateLinks() }));
+  app.get('/', (_req, res) => res.render('layout', buildLandingContext()));
   app.get('/destinations/buffalo-river', (_req, res) => { const { getBundle } = require('./lib/affiliate-links'); res.render('destinations-buffalo-river', { affiliateLinks: getBundle('stays'), baseUrl: publicBaseUrl(_req) }); });
   app.get('/listings', async (_req, res) => {
     const { getAllListings } = require('./db/listing-submissions');
