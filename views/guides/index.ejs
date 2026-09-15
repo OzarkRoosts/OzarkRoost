@@ -9,7 +9,7 @@
   <link rel="canonical" href="<%= baseUrl %>/guides/">
   <link rel="stylesheet" href="/css/theme.css">
   <style>
-    .guide-hub{max-width:1120px;margin:0 auto;padding:44px 22px 90px}.guide-hub h1{font:400 clamp(42px,7vw,72px)/1 Georgia,serif;margin:0 0 14px}.guide-hub .lede{max-width:780px;color:#69736b;font-size:17px;line-height:1.7}.guide-actions{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 8px}.guide-actions a{display:inline-flex;align-items:center;justify-content:center;padding:12px 17px;border-radius:999px;text-decoration:none;font-size:12px;font-weight:900;border:1px solid #d9d5ca;color:#102317;background:#fff}.guide-actions a.primary{background:#102317;color:#fff;border-color:#102317}.guide-intent{margin:28px 0 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.intent-card{padding:17px;border:1px solid #e6e2d8;border-radius:16px;background:#f7f5ef;text-decoration:none;color:#102317}.intent-card strong{display:block;font-size:14px;margin-bottom:5px}.intent-card span{font-size:11px;color:#69736b;line-height:1.45}.guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:30px}.guide-card{display:block;background:#fff;border:1px solid #e6e2d8;border-radius:18px;padding:22px;text-decoration:none;color:#102317;box-shadow:0 8px 24px #1023170d}.guide-card:hover{transform:translateY(-2px)}.guide-card h2{font:400 24px/1.15 Georgia,serif;margin:0 0 9px}.guide-card p{font-size:13px;line-height:1.6;color:#69736b;margin:0 0 14px}.guide-card span{font-size:11px;font-weight:900;color:#214b31}.guide-note{margin-top:28px;padding:16px 18px;background:#f1eee5;border-radius:14px;color:#687269;font-size:12px;line-height:1.6}@media(max-width:800px){.guide-grid{grid-template-columns:1fr 1fr}.guide-intent{grid-template-columns:1fr 1fr}}@media(max-width:560px){.guide-grid{grid-template-columns:1fr}.guide-intent{grid-template-columns:1fr}.guide-hub{padding-top:30px}}
+    .guide-hub{max-width:1120px;margin:0 auto;padding:44px 22px 90px}.guide-hub h1{font:400 clamp(42px,7vw,72px)/1 Georgia,serif;margin:0 0 14px}.guide-hub .lede{max-width:780px;color:#69736b;font-size:17px;line-height:1.7}.guide-actions{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 8px}.guide-actions a{display:inline-flex;align-items:center;justify-content:center;padding:12px 17px;border-radius:999px;text-decoration:none;font-size:12px;font-weight:900;border:1px solid #d9d5ca;color:#102317;background:#fff}.guide-actions a.primary{background:#102317;color:#fff;border-color:#102317}.guide-intent{margin:28px 0 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.intent-card{padding:17px;border:1px solid #e6e2d8;border-radius:16px;background:#f7f5ef;text-decoration:none;color:#102317}.intent-card strong{display:block;font-size:14px;margin-bottom:5px}.intent-card span{font-size:11px;color:#69736b;line-height:1.45}.guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:30px}.guide-card{display:block;background:#fff;border:1px solid #e6e2d8;border-radius:18px;padding:22px;text-decoration:none;color:#102317;box-shadow:0 8px 24px #1023170d}.guide-card:hover{transform:translateY(-2px)}.guide-card h2{font:400 24px/1.15 Georgia,serif;margin:0 0 9px}.guide-card p{font-size:13px;line-height:1.6;color:#69736b;margin:0 0 14px}.guide-card span{font-size:11px;font-weight:900;color:#214b31}.guide-bridge{margin:34px 0 12px;padding:22px;border:1px solid #dcd7cb;border-radius:18px;background:#f4f1e8}.guide-bridge h2{font:400 27px/1.2 Georgia,serif;margin:0 0 7px}.guide-bridge p{margin:0 0 15px;color:#69736b;font-size:13px;line-height:1.6}.guide-bridge-links{display:flex;flex-wrap:wrap;gap:9px}.guide-bridge-links a{padding:10px 13px;border-radius:999px;background:#fff;border:1px solid #d8d3c8;color:#102317;text-decoration:none;font-size:11px;font-weight:900}.guide-note{margin-top:28px;padding:16px 18px;background:#f1eee5;border-radius:14px;color:#687269;font-size:12px;line-height:1.6}@media(max-width:800px){.guide-grid{grid-template-columns:1fr 1fr}.guide-intent{grid-template-columns:1fr 1fr}}@media(max-width:560px){.guide-grid{grid-template-columns:1fr}.guide-intent{grid-template-columns:1fr}.guide-hub{padding-top:30px}}
   </style>
 </head>
 <body>
@@ -41,6 +41,21 @@
         </a>
       <% }) %>
     </section>
+
+    <%- include('../partials/affiliate-widget', { bundle: 'stays' }) %>
+
+    <section class="guide-bridge" aria-label="Next steps for planning and local businesses">
+      <h2>Turn a guide into a trip.</h2>
+      <p>Use the guides for ideas, then move directly into stays, adventures, or the local businesses that make the itinerary happen.</p>
+      <div class="guide-bridge-links">
+        <a href="/listings">Browse stays & listings →</a>
+        <a href="/adventures">Find adventures →</a>
+        <a href="/destinations/buffalo-river">Explore Buffalo River →</a>
+        <a href="/trip-planner">Build a trip plan →</a>
+        <a href="/list-your-cabin">Get your business listed →</a>
+      </div>
+    </section>
+
     <p class="guide-note">OzarkRoost is an independent travel directory. Verify current access, conditions, reservations, prices and operating details with the official destination or provider before traveling.</p>
   </main>
 </body>
