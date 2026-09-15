@@ -1,98 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ozarkroost.onrender.com/</loc>
+    <loc>https://ozartkroost.onrender.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/listings</loc>
+    <loc>https://ozartkroost.onrender.com/guides/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/listings</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/adventures</loc>
+    <loc>https://ozartkroost.onrender.com/adventures</loc>
     <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/destinations/buffalo-river</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/trip-planner</loc>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/list-your-cabin</loc>
+    <loc>https://ozartkroost.onrender.com/list-your-cabin</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/referral</loc>
+    <loc>https://ozartkroost.onrender.com/referral</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/faq</loc>
+    <loc>https://ozartkroost.onrender.com/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/about-the-ozarks</loc>
+    <loc>https://ozartkroost.onrender.com/guides/cabins-near-eureka-springs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/guides/buffalo-river-float-trips</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/guides/romantic-getaways-ozarks</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/guides/family-things-to-do-ozarks</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/guides/about-the-ozarks</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/buffalo-river-cabins</loc>
+    <loc>https://ozartkroost.onrender.com/guides/buffalo-river-cabins</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/guides/ozarks-adventures</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ozartkroost.onrender.com/guides/ozarks-camping-rv</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/ozarks-adventures</loc>
+    <loc>https://ozartkroost.onrender.com/guides/hidden-gem-cabins</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/ozarks-camping-rv</loc>
+    <loc>https://ozartkroost.onrender.com/guides/buffalo-river-kayaking</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/hidden-gem-cabins</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ozarkroost.onrender.com/guides/buffalo-river-kayaking</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ozarkroost.onrender.com/guides/hot-tub-cabins</loc>
+    <loc>https://ozartkroost.onrender.com/guides/hot-tub-cabins</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/pet-friendly-cabins</loc>
+    <loc>https://ozartkroost.onrender.com/guides/pet-friendly-cabins</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/treehouse-rentals</loc>
+    <loc>https://ozartkroost.onrender.com/guides/treehouse-rentals</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/glamping-ozarks</loc>
+    <loc>https://ozartkroost.onrender.com/guides/glamping-ozarks</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/luxury-cabins</loc>
+    <loc>https://ozartkroost.onrender.com/guides/luxury-cabins</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ozarkroost.onrender.com/guides/ozarks-road-trip</loc>
+    <loc>https://ozartkroost.onrender.com/guides/ozarks-road-trip</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://ozarkroost.onrender.com/guides/trip-planner</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>
