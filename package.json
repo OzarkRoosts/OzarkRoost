@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node start.js",
     "dev": "node start.js",
-    "build": "node -e \"console.log('Render build: runtime migrations are deferred to application startup')\"",
+    "build": "node scripts/generate-sitemap.js && node -e \"console.log('Render build: runtime migrations are deferred to application startup')\"",
     "migrate": "node migrate.js",
     "test": "node --test test/*.test.js",
     "postinstall": "node scripts/repair-guide-affiliate-markup.js"
@@ -16,9 +16,10 @@
     "express": "^4.18.2",
     "imap": "^0.8.19",
     "mailparser": "^3.7.4",
-    "nodemailer": "^9.0.1",
     "openai": "^4.77.0",
     "pg": "^8.11.3",
+    "nodemailer": "^9.0.1",
+    "openai": "^4.77.0",
     "stripe": "^14.0.0"
   }
 }
