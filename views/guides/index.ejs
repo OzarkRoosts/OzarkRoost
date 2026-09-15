@@ -9,7 +9,7 @@
   <link rel="canonical" href="<%= baseUrl %>/guides/">
   <link rel="stylesheet" href="/css/theme.css">
   <style>
-    .guide-hub{max-width:1120px;margin:0 auto;padding:56px 22px 90px}.guide-hub h1{font:400 clamp(42px,7vw,72px)/1 Georgia,serif;margin:0 0 14px}.guide-hub .lede{max-width:760px;color:#69736b;font-size:17px;line-height:1.7}.guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:34px}.guide-card{display:block;background:#fff;border:1px solid #e6e2d8;border-radius:18px;padding:22px;text-decoration:none;color:#102317;box-shadow:0 8px 24px #1023170d}.guide-card:hover{transform:translateY(-2px)}.guide-card h2{font:400 24px/1.15 Georgia,serif;margin:0 0 9px}.guide-card p{font-size:13px;line-height:1.6;color:#69736b;margin:0 0 14px}.guide-card span{font-size:11px;font-weight:900;color:#214b31}.guide-note{margin-top:28px;padding:16px 18px;background:#f1eee5;border-radius:14px;color:#687269;font-size:12px;line-height:1.6}@media(max-width:800px){.guide-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.guide-grid{grid-template-columns:1fr}.guide-hub{padding-top:38px}}
+    .guide-hub{max-width:1120px;margin:0 auto;padding:44px 22px 90px}.guide-hub h1{font:400 clamp(42px,7vw,72px)/1 Georgia,serif;margin:0 0 14px}.guide-hub .lede{max-width:780px;color:#69736b;font-size:17px;line-height:1.7}.guide-actions{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 8px}.guide-actions a{display:inline-flex;align-items:center;justify-content:center;padding:12px 17px;border-radius:999px;text-decoration:none;font-size:12px;font-weight:900;border:1px solid #d9d5ca;color:#102317;background:#fff}.guide-actions a.primary{background:#102317;color:#fff;border-color:#102317}.guide-intent{margin:28px 0 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.intent-card{padding:17px;border:1px solid #e6e2d8;border-radius:16px;background:#f7f5ef;text-decoration:none;color:#102317}.intent-card strong{display:block;font-size:14px;margin-bottom:5px}.intent-card span{font-size:11px;color:#69736b;line-height:1.45}.guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:30px}.guide-card{display:block;background:#fff;border:1px solid #e6e2d8;border-radius:18px;padding:22px;text-decoration:none;color:#102317;box-shadow:0 8px 24px #1023170d}.guide-card:hover{transform:translateY(-2px)}.guide-card h2{font:400 24px/1.15 Georgia,serif;margin:0 0 9px}.guide-card p{font-size:13px;line-height:1.6;color:#69736b;margin:0 0 14px}.guide-card span{font-size:11px;font-weight:900;color:#214b31}.guide-note{margin-top:28px;padding:16px 18px;background:#f1eee5;border-radius:14px;color:#687269;font-size:12px;line-height:1.6}@media(max-width:800px){.guide-grid{grid-template-columns:1fr 1fr}.guide-intent{grid-template-columns:1fr 1fr}}@media(max-width:560px){.guide-grid{grid-template-columns:1fr}.guide-intent{grid-template-columns:1fr}.guide-hub{padding-top:30px}}
   </style>
 </head>
 <body>
@@ -17,6 +17,21 @@
     <p class="eyebrow">OzarkRoost travel guides</p>
     <h1>Plan the Ozarks with guides built around real trips.</h1>
     <p class="lede">Find practical trip ideas for Arkansas and Missouri: cabins, Buffalo River floats, hiking, camping, fishing, waterfalls, scenic drives, lakes, family trips and weekend getaways. Start with the guide that matches what you want to do, then follow the destination links to build the rest of the trip.</p>
+
+    <nav class="guide-actions" aria-label="Trip planning actions">
+      <a class="primary" href="/listings">Find Ozarks stays & local listings →</a>
+      <a href="/adventures">Explore adventures →</a>
+      <a href="/destinations/buffalo-river">Buffalo River →</a>
+      <a href="/list-your-cabin">List your Ozarks business →</a>
+    </nav>
+
+    <section class="guide-intent" aria-label="Trip intent shortcuts">
+      <a class="intent-card" href="/guides/cabins-near-eureka-springs"><strong>🏕 Find a cabin</strong><span>Start with lodging, then build the weekend around it.</span></a>
+      <a class="intent-card" href="/guides/buffalo-river-float-trips"><strong>🛶 Plan a river trip</strong><span>Floats, trails, camp bases and nearby adventures.</span></a>
+      <a class="intent-card" href="/guides/romantic-getaways-ozarks"><strong>❤️ Weekend getaway</strong><span>Scenic bases, cabins, waterfalls and easy itineraries.</span></a>
+      <a class="intent-card" href="/guides/family-things-to-do-ozarks"><strong>👨‍👩‍👧 Family trip</strong><span>Caves, lakes, wildlife, parks and flexible activities.</span></a>
+    </section>
+
     <section class="guide-grid" aria-label="Ozarks travel guides">
       <% guides.forEach(guide => { %>
         <a class="guide-card" href="/guides/<%= guide.slug %>">
