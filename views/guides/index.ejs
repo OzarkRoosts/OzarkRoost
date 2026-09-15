@@ -1,0 +1,32 @@
+<% const title = 'Ozarks Travel Guides | Things to Do, Cabins, Camping & Adventures | OzarkRoost'; %>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><%= title %></title>
+  <meta name="description" content="Explore OzarkRoost travel guides for cabins, weekend getaways, Buffalo River trips, hiking, camping, fishing, waterfalls, scenic drives and Ozarks adventures in Arkansas and Missouri.">
+  <link rel="canonical" href="<%= baseUrl %>/guides/">
+  <link rel="stylesheet" href="/css/theme.css">
+  <style>
+    .guide-hub{max-width:1120px;margin:0 auto;padding:56px 22px 90px}.guide-hub h1{font:400 clamp(42px,7vw,72px)/1 Georgia,serif;margin:0 0 14px}.guide-hub .lede{max-width:760px;color:#69736b;font-size:17px;line-height:1.7}.guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:34px}.guide-card{display:block;background:#fff;border:1px solid #e6e2d8;border-radius:18px;padding:22px;text-decoration:none;color:#102317;box-shadow:0 8px 24px #1023170d}.guide-card:hover{transform:translateY(-2px)}.guide-card h2{font:400 24px/1.15 Georgia,serif;margin:0 0 9px}.guide-card p{font-size:13px;line-height:1.6;color:#69736b;margin:0 0 14px}.guide-card span{font-size:11px;font-weight:900;color:#214b31}.guide-note{margin-top:28px;padding:16px 18px;background:#f1eee5;border-radius:14px;color:#687269;font-size:12px;line-height:1.6}@media(max-width:800px){.guide-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.guide-grid{grid-template-columns:1fr}.guide-hub{padding-top:38px}}
+  </style>
+</head>
+<body>
+  <main class="guide-hub">
+    <p class="eyebrow">OzarkRoost travel guides</p>
+    <h1>Plan the Ozarks with guides built around real trips.</h1>
+    <p class="lede">Find practical trip ideas for Arkansas and Missouri: cabins, Buffalo River floats, hiking, camping, fishing, waterfalls, scenic drives, lakes, family trips and weekend getaways. Start with the guide that matches what you want to do, then follow the destination links to build the rest of the trip.</p>
+    <section class="guide-grid" aria-label="Ozarks travel guides">
+      <% guides.forEach(guide => { %>
+        <a class="guide-card" href="/guides/<%= guide.slug %>">
+          <h2><%= guide.title.replace(/\s*\|\s*OzarkRoost.*$/,'') %></h2>
+          <p><%= guide.description %></p>
+          <span>Open guide →</span>
+        </a>
+      <% }) %>
+    </section>
+    <p class="guide-note">OzarkRoost is an independent travel directory. Verify current access, conditions, reservations, prices and operating details with the official destination or provider before traveling.</p>
+  </main>
+</body>
+</html>
