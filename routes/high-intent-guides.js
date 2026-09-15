@@ -1,7 +1,7 @@
 const express = require('express');
 const { getAffiliateLinks } = require('../lib/affiliate-links');
 const { getAdventureBySlug } = require('../lib/adventure-directory');
-const { getHighIntentGuide } = require('../lib/high-intent-guides');
+const { getHighIntentGuide, GUIDE_DEFINITIONS } = require('../lib/high-intent-guides');
 const { CLUSTER_TWO_GUIDES } = require('../lib/high-intent-guides-cluster-2');
 const { CLUSTER_THREE_GUIDES } = require('../lib/high-intent-guides-cluster-3');
 const { CLUSTER_FOUR_GUIDES } = require('../lib/high-intent-guides-cluster-4');
@@ -13,6 +13,15 @@ const CLUSTER_THREE_SLUGS = CLUSTER_THREE_GUIDES.map(page => page.slug);
 const CLUSTER_FOUR_SLUGS = CLUSTER_FOUR_GUIDES.map(page => page.slug);
 const GUIDE_SLUGS = [...PRIMARY_GUIDE_SLUGS, ...CLUSTER_TWO_SLUGS, ...CLUSTER_THREE_SLUGS, ...CLUSTER_FOUR_SLUGS];
 const GUIDE_PAGES = [...CLUSTER_TWO_GUIDES, ...CLUSTER_THREE_GUIDES, ...CLUSTER_FOUR_GUIDES];
+
+router.get('/', (_req, res) => {
+  const guides = [
+    ...GUIDE_DEFINITIONS,
+    ...GUIDE_PAGES,
+  ];
+  return res.render('guides/index', { baseUrl: BASE_URL, guides, affiliateLinks: getAffiliateLinks() });
+});
+
 function resolveGuide(slug) {
   const primary = getHighIntentGuide(slug);
   if (primary) return primary;
