@@ -34,9 +34,13 @@ async function start() {
     console.error('[startup] database migrations unavailable; continuing in degraded mode:', err.message);
   }
 
-  const { ensureInboundAutomationGuard } = require('./lib/opsbot-inbound-guard');
-  await ensureInboundAutomationGuard(pool);
-  console.log('[startup] OpsBot inbound automation guard verified');
+  try {
+    const { ensureInboundAutomationGuard } = require('./lib/opsbot-inbound-guard');
+    await ensureInboundAutomationGuard(pool);
+    console.log('[startup] OpsBot inbound automation guard verified');
+  } catch (err) {
+    console.warn('[startup] OpsBot inbound automation guard unavailable; continuing in degraded mode:', err.message);
+  }
 
   const affiliateLinkRegistry = require('./lib/affiliate-link-registry-db');
   affiliateLinkRegistry.start();
