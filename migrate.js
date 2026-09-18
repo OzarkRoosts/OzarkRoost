@@ -92,7 +92,7 @@ async function runFolderMigrations(client) {
 
 migrate().catch(err => {
   const message = String(err?.message || err);
-  const transientDatabaseFailure = /ENOTFOUND|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN/.test(message);
+  const transientDatabaseFailure = /ENOTFOUND|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|Connection terminated unexpectedly|server closed the connection unexpectedly|SSL\/TLS required/.test(message);
   if (transientDatabaseFailure && process.env.FAIL_ON_UNAVAILABLE_DB_MIGRATION !== 'true') {
     console.warn(`[migration] deferred because database is unavailable: ${message}`);
     process.exit(0);
