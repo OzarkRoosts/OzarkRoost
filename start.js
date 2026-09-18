@@ -27,8 +27,12 @@ async function repairAffiliateExecutionSchema(pool) {
 async function start() {
   const pool = require('./db/index');
   const { runAllMigrations } = require('./migrate-runner');
-  await runAllMigrations(pool);
-  await repairAffiliateExecutionSchema(pool);
+  try {
+    await runAllMigrations(pool);
+    await repairAffiliateExecutionSchema(pool);
+  } catch (err) {
+    console.error('[startup] database migrations unavailable; continuing in degraded mode:', err.message);
+  }
 
   const { ensureInboundAutomationGuard } = require('./lib/opsbot-inbound-guard');
   await ensureInboundAutomationGuard(pool);
