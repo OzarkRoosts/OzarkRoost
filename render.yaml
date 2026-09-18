@@ -16,7 +16,9 @@ services:
       - key: NODE_OPTIONS
         value: "--require=./lib/runtime-env.js"
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: ozarkroost-db
+          property: connectionString
       - key: APP_URL
         sync: false
       - key: OPENAI_API_KEY
