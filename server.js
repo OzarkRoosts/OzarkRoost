@@ -44,8 +44,7 @@ async function startServer() {
     const migrationResult = await runAllMigrations();
     if (migrationResult?.applied?.length) console.log(`[startup] migrations applied: ${migrationResult.applied.join(', ')}`);
   } catch (err) {
-    console.error('[startup] migration failure:', err.message);
-    throw err;
+    console.error('[startup] migration unavailable; continuing in degraded mode:', err.message);
   }
 
   errorTracker.installProcessHooks();
