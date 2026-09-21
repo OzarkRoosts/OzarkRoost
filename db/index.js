@@ -8,18 +8,23 @@ let pool;
 if (process.env.DATABASE_URL) {
   const { Pool } = require('pg');
 
-  // Render private Postgres hostnames are region-scoped. The production
-  // service is in Oregon while the primary database is in Virginia, so
-  // normalize the known legacy hostname to its TLS endpoint here as well
-  // as in the migration path. This keeps every DB consumer on one config.
+  // Render Postgres can expose legacy hostnames and external URLs that require
+  // TLS. Normalize the known legacy cross-region hostname and force TLS at the
+  // URL level so a stale sslmode=disable cannot override the pg SSL config.
   let effectiveDatabaseUrl = process.env.DATABASE_URL;
   try {
     const parsed = new URL(effectiveDatabaseUrl);
+
     if (parsed.hostname === 'dpg-damhu3ek1f9s7394emjg-a') {
       parsed.hostname = 'dpg-damhu3ek1f9s7394emjg-a.virginia-postgres.render.com';
-      effectiveDatabaseUrl = parsed.toString();
-      console.warn('[db] normalized legacy cross-region Render hostname to TLS endpoint');
+      console.warn('[db] normalized legacy cross-region Render hostname');
     }
+
+    if (!parsed.hostname.includes('localhost') && !parsed.hostname.includes('127.0.0.1')) {
+      parsed.searchParams.set('sslmode', 'require');
+    }
+
+    effectiveDatabaseUrl = parsed.toString();
   } catch (err) {
     console.error('[db] invalid DATABASE_URL:', err.message);
     throw err;
@@ -27,12 +32,19 @@ if (process.env.DATABASE_URL) {
 
   pool = new Pool({
     connectionString: effectiveDatabaseUrl,
-    ssl: effectiveDatabaseUrl.includes('localhost') ? false : { rejectUnauthorized: false }
+    ssl: effectiveDatabaseUrl.includes('localhost') || effectiveDatabaseUrl.includes('127.0.0.1')
+      ? false
+      : { rejectUnauthorized: false },
+    connectionTimeoutMillis: 10000,
+    keepAlive: true,
+    idleTimeoutMillis: 30000,
+    max: 10
   });
+
   pool.on('error', (err) => {
     console.error('[pg pool] idle client error (non-fatal):', err && err.message);
   });
-  console.log('[db] Connected via pg Pool');
+  console.log('[db] pg Pool configured with TLS for remote Render Postgres');
 } else {
   console.warn('[db] DATABASE_URL not set - database features disabled (Rover still works)');
   const noDbError = new Error('Database not configured. Set DATABASE_URL to enable DB features.');
