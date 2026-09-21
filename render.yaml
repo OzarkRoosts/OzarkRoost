@@ -1,13 +1,13 @@
-# OzarkRoost — Render Blueprint
-# Production web service. Secrets stay in Render, never in Git.
+# OzarkRoost — canonical Render Blueprint
+# One production web service. Secrets stay in Render, never in Git.
 services:
   - type: web
     runtime: node
     name: ozarkroost
-    plan: free
+    plan: starter
     region: oregon
     branch: main
-    buildCommand: npm install && npm run migrate
+    buildCommand: npm install
     startCommand: node start.js
     healthCheckPath: /health
     envVars:
@@ -16,10 +16,10 @@ services:
       - key: NODE_OPTIONS
         value: "--require=./lib/runtime-env.js"
       - key: DATABASE_URL
-        fromDatabase:
-          name: ozarkroost-prod-db
-          property: connectionString
+        sync: false
       - key: APP_URL
+        sync: false
+      - key: SITE_URL
         sync: false
       - key: OPENAI_API_KEY
         sync: false
