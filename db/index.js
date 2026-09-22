@@ -8,9 +8,6 @@ let pool;
 if (process.env.DATABASE_URL) {
   const { Pool } = require('pg');
 
-  // Render Postgres can expose legacy hostnames and external URLs that require
-  // TLS. Normalize the known legacy cross-region hostname and force TLS at the
-  // URL level so a stale sslmode=disable cannot override the pg SSL config.
   let effectiveDatabaseUrl = process.env.DATABASE_URL;
   try {
     const parsed = new URL(effectiveDatabaseUrl);
@@ -20,21 +17,20 @@ if (process.env.DATABASE_URL) {
       console.warn('[db] normalized legacy cross-region Render hostname');
     }
 
-    if (!parsed.hostname.includes('localhost') && !parsed.hostname.includes('127.0.0.1')) {
-      parsed.searchParams.set('sslmode', 'require');
-    }
-
+    // Do not put sslmode in the connection string: node-postgres can use it
+    // to override the explicit SSL options below.
+    parsed.searchParams.delete('sslmode');
     effectiveDatabaseUrl = parsed.toString();
   } catch (err) {
     console.error('[db] invalid DATABASE_URL:', err.message);
     throw err;
   }
 
+  const isLocal = effectiveDatabaseUrl.includes('localhost') || effectiveDatabaseUrl.includes('127.0.0.1');
+
   pool = new Pool({
     connectionString: effectiveDatabaseUrl,
-    ssl: effectiveDatabaseUrl.includes('localhost') || effectiveDatabaseUrl.includes('127.0.0.1')
-      ? false
-      : { rejectUnauthorized: false },
+    ssl: isLocal ? false : { rejectUnauthorized: false },
     connectionTimeoutMillis: 10000,
     keepAlive: true,
     idleTimeoutMillis: 30000,
@@ -44,7 +40,7 @@ if (process.env.DATABASE_URL) {
   pool.on('error', (err) => {
     console.error('[pg pool] idle client error (non-fatal):', err && err.message);
   });
-  console.log('[db] pg Pool configured with TLS for remote Render Postgres');
+  console.log('[db] pg Pool configured with explicit TLS options for remote Render Postgres');
 } else {
   console.warn('[db] DATABASE_URL not set - database features disabled (Rover still works)');
   const noDbError = new Error('Database not configured. Set DATABASE_URL to enable DB features.');
@@ -56,6 +52,4 @@ if (process.env.DATABASE_URL) {
   };
 }
 
-// Export the pool itself. Do not overwrite pool.query with a wrapper that
-// calls pool.query, which would recurse indefinitely and exhaust the stack.
 module.exports = pool;
