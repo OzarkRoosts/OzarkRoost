@@ -17,12 +17,7 @@ function getDatabaseConfig() {
 
   let effectiveDatabaseUrl = databaseUrl;
   try {
-    const parsed = new URL(databaseUrl);
-    if (parsed.hostname === 'dpg-damhu3ek1f9s7394emjg-a') {
-      parsed.hostname = 'dpg-damhu3ek1f9s7394emjg-a.virginia-postgres.render.com';
-      console.warn('[db] normalized legacy cross-region Render hostname to TLS endpoint');
-    }
-    parsed.searchParams.delete('sslmode');
+    const parsed = new URL(databaseUrl);    parsed.searchParams.delete('sslmode');
     effectiveDatabaseUrl = parsed.toString();
   } catch (err) {
     console.error('[db] invalid DATABASE_URL:', err.message);
