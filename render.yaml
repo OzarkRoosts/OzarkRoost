@@ -16,7 +16,9 @@ services:
       - key: NODE_OPTIONS
         value: "--require=./lib/runtime-env.js"
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: ozarkroost-db
+          property: connectionString
       - key: APP_URL
         sync: false
       - key: SITE_URL
@@ -145,3 +147,9 @@ services:
         sync: false
       - key: AFF_AMAZON_BINOCULARS_URL
         sync: false
+
+# Existing production Postgres resource used by the canonical service.
+databases:
+  - name: ozarkroost-db
+    plan: free
+    region: oregon
