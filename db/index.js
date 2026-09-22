@@ -11,12 +11,6 @@ if (process.env.DATABASE_URL) {
   let effectiveDatabaseUrl = process.env.DATABASE_URL;
   try {
     const parsed = new URL(effectiveDatabaseUrl);
-
-    if (parsed.hostname === 'dpg-damhu3ek1f9s7394emjg-a') {
-      parsed.hostname = 'dpg-damhu3ek1f9s7394emjg-a.virginia-postgres.render.com';
-      console.warn('[db] normalized legacy cross-region Render hostname');
-    }
-
     // Do not put sslmode in the connection string: node-postgres can use it
     // to override the explicit SSL options below.
     parsed.searchParams.delete('sslmode');
