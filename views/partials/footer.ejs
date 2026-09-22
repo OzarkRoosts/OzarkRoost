@@ -3,7 +3,7 @@
     <div class="site-footer__brand">
       <span class="site-footer__logo">OzarkRoost</span>
       <p>The curated lead site for Ozarks cabin, camping, and RV rentals.</p>
-      <p class="site-footer__affiliate-cta"><a href="/out?to=<%= encodeURIComponent('https://tpo.mx/Jlt1jAj6') %>" rel="sponsored noopener">Plan your Ozarks trip &amp; compare travel options</a></p>
+      <p class="site-footer__affiliate-cta"><a href="/out?to=<%= encodeURIComponent('<%= process.env.AFF_TRAVELPAYOUTS_URL || 'https://tpo.mx/Jlt1jAj6' %>') %>" rel="sponsored noopener">Plan your Ozarks trip &amp; compare travel options</a></p>
     </div>
     <div class="site-footer__links">
       <div class="site-footer__col">
@@ -22,8 +22,8 @@
       </div>
       <div class="site-footer__col">
         <p class="site-footer__col-title">Book Partners</p>
-        <a href="/out?to=<%= encodeURIComponent('https://tpo.mx/Jlt1jAj6') %>" rel="sponsored noopener">Travel deals</a>
-        <a href="/out?to=<%= encodeURIComponent('https://www.stay22.com/embed/gm?aid=ozarkroost&campaign=footer&address=Ozarks%20Arkansas') %>" rel="sponsored noopener">Stay22 map</a>
+        <a href="/out?to=<%= encodeURIComponent('<%= process.env.AFF_TRAVELPAYOUTS_URL || 'https://tpo.mx/Jlt1jAj6' %>') %>" rel="sponsored noopener">Travel deals</a>
+        <a href="/out?to=<%= encodeURIComponent('<%= process.env.AFF_STAY22_URL || 'https://www.stay22.com/embed/gm?aid=ozarkroost&campaign=footer&address=Ozarks%20Arkansas' %>') %>" rel="sponsored noopener">Stay22 map</a>
         <a href="/out?to=<%= encodeURIComponent('https://www.hipcamp.com/en-US/d/united-states/arkansas/camping/all?utm_source=ozarkroost') %>" rel="sponsored noopener">Hipcamp</a>
         <a href="/out?to=<%= encodeURIComponent('https://www.vrbo.com/search?destination=Ozarks%20Arkansas&utm_source=ozarkroost') %>" rel="sponsored noopener">Vrbo</a>
         <a href="/out?to=<%= encodeURIComponent('https://www.getyourguide.com/s/?q=Ozarks%20Arkansas&utm_source=ozarkroost') %>" rel="sponsored noopener">GetYourGuide</a>
