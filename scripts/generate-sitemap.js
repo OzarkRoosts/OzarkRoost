@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { buildUrlMap } = require('../lib/site-inventory');
 
-const DEFAULT_SITE_URL = 'https://ozartkroost.onrender.com';
+const DEFAULT_SITE_URL = 'https://ozarkroost-jibz.onrender.com';
 const SITE_URL = (process.env.SITE_URL || process.env.RENDER_EXTERNAL_URL || DEFAULT_SITE_URL).replace(/\/$/, '');
 
 function xmlEscape(value) {
