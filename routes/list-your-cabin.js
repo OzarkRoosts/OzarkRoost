@@ -8,9 +8,9 @@ const { isValidEmail, sanitizeText } = require('../lib/security');
 const { TIERS, getTier } = require('../lib/stripe-pricing');
 
 const STRIPE_LINKS = {
-  starter: process.env.STRIPE_STARTER_PAYMENT_LINK_URL || 'https://buy.stripe.com/6oU8wO1w57h03jkdU97wA01',
-  featured: process.env.STRIPE_FEATURED_PAYMENT_LINK_URL || 'https://buy.stripe.com/3cI8wOgqZ58S5rseYd7wA02',
-  dominant: process.env.STRIPE_DOMINANT_PAYMENT_LINK_URL || 'https://buy.stripe.com/9B600i4Ih6cW8DE9DT7wA04',
+  starter: process.env.STRIPE_STARTER_PAYMENT_LINK_URL || 'https://buy.stripe.com/dRmfZgb952Zq9Tqeuv5os00',
+  featured: process.env.STRIPE_FEATURED_PAYMENT_LINK_URL || 'https://buy.stripe.com/00w28qelh1Vm2qYeuv5os01',
+  dominant: process.env.STRIPE_DOMINANT_PAYMENT_LINK_URL || 'https://buy.stripe.com/8x2bJ05OL2Zq7LigCD5os02',
 };
 
 const TIER_META = {
