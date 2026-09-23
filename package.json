@@ -8,7 +8,8 @@
     "build": "node scripts/generate-sitemap.js && node -e \"console.log('Render build: runtime migrations are deferred to application startup')\"",
     "migrate": "node migrate.js",
     "test": "node --test test/*.test.js",
-    "postinstall": "node scripts/repair-guide-affiliate-markup.js"
+    "postinstall": "node scripts/repair-guide-affiliate-markup.js",
+    "seo:crawl": "node scripts/seo-audit.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
