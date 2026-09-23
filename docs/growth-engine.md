@@ -31,3 +31,27 @@ Use one primary CTA per post:
 - List a property → /list-your-cabin
 
 All campaign links should use the canonical `https://ozarkroost-jibz.onrender.com` host.
+
+## 30-day traffic sprint
+
+Run this as an always-on distribution system, not a one-off launch:
+
+- Daily: publish one destination/adventure/trip-planning asset and distribute it across connected social channels.
+- Weekly: refresh the strongest pages based on search/engagement data, add internal links from relevant guides, and publish one operator-facing acquisition asset.
+- Every post uses one destination URL and one CTA. Avoid dumping every post on the homepage.
+- Repurpose each core guide into: short video script, image/carousel concept, social post, community discussion prompt, email snippet, and partner outreach angle.
+- Build original local utility: itineraries, drive times, packing lists, seasonal trip plans, activity comparisons, and verified operator information.
+- Build links through legitimate partnerships: chambers, tourism organizations, outfitters, lodging operators, event organizers, local creators, and complementary travel resources.
+- Free distribution targets: Facebook groups that permit promotion, Reddit communities that permit self-promotion, Pinterest, YouTube Shorts, TikTok, Instagram Reels, LinkedIn, X, local tourism calendars, and partner newsletters. Respect each community's rules.
+- Paid testing can come later; first identify organic winners, then boost those winners rather than guessing at creatives.
+
+### Content machine
+
+Use a 70/20/10 mix:
+- 70% useful trip-planning content
+- 20% local discovery/community content
+- 10% direct monetization/operator acquisition
+
+### Guardrails
+
+Never buy fake traffic, automate spam comments, scrape/repost competitors' copy, create doorway pages, or publish large volumes of thin AI pages. Google's current spam guidance explicitly covers doorway abuse, scaled content abuse, and scraping. See https://developers.google.com/search/docs/essentials/spam-policies.
