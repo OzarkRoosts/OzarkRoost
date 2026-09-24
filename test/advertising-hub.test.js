@@ -23,7 +23,7 @@ test('free opportunity dataset is valid and complete', () => {
   }
 });
 
-test('paid listing offer contains exactly $49, $99, and $149', () => {
+test('paid listing offer contains exactly $99, $149, and $199', () => {
   const html = fs.readFileSync(hubPath, 'utf8');
   const prices = [...html.matchAll(/\$(49|99|149)\b/g)].map(m => Number(m[1]));
   assert.deepEqual([...new Set(prices)].sort((a, b) => a - b), [49, 99, 149]);
