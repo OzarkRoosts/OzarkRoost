@@ -13,6 +13,6 @@ test('partner command center exposes affiliate and sponsorship engines', () => {
 
 test('partner command center does not claim unverified revenue', () => {
   assert.match(html, /Unverified activity is not revenue/);
-  assert.match(html, /\$49 \/ \$99 \/ \$149/);
+  assert.match(html, /\$99 \/ \$149 \/ \$199/);
   assert.match(html, /human approval/);
 });
