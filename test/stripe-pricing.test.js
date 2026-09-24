@@ -4,9 +4,9 @@ const { TIERS, getTier, isPaidTier } = require('../lib/stripe-pricing');
 
 test('Stripe listing tiers are exactly $99, $149, and $199 monthly', () => {
   assert.deepEqual(TIERS, {
-    starter: { label: 'Starter', monthlyPrice: 199 },
-    featured: { label: 'Featured', monthlyPrice: 99 },
-    dominant: { label: 'Dominant', monthlyPrice: 149 },
+    starter: { label: 'Starter', monthlyPrice: 99 },
+    featured: { label: 'Featured', monthlyPrice: 149 },
+    dominant: { label: 'Dominant', monthlyPrice: 199 },
   });
 });
 
