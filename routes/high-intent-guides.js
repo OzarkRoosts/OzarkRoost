@@ -24,7 +24,12 @@ router.get('/', (_req, res) => {
 
 function resolveGuide(slug) {
   const primary = getHighIntentGuide(slug);
-  if (primary) return primary;
+  if (primary) {
+    return {
+      ...primary,
+      destinations: primary.destinations || (primary.destinationSlugs || []).map(getAdventureBySlug).filter(Boolean),
+    };
+  }
   const page = GUIDE_PAGES.find(item => item.slug === slug);
   if (!page) return null;
   return {
