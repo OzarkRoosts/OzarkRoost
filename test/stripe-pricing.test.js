@@ -2,9 +2,9 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const { TIERS, getTier, isPaidTier } = require('../lib/stripe-pricing');
 
-test('Stripe listing tiers are exactly $49, $99, and $149 monthly', () => {
+test('Stripe listing tiers are exactly $99, $149, and $199 monthly', () => {
   assert.deepEqual(TIERS, {
-    starter: { label: 'Starter', monthlyPrice: 49 },
+    starter: { label: 'Starter', monthlyPrice: 199 },
     featured: { label: 'Featured', monthlyPrice: 99 },
     dominant: { label: 'Dominant', monthlyPrice: 149 },
   });
