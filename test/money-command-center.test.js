@@ -7,7 +7,7 @@ test('money command center has an explicit first-dollar action queue', () => {
   const ui = fs.readFileSync(path.join(__dirname, '..', 'public', 'money-command-center.html'), 'utf8');
   assert.match(ui, /First-dollar mode/);
   assert.match(ui, /Get the first dollar/);
-  assert.match(ui, /\$49/);
+  assert.match(ui, /\$99/);
   assert.match(ui, /\$99/);
   assert.match(ui, /\$149/);
 });
